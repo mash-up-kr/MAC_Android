@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MysticalAnimalCounseling</string>
+
+    <!-- sample -->
+    <string name="sample_name_format">%s. %s %s</string>
+    <string name="sample_empty_user">empty user</string>
 </resources>
