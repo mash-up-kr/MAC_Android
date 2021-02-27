@@ -17,7 +17,7 @@
         android:paddingStart="5dp"
         android:paddingTop="7dp"
         android:paddingEnd="5dp"
-        android:paddingBottom="10dp"
+        android:paddingBottom="7dp"
         tools:background="@color/point">
 
         <ImageView

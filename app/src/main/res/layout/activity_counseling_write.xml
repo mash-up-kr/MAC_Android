@@ -92,27 +92,26 @@
                     tools:itemCount="6"
                     tools:listitem="@layout/item_animal_category" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/feeling"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@id/layout_feeling_happy"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="117dp"
+                    android:layout_height="94dp"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:background="@drawable/rect_counseling_feeling_box"
                     android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_feeling_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/feeling"
-                        android:textColor="@color/white"
-                        android:textSize="14dp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="@id/layout_feeling_happy"
-                        app:layout_constraintTop_toTopOf="parent" />
 
                     <include
                         android:id="@+id/layout_feeling_happy"
@@ -120,9 +119,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:feeling="@{Feeling.기쁨}"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/layout_feeling_sad"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_feeling_title" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <include
                         android:id="@+id/layout_feeling_sad"
@@ -130,9 +130,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:feeling="@{Feeling.슬픔}"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/layout_feeling_angry"
                         app:layout_constraintStart_toEndOf="@id/layout_feeling_happy"
-                        app:layout_constraintTop_toBottomOf="@id/tv_feeling_title" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <include
                         android:id="@+id/layout_feeling_angry"
@@ -140,9 +141,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:feeling="@{Feeling.화남}"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/layout_feeling_embarrassed"
                         app:layout_constraintStart_toEndOf="@id/layout_feeling_sad"
-                        app:layout_constraintTop_toBottomOf="@id/tv_feeling_title" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <include
                         android:id="@+id/layout_feeling_embarrassed"
@@ -150,9 +152,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:feeling="@{Feeling.당황}"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/layout_feeling_irritation"
                         app:layout_constraintStart_toEndOf="@id/layout_feeling_angry"
-                        app:layout_constraintTop_toBottomOf="@id/tv_feeling_title" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <include
                         android:id="@+id/layout_feeling_irritation"
@@ -160,9 +163,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:feeling="@{Feeling.짜증}"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/layout_feeling_embarrassed"
-                        app:layout_constraintTop_toBottomOf="@id/tv_feeling_title" />
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
