@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="appCompatStyle" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/point</item>
+        <item name="colorControlActivated">@color/teal_200</item>
+        <item name="android:editTextStyle">@style/editTextStyle</item>
+    </style>
+    <!-- changes the default text colour for the EditTexts -->
+    <style name="editTextStyle" parent="android:style/Widget.EditText">
+        <item name="android:textColor">@color/gray3</item>
+    </style>
+</resources>
