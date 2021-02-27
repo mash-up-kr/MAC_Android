@@ -23,11 +23,12 @@
             android:id="@+id/iv_animal"
             android:layout_width="76dp"
             android:layout_height="76dp"
-            android:background="@color/gray5"
+            android:src="@{item.category.bodyRes}"
             app:layout_constraintBottom_toTopOf="@id/tv_animal_category"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/body_cat" />
 
         <TextView
             android:id="@+id/tv_animal_category"

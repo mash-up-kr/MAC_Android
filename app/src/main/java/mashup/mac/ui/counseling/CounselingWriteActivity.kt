@@ -4,6 +4,7 @@ import android.os.Bundle
 import mashup.mac.R
 import mashup.mac.base.BaseActivity
 import mashup.mac.databinding.ActivityCounselingWriteBinding
+import mashup.mac.model.Category
 import mashup.mac.ui.counseling.adapter.AnimalCategoryAdapter
 
 class CounselingWriteActivity :
@@ -15,10 +16,13 @@ class CounselingWriteActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initAnimalCategory()
+    }
 
+    private fun initAnimalCategory() {
         binding.rvAnimalCategory.adapter = categoryAdapter
 
-        val sample = listOf("초코", "민트", "오레오", "연애", "학업", "직업", "주변", "기타")
-        categoryAdapter.replaceAll(sample)
+        val categories = Category.getAllCategories()
+        categoryAdapter.replaceAll(categories)
     }
 }
