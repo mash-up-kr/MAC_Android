@@ -26,5 +26,12 @@ enum class Category(
             val index = Random().nextInt(allCategories.size)
             return allCategories[index]
         }
+
+        fun findCircleImage(title:String): Int? {
+            return getAllCategories().find {
+                it.title == title
+            }?.let { it.circleRes }
+        }
+
     }
 }

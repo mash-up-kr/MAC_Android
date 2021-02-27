@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="main_user_img">48dp</dimen>
+    <dimen name="main_user_name">32dp</dimen>
+    <dimen name="main_user_img_mini">26dp</dimen>
+    <dimen name="main_icon">36dp</dimen>
 </resources>

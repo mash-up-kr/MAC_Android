@@ -20,4 +20,6 @@ class MainViewModel(
         val intent = Intent(context, MyPageActivity::class.java)
         context.startActivity(intent)
     }
+    fun onClickList(){}
+    fun onClickReset(){}
 }

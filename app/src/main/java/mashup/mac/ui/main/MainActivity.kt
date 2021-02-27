@@ -6,6 +6,7 @@ import mashup.data.sample.SampleInjection
 import mashup.mac.R
 import mashup.mac.base.BaseActivity
 import mashup.mac.databinding.ActivityMainBinding
+import mashup.mac.model.Category
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
@@ -26,9 +27,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         val cue =  arrayListOf<CounselingMapModel>()
         //x : 210
-        cue.add(CounselingMapModel(500,200,"MapMdoMapMo","연애 | 5km",200))
-        cue.add(CounselingMapModel(210,1200,"제 남친이 좀 이상...","연애 | 5km",200))
-        cue.add(CounselingMapModel(720,600,"제 남친이 좀 이상...","연애 | 5km",200))
+        cue.add(CounselingMapModel(500,400,"MapMdoMapMo", Category.관계.title,5))
+        cue.add(CounselingMapModel(210,1300,"제 남친이 좀 이상...", Category.음식.title,1))
+        cue.add(CounselingMapModel(620,1400,"제 남친이 좀 이상...", Category.연애.title,7))
+        cue.add(CounselingMapModel(720,700,"제 남친이 좀 이상...", Category.직업.title,7))
         binding.customCounselingMap.setCueList(cue)
     }
 }
