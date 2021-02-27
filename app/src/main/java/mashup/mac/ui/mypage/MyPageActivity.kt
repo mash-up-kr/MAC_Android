@@ -33,6 +33,8 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
                     return@setOnClickListener
                 }
 
+                viewType = MyPageFragment.ViewType.MyCounseling
+
                 showMyCounselingTab()
                 replaceFragment(
                     MyPageFragment.newInstanceCounseling()
@@ -43,6 +45,8 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
                 if (viewType == MyPageFragment.ViewType.MyAnswer) {
                     return@setOnClickListener
                 }
+
+                viewType = MyPageFragment.ViewType.MyAnswer
 
                 showMyAnswerTab()
                 replaceFragment(
