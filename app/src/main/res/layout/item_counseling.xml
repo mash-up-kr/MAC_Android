@@ -13,20 +13,24 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
         android:layout_height="116dp"
-        android:foreground="?attr/selectableItemBackground"
-        tools:background="#312651">
+        android:background="@drawable/rect_white_rad_20"
+        android:foreground="?attr/selectableItemBackground">
 
         <ImageView
             android:id="@+id/iv_animal"
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_marginStart="16dp"
-            android:background="@color/gray5"
+            android:src="@{item.category.bodyRes}"
             app:layout_constraintBottom_toTopOf="@id/tv_category"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:src="@drawable/body_cat" />
 
         <TextView
             android:id="@+id/tv_category"
@@ -62,7 +66,7 @@
             android:paddingEnd="10dp"
             android:singleLine="true"
             android:text="@{item.title}"
-            android:textColor="@color/white"
+            android:textColor="@color/gray11"
             android:textSize="14dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/tv_answer"
@@ -93,7 +97,7 @@
             android:lineSpacingExtra="4dp"
             android:maxLines="2"
             android:text="@{item.description}"
-            android:textColor="@color/white"
+            android:textColor="@color/gray11"
             android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/guideline_column"

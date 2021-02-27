@@ -1,6 +1,8 @@
 package mashup.mac.ext
 
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -21,5 +23,12 @@ fun ImageView.setCircleImageUrl(url: String?) {
             .load(url)
             .apply(RequestOptions().circleCrop())
             .into(this)
+    }
+}
+
+@BindingAdapter("android:src")
+fun ImageView.setDrawable(@DrawableRes drawableRes: Int?) {
+    drawableRes?.let {
+        setImageDrawable(ContextCompat.getDrawable(context, it))
     }
 }

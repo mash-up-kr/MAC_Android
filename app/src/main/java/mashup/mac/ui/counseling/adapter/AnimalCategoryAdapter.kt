@@ -6,11 +6,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import mashup.mac.R
 import mashup.mac.databinding.ItemAnimalCategoryBinding
+import mashup.mac.model.Category
 
 class AnimalCategoryAdapter :
     RecyclerView.Adapter<AnimalCategoryAdapter.AnimalCategoryViewHolder>() {
 
-    private val items = mutableListOf<String>()
+    private val items = mutableListOf<Category>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalCategoryViewHolder {
         return AnimalCategoryViewHolder(parent)
@@ -22,7 +23,7 @@ class AnimalCategoryAdapter :
 
     override fun getItemCount() = items.size
 
-    fun replaceAll(items: List<String>) {
+    fun replaceAll(items: List<Category>) {
         this.items.clear()
         this.items.addAll(items)
         notifyDataSetChanged()
@@ -37,8 +38,8 @@ class AnimalCategoryAdapter :
 
         private val binding: ItemAnimalCategoryBinding? = DataBindingUtil.bind(itemView)
 
-        fun bind(item: String) {
-            binding?.title = item
+        fun bind(item: Category) {
+            binding?.item = item
         }
     }
 }

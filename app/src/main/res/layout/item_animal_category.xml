@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="title"
-            type="String" />
+            name="item"
+            type="mashup.mac.model.Category" />
     </data>
 
     <LinearLayout
@@ -21,14 +21,15 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:background="@color/white"
-            tools:background="@color/gray5" />
+            android:src="@{item.faceRes}"
+            tools:src="@drawable/face_cat" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:includeFontPadding="false"
-            android:text="@{title}"
+            android:text="@{item.title}"
             android:textColor="@color/white"
             android:textSize="14dp"
             tools:text="연애" />

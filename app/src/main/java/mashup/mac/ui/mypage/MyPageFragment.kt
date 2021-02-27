@@ -7,6 +7,7 @@ import mashup.mac.R
 import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.FragmentMyPageBinding
 import mashup.mac.model.AnimalBadgeItem
+import mashup.mac.model.Category
 import mashup.mac.model.CounselingItem
 import mashup.mac.ui.mypage.adapter.AnimalBadgeAdapter
 import mashup.mac.ui.mypage.adapter.CounselingAdapter
@@ -49,10 +50,11 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
         }
 
         val sample1 = mutableListOf<AnimalBadgeItem>()
-        (0..5).forEach { index ->
+        Category.getAllCategories().forEach {
             sample1.add(
                 AnimalBadgeItem(
-                    badgeCount = index
+                    category = it,
+                    badgeCount = 10
                 )
             )
         }
@@ -81,6 +83,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
         (0..100).forEach { _ ->
             sample.add(
                 CounselingItem(
+                    category = Category.getRandomCategory(),
                     title = "[내가 올린 고민들] 소양이팀 너무 좋아요!",
                     description = "뭔가 긴 설명이 필요한데 뭐라고 적을까요? 그냥 우리팀 너무너무 멋지다! 홍대 너무너무 신난다! 날씨 너무너무 좋다! 으아 다 좋다! 라이언 귀엽다!",
                     answer = 100
@@ -95,6 +98,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
         (0..100).forEach { _ ->
             sample.add(
                 CounselingItem(
+                    category = Category.getRandomCategory(),
                     title = "[내가 남긴 답변들] 소양이팀 너무 좋아요!",
                     description = "뭔가 긴 설명이 필요한데 뭐라고 적을까요? 그냥 우리팀 너무너무 멋지다! 홍대 너무너무 신난다! 날씨 너무너무 좋다! 으아 다 좋다! 라이언 귀엽다!",
                     answer = 100
