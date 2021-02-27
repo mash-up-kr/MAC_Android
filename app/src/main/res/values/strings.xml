@@ -14,4 +14,10 @@
     <string name="what_is_title_of_counseling">고민의 제목이 무엇인가요?</string>
     <string name="please_write_counseling">고민을 적어주세요</string>
     <string name="complete_counseling">작성 완료</string>
+    <string name="my_page">마이페이지</string>
+    <string name="my_counseling">내가 올린 고민들</string>
+    <string name="my_answer">내가 남긴 답변들</string>
+    <string name="own_counseling_badge_format" cdata="true"><![CDATA[보유한 고민 배지 <font color=#6DECA2>%d</font>]]></string>
+    <string name="answer_count_format" cdata="true"><![CDATA[답변 <b>%d</b>]]></string>
+
 </resources>

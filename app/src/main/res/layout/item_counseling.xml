@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="mashup.mac.model.CounselingItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="116dp"
+        android:foreground="?attr/selectableItemBackground"
+        tools:background="#312651">
+
+        <ImageView
+            android:id="@+id/iv_animal"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="16dp"
+            android:background="@color/gray5"
+            app:layout_constraintBottom_toTopOf="@id/tv_category"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rect_green_rad_30"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingStart="13dp"
+            android:paddingEnd="13dp"
+            android:text="@{item.category.title}"
+            android:textColor="@color/gray11"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/iv_animal"
+            app:layout_constraintStart_toStartOf="@id/iv_animal"
+            app:layout_constraintTop_toBottomOf="@id/iv_animal"
+            tools:text="연애" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_column"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="80dp" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:paddingEnd="10dp"
+            android:singleLine="true"
+            android:text="@{item.title}"
+            android:textColor="@color/white"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/tv_answer"
+            app:layout_constraintStart_toEndOf="@id/guideline_column"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="소양이팀 좋아요" />
+
+        <TextView
+            android:id="@+id/tv_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/point"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            bind:setHtmlText="@{@string/answer_count_format(item.answer)}"
+            tools:text="답변 311" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="41dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="4dp"
+            android:maxLines="2"
+            android:text="@{item.description}"
+            android:textColor="@color/white"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline_column"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="신비로운 동물 상담소에 오신것을 환영합니다. 다양한 동물들과 함께 고민 상담도 하고 내가 해결 해준 동물을 수집해 보세요!" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:text="@{item.date}"
+            android:textColor="#5E5474"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline_column"
+            tools:text="2020.02.20 오전 08:00" />
+
+        <!-- divider -->
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#4B494D"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
