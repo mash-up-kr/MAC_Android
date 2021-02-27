@@ -6,7 +6,9 @@ import androidx.core.os.bundleOf
 import mashup.mac.R
 import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.FragmentMyPageBinding
+import mashup.mac.model.AnimalBadgeItem
 import mashup.mac.model.CounselingItem
+import mashup.mac.ui.mypage.adapter.AnimalBadgeAdapter
 import mashup.mac.ui.mypage.adapter.CounselingAdapter
 import mashup.mac.util.log.Dlog
 
@@ -31,6 +33,8 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
         MyCounseling, MyAnswer
     }
 
+    private val animalBadgeAdapter by lazy { AnimalBadgeAdapter() }
+
     private val counselingAdapter by lazy { CounselingAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,13 +48,31 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
             return
         }
 
-        binding.rvCounseling.adapter = counselingAdapter
+        val sample1 = mutableListOf<AnimalBadgeItem>()
+        (0..5).forEach { index ->
+            sample1.add(
+                AnimalBadgeItem(
+                    badgeCount = index
+                )
+            )
+        }
 
-        val sample = when (viewType) {
+        val sample2 = when (viewType) {
             ViewType.MyCounseling -> getCounselingData()
             ViewType.MyAnswer -> getAnswerData()
         }
 
+        initAnimalBadge(sample1)
+        initCounseling(sample2)
+    }
+
+    private fun initAnimalBadge(sample: List<AnimalBadgeItem>) {
+        binding.rvAnimalBadge.adapter = animalBadgeAdapter
+        animalBadgeAdapter.replaceAll(sample)
+    }
+
+    private fun initCounseling(sample: List<CounselingItem>) {
+        binding.rvCounseling.adapter = counselingAdapter
         counselingAdapter.replaceAll(sample)
     }
 
