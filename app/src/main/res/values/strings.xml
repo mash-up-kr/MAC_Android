@@ -1,7 +1,17 @@
 <resources>
     <string name="app_name">MysticalAnimalCounseling</string>
 
-    <!-- sample -->
+    <!-- sample start -->
     <string name="sample_name_format">%s. %s %s</string>
     <string name="sample_empty_user">empty user</string>
+    <!-- sample end -->
+
+    <string name="write_counseling">고민 작성하기</string>
+    <string name="title">제목</string>
+    <string name="category">카테고리</string>
+    <string name="feeling">기분</string>
+    <string name="content">내용</string>
+    <string name="what_is_title_of_counseling">고민의 제목이 무엇인가요?</string>
+    <string name="please_write_counseling">고민을 적어주세요</string>
+    <string name="complete_counseling">작성 완료</string>
 </resources>
