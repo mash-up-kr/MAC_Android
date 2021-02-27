@@ -13,8 +13,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/mainBackground"
         tools:context=".ui.main.MainActivity">
 
+        <mashup.mac.ui.main.CounselingMapCustom
+            android:id="@+id/custom_counseling_map"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+        </mashup.mac.ui.main.CounselingMapCustom>
         <TextView
             android:id="@+id/btn_counseling_write"
             android:layout_width="wrap_content"

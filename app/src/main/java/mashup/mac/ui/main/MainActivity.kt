@@ -23,5 +23,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.mainVm = mainViewModel
+
+        val cue =  arrayListOf<CounselingMapModel>()
+        //x : 210
+        cue.add(CounselingMapModel(500,200,"MapMdoMapMo","연애 | 5km",200))
+        cue.add(CounselingMapModel(210,1200,"제 남친이 좀 이상...","연애 | 5km",200))
+        cue.add(CounselingMapModel(720,600,"제 남친이 좀 이상...","연애 | 5km",200))
+        binding.customCounselingMap.setCueList(cue)
     }
 }
