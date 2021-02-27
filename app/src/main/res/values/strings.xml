@@ -11,6 +11,7 @@
     <string name="category">카테고리</string>
     <string name="feeling">기분</string>
     <string name="content">내용</string>
+    <string name="have_counseling">고민이 있어요</string>
     <string name="what_is_title_of_counseling">고민의 제목이 무엇인가요?</string>
     <string name="please_write_counseling">고민을 적어주세요</string>
     <string name="complete_counseling">작성 완료</string>
