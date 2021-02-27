@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -50,15 +51,16 @@
                 android:layout_weight="1">
 
                 <TextView
+                    android:id="@+id/tv_my_counseling"
                     android:layout_width="129dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/rect_white_rad_5"
                     android:gravity="center"
                     android:text="@string/my_counseling"
-                    android:textColor="@color/gray11"
                     android:textSize="14dp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:background="@drawable/rect_white_rad_5"
+                    tools:textColor="@color/gray11" />
             </FrameLayout>
 
             <FrameLayout
@@ -68,13 +70,14 @@
                 android:layout_weight="1">
 
                 <TextView
+                    android:id="@+id/tv_my_answer"
                     android:layout_width="129dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="@string/my_answer"
-                    android:textColor="@color/gray6"
-                    android:textSize="14dp" />
+                    android:textSize="14dp"
+                    tools:textColor="@color/gray6" />
             </FrameLayout>
         </LinearLayout>
 
