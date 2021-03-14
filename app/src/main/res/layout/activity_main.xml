@@ -27,11 +27,14 @@
 
         <ImageView
             android:id="@+id/iv_profile_img_mini"
-            android:layout_width="@dimen/main_user_img_mini"
-            android:layout_height="@dimen/main_user_img_mini"
+            android:layout_width="@dimen/main_icon"
+            android:layout_height="@dimen/main_icon"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/circle_monkey"
+            android:background="@drawable/rect_green_rad_30"
+            android:backgroundTint="@color/point"
+            android:padding="6dp"
+            android:src="@drawable/ic_reset"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,9 +43,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
+            android:text="서울시 송파구 "
             android:clickable="true"
             android:onClick="@{() -> mainVm.onClickMyPage(context)}"
-            android:text="@string/name_nim"
+            android:textStyle="bold"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@id/iv_profile_img_mini"
             app:layout_constraintStart_toEndOf="@id/iv_profile_img_mini"
@@ -64,24 +68,9 @@
             android:onClick="@{() -> mainVm.onClickCounselingWrite(context)}"
             android:textSize="18dp"
             android:textStyle="bold"
-            android:text="@string/have_counseling"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/write_counseling"
+            app:layout_constraintBottom_toTopOf="@id/counseling"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_distance_kilometer"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/main_btn_gradient"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="14dp"
-            android:text="5Km"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
         <ImageView
@@ -123,21 +112,39 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/main_name"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/main_user_name"
-            android:background="@drawable/rect_green_rad_30"
-            android:layout_marginTop="6dp"
-            android:onClick="@{() -> mainVm.onClickMyPage(context)}"
-            android:backgroundTint="@color/point"
+            android:layout_marginTop="4dp"
             android:gravity="center"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:text="@string/update_my_location"
+            android:text="@string/name_nim"
             android:textColor="@color/white"
-            android:textSize="14dp"
+            android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="@id/iv_profile_img"
             app:layout_constraintStart_toStartOf="@id/iv_profile_img"
             app:layout_constraintTop_toBottomOf="@id/iv_profile_img" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/main_user_name"
+            android:gravity="center"
+            android:onClick="@{() -> mainVm.onClickMyPage(context)}"
+            android:text="0~5km"
+            android:textColor="@color/green"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="@id/iv_profile_img"
+            app:layout_constraintStart_toStartOf="@id/iv_profile_img"
+            app:layout_constraintTop_toBottomOf="@id/main_name" />
+
+        <include
+            android:layout_width="0dp"
+            android:layout_height="108dp"
+            android:layout_margin="16sp"
+            android:id="@+id/counseling"
+            layout="@layout/item_counseling"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <FrameLayout
             android:id="@+id/layout_frame_main"

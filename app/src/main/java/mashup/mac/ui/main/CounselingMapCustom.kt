@@ -30,11 +30,10 @@ class CounselingMapCustom : View {
 
     var titleSize = 40F
     var subtileSize = 35F
-    var textStarMargin = 30F
+    var textStarMargin = 10F
 
     private var cue: List<CounselingMapModel>? = null
 
-    private var itemWidth: Float
     private val offset: Int = 120
 
 
@@ -43,7 +42,6 @@ class CounselingMapCustom : View {
         val white: Int = ContextCompat.getColor(context, R.color.white)
         val point: Int = ContextCompat.getColor(context, R.color.point)
 
-        itemWidth = (offset * 3.2).toFloat()
         mTitlePaint.color = textCounselingMsg
         mTitlePaint.textSize = titleSize
         mTitlePaint.textAlign = Paint.Align.LEFT
@@ -77,44 +75,32 @@ class CounselingMapCustom : View {
         canvas.drawCircle(width / 2f, height / 2f, 300F + offset * 3, linePaint)
 
         cue?.forEach {
-            val itemStartX = (it.x - (itemWidth * 0.5)).toInt()
+            val itemStartX = (it.x - textStarMargin.toInt())
             rect.set(
                 itemStartX.toFloat() + textStarMargin,
-                it.y.toFloat(),
+                it.y.toFloat() - offset,
                 itemStartX.toFloat() + offset + textStarMargin,
-                (it.y + offset).toFloat()
+                (it.y).toFloat()
             )
 
             canvas.drawArc(rect, 0F, 360F, true, paint)
 
-            ContextCompat.getDrawable(context, R.drawable.chat)?.run {
-                setBounds(itemStartX, it.y - offset, (itemStartX + itemWidth).toInt(), it.y)
-                draw(canvas)
-            }
-
             canvas.drawText(
-                it.title,
-                itemStartX.toFloat() + textStarMargin,
-                (it.y - (offset * 0.5f)),
-                mTitlePaint
-            )
-
-            canvas.drawText(
-                it.category+" | "+ it.distanceKilometer+"Km",
+                it.category + " | " + it.distanceKilometer + "Km",
                 it.x - textStarMargin,
-                (it.y + (offset * 0.6f)),
+                (it.y + (offset * 0.5f)),
                 mSubTittlePaint
             )
 
             val img = Category.findCircleImage(it.category) ?: R.drawable.circle_cat
             val imgMargin = 5
             ContextCompat.getDrawable(context, img)?.run {
-                val imageX = (it.x - (itemWidth * 0.5)).toInt()
+                val imageX = (it.x - textStarMargin).toInt()
                 setBounds(
                     (imageX + textStarMargin + imgMargin).toInt(),
-                    it.y + imgMargin,
+                    it.y - offset + imgMargin,
                     (imageX + textStarMargin + offset - imgMargin).toInt(),
-                    it.y + offset - imgMargin
+                    it.y - imgMargin
                 )
                 draw(canvas)
             }
