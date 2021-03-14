@@ -31,7 +31,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         cue.add(CounselingMapModel(500, 400, "MapMdoMapMo", Category.관계.title, 5))
         cue.add(CounselingMapModel(210, 1300, "제 남친이 좀 이상...", Category.음식.title, 1))
         cue.add(CounselingMapModel(620, 1400, "제 남친이 좀 이상...", Category.연애.title, 7))
-        cue.add(CounselingMapModel(720, 700, "제 남친이 좀 이상...", Category.직업.title, 7))
+        cue.add(CounselingMapModel(720, 700, "제 남친이 좀 이상...", Category.학업.title, 7))
         binding.customCounselingMap.setCueList(cue)
 
         mainViewModel.mainListView.observe(this, Observer {
@@ -49,7 +49,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     }
 
-    private val counselingList = "https://www.cowcat.live/concerns"
+    private val counselingList = "https://www.cowcat.live/concern/edit"
     private val counselingDetail = "https://www.cowcat.live/concern/edit"
     private fun replaceFragment(fragment: BaseFragment<*>) {
         supportFragmentManager.beginTransaction().apply {

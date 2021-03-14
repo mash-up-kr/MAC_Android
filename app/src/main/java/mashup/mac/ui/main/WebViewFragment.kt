@@ -31,14 +31,8 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
 
     val webViewLink by lazy { requireArguments().getString(KEY) }
 
-
-
-
     private lateinit var mWebView: WebView
     private lateinit var mWebSettings: WebSettings //웹뷰세팅
-
-
-
 
     private val mainViewModel by lazy {
         ViewModelProvider(
