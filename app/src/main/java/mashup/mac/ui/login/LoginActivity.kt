@@ -35,7 +35,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 //        })
         binding.btnLogin.setOnClickListener{
             //공통 Call back
-            //loadingDialog.show()
             val TAG = "카카오"
 
             // 로그인 공통 callback 구성
@@ -51,14 +50,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                             Log.e(KAKAO_TAG, "사용자 정보 요청 실패", error)
                         }
                         else if(user!=null){
-                            Log.i(KAKAO_TAG, "사용자 정보 요청 성공" +
-                                    "\n회원번호: ${user.id}" +
-                                    "\n이메일: ${user.kakaoAccount?.email}" +
-                                    "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
-                                    "\n간편가입 시간: ${user.synchedAt}" +
-                                    "\n서비스 연결 완료 시간: ${user.connectedAt}" +
-                                    "\nproperties: ${user.properties}" +
-                                    "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}")
+                            Log.i(KAKAO_TAG, "사용자 정보 요청 성공" )
                         }
                     }
                 }
@@ -71,16 +63,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 //기본 웹 브라우저를 통해 카카오계정으로 로그인
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
             }
-
-//            UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
-//                if (error != null) {
-//                    Log.d("check", "${error.message}")
-//                } else if (tokenInfo != null) {
-//                    intent.putExtra("sort", "kakao")
-//                    startActivity(intent)
-//                    finish()
-//                }
-//            }
 
         }
 
