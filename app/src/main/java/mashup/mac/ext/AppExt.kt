@@ -8,6 +8,7 @@ import android.content.res.Resources
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import mashup.mac.ext.dialog.AlertBuilder
 import mashup.mac.ext.dialog.AndroidAlertBuilder
@@ -26,6 +27,18 @@ fun Context.toast(@StringRes messageId: Int) {
     Toast.makeText(this, messageId, Toast.LENGTH_SHORT).show()
 }
 
+fun Fragment.toast(message: CharSequence?): Toast = Toast
+    .makeText(context, message, Toast.LENGTH_SHORT)
+    .apply {
+        show()
+    }
+
+fun Fragment.toast(@StringRes messageId: Int): Toast = Toast
+    .makeText(context, messageId, Toast.LENGTH_SHORT)
+    .apply {
+        show()
+    }
+
 fun Context.longToast(message: CharSequence?) {
     if (message.isNullOrEmpty()) return
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
@@ -34,6 +47,18 @@ fun Context.longToast(message: CharSequence?) {
 fun Context.longToast(@StringRes messageId: Int) {
     Toast.makeText(this, messageId, Toast.LENGTH_LONG).show()
 }
+
+fun Fragment.longToast(message: CharSequence?): Toast = Toast
+    .makeText(context, message, Toast.LENGTH_SHORT)
+    .apply {
+        show()
+    }
+
+fun Fragment.longToast(@StringRes messageId: Int): Toast = Toast
+    .makeText(context, messageId, Toast.LENGTH_SHORT)
+    .apply {
+        show()
+    }
 
 fun Context.alert(
     title: CharSequence? = null,
