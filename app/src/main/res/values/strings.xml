@@ -20,6 +20,8 @@
     <string name="my_answer">내가 남긴 답변들</string>
     <string name="own_counseling_badge_format" cdata="true"><![CDATA[보유한 고민 배지 <font color=#6DECA2>%d</font>]]></string>
     <string name="answer_count_format" cdata="true"><![CDATA[답변 <b>%d</b>]]></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="update_my_location">내 위치 업데이트</string>
     <string name="name_nim"><b>소양이</b> 님</string>
 
