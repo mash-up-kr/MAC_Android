@@ -6,6 +6,10 @@
     <data>
 
         <import type="mashup.mac.model.Feeling" />
+
+        <variable
+            name="counselingViewModel"
+            type="mashup.mac.ui.counseling.CounselingWriteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,6 +70,7 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:singleLine="true"
+                    android:text="@={counselingViewModel.title}"
                     android:textColor="@color/white"
                     android:textColorHint="@color/gray5"
                     android:textSize="14dp" />
@@ -197,6 +202,7 @@
                     android:paddingTop="12dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="12dp"
+                    android:text="@={counselingViewModel.description}"
                     android:textColor="@color/white"
                     android:textColorHint="@color/gray5"
                     android:textSize="14dp" />
@@ -207,6 +213,7 @@
             android:id="@+id/btn_complete"
             android:layout_width="match_parent"
             android:layout_height="52dp"
+            android:onSingleClick="@{() -> counselingViewModel.submitCounseling()}"
             android:background="@color/point"
             android:foreground="?attr/selectableItemBackground"
             app:layout_constraintBottom_toBottomOf="parent"

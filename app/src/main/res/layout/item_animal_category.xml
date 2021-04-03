@@ -4,9 +4,11 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="item"
-            type="mashup.mac.model.Category" />
+            type="mashup.mac.ui.counseling.model.CategoryItem" />
     </data>
 
     <LinearLayout
@@ -24,22 +26,25 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:alpha="@{item.isCheck ? 1f : 0.2f}"
                 android:background="@color/white"
-                android:src="@{item.faceRes}"
+                android:src="@{item.category.faceRes}"
                 tools:src="@drawable/face_cat" />
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/stroke_animal_face" />
+                android:background="@drawable/stroke_animal_face"
+                android:visibility="@{item.isCheck ? View.VISIBLE : View.GONE}" />
         </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:alpha="@{item.isCheck ? 1f : 0.2f}"
             android:includeFontPadding="false"
-            android:text="@{item.title}"
+            android:text="@{item.category.title}"
             android:textColor="@color/white"
             android:textSize="14dp"
             tools:text="연애" />
