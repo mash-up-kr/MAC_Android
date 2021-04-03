@@ -10,24 +10,34 @@
     </data>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="20dp"
         android:gravity="center"
         android:orientation="vertical"
-        tools:background="@color/point">
+        tools:background="@color/gray3">
 
-        <ImageView
+        <FrameLayout
             android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:background="@color/white"
-            android:src="@{item.faceRes}"
-            tools:src="@drawable/face_cat" />
+            android:layout_height="64dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:src="@{item.faceRes}"
+                tools:src="@drawable/face_cat" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/stroke_animal_face" />
+        </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="8dp"
             android:includeFontPadding="false"
             android:text="@{item.title}"
             android:textColor="@color/white"

@@ -14,15 +14,11 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingStart="5dp"
-        android:paddingTop="7dp"
-        android:paddingEnd="5dp"
-        android:paddingBottom="7dp"
-        tools:background="@color/point">
+        tools:background="@color/gray3">
 
         <ImageView
-            android:layout_width="38dp"
-            android:layout_height="38dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:src="@{feeling.icon}"
             tools:background="@drawable/feeling_happy" />
 
@@ -33,7 +29,7 @@
             android:includeFontPadding="false"
             android:text="@{feeling.title}"
             android:textColor="@color/white"
-            android:textSize="12dp"
+            android:textSize="14dp"
             tools:text="기쁨" />
     </LinearLayout>
 </layout>
