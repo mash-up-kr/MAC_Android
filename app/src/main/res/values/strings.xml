@@ -24,5 +24,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="update_my_location">내 위치 업데이트</string>
     <string name="name_nim"><b>소양이</b> 님</string>
+    <string name="my_page_badge_description">고민을 올리면 배지를 획득할 수 있어요!</string>
 
 </resources>
