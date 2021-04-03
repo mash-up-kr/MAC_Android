@@ -6,6 +6,9 @@
 
     <data>
 
+        <variable
+            name="myPageViewModel"
+            type="mashup.mac.ui.mypage.MyPageViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

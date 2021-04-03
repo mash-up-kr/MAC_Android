@@ -2,7 +2,6 @@ package mashup.mac.ui.mypage.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import mashup.mac.R
@@ -17,7 +16,7 @@ class CounselingAdapter :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CounselingViewHolder {
         return CounselingViewHolder(parent).apply {
             itemView.setOnClickListener {
-                Toast.makeText(it.context, "hello", Toast.LENGTH_LONG).show()
+               //..
             }
         }
     }

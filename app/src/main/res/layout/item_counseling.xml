@@ -13,18 +13,18 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_height="116dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="12dp"
-        android:layout_height="116dp"
         android:background="@drawable/rect_white_rad_20"
         android:foreground="?attr/selectableItemBackground">
 
         <ImageView
             android:id="@+id/iv_animal"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="10dp"
             android:src="@{item.category.bodyRes}"
             app:layout_constraintBottom_toTopOf="@id/tv_category"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,22 +56,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="80dp" />
+            app:layout_constraintGuide_begin="68dp" />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="19dp"
+            android:includeFontPadding="false"
+            android:paddingStart="0dp"
             android:paddingEnd="10dp"
             android:singleLine="true"
             android:text="@{item.title}"
             android:textColor="@color/gray11"
-            android:textSize="14dp"
+            android:textSize="16dp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tv_content"
             app:layout_constraintEnd_toStartOf="@id/tv_answer"
             app:layout_constraintStart_toEndOf="@id/guideline_column"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
             tools:text="소양이팀 좋아요" />
 
         <TextView
@@ -79,6 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            android:includeFontPadding="false"
             android:textColor="@color/point"
             android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="@id/tv_title"
@@ -91,38 +95,34 @@
             android:id="@+id/tv_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="41dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:ellipsize="end"
-            android:lineSpacingExtra="4dp"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="2dp"
             android:maxLines="2"
             android:text="@{item.description}"
             android:textColor="@color/gray11"
-            android:textSize="12dp"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/guideline_column"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
             tools:text="신비로운 동물 상담소에 오신것을 환영합니다. 다양한 동물들과 함께 고민 상담도 하고 내가 해결 해준 동물을 수집해 보세요!" />
 
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp"
+            android:layout_marginTop="10dp"
+            android:includeFontPadding="false"
             android:text="@{item.date}"
-            android:textColor="#5E5474"
+            android:textColor="@color/gray6"
             android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/guideline_column"
+            app:layout_constraintTop_toBottomOf="@id/tv_content"
             tools:text="2020.02.20 오전 08:00" />
 
-        <!-- divider -->
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="#4B494D"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
