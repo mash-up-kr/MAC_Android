@@ -6,6 +6,9 @@
 
     <data>
 
+        <variable
+            name="myPageViewModel"
+            type="mashup.mac.ui.mypage.MyPageViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -28,29 +31,41 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp">
 
                     <TextView
                         android:id="@+id/tv_badge"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
                         android:gravity="center_vertical"
                         android:includeFontPadding="false"
                         android:textColor="@color/white"
-                        android:textSize="14dp"
+                        android:textSize="16dp"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         bind:setHtmlText="@{@string/own_counseling_badge_format(100)}"
                         tools:text="보유한 고민 배지 133" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/my_page_badge_description"
+                        android:textColor="@color/gray1"
+                        android:textSize="10dp"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_badge"
+                        app:layout_constraintStart_toEndOf="@id/tv_badge"
+                        app:layout_constraintTop_toTopOf="@id/tv_badge" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_animal_badge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

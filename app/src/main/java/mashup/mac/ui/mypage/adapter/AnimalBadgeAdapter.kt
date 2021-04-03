@@ -2,24 +2,50 @@ package mashup.mac.ui.mypage.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import mashup.mac.R
 import mashup.mac.databinding.ItemAnimalBadgeBinding
 import mashup.mac.model.AnimalBadgeItem
+import mashup.mac.ui.counseling.adapter.AnimalCategoryAdapter
 
 class AnimalBadgeAdapter :
     RecyclerView.Adapter<AnimalBadgeAdapter.AnimalBadgeViewHolder>() {
+
+    companion object {
+
+        const val DEFAULT_CHECK_ITEM_POSITION = 0
+    }
+
+    private var prePosition = AnimalCategoryAdapter.DEFAULT_CHECK_ITEM_POSITION
 
     private val items = mutableListOf<AnimalBadgeItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalBadgeViewHolder {
         return AnimalBadgeViewHolder(parent).apply {
             itemView.setOnClickListener {
-                Toast.makeText(it.context, "hello", Toast.LENGTH_LONG).show()
+                val currentPosition = adapterPosition
+                if (currentPosition != prePosition) {
+                    notifyUnCheckItem(prePosition)
+                    notifyCheckItem(currentPosition)
+                    changePrePosition(currentPosition)
+                }
             }
         }
+    }
+
+    private fun notifyUnCheckItem(position: Int) {
+        items[position] = items[position].copy(isCheck = false)
+        notifyItemChanged(position)
+    }
+
+    private fun notifyCheckItem(position: Int) {
+        items[position] = items[position].copy(isCheck = true)
+        notifyItemChanged(position)
+    }
+
+    private fun changePrePosition(position: Int) {
+        prePosition = position
     }
 
     override fun onBindViewHolder(holder: AnimalBadgeViewHolder, position: Int) {

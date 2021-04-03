@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="item"
             type="mashup.mac.model.AnimalBadgeItem" />
@@ -13,16 +15,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="18dp"
         android:orientation="vertical"
         tools:background="@color/darkGray2">
 
         <ImageView
             android:id="@+id/iv_animal"
-            android:layout_width="76dp"
-            android:layout_height="76dp"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:alpha="@{item.isCheck ? 1f : 0.2f}"
             android:src="@{item.category.bodyRes}"
             app:layout_constraintBottom_toTopOf="@id/tv_animal_category"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,31 +39,34 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@{item.category.title}"
-            android:textColor="@color/white"
+            android:textColor="@{item.isCheck ? @color/white : @color/gray6}"
             android:textSize="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_animal_badge"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_animal"
-            tools:text="연애" />
+            tools:text="연애"
+            tools:textColor="@color/white" />
 
         <TextView
             android:id="@+id/tv_animal_badge"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="18dp"
             android:layout_marginStart="3dp"
-            android:background="@drawable/round_badge"
+            android:background="@{item.isCheck ? @drawable/bg_badge_checked : @drawable/bg_badge_unchecked}"
+            android:gravity="center"
             android:includeFontPadding="false"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:text="@{String.valueOf(item.badgeCount)}"
             android:textColor="@color/white"
-            android:textSize="14dp"
+            android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="@id/tv_animal_category"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_animal_category"
             app:layout_constraintTop_toTopOf="@id/tv_animal_category"
+            tools:background="@drawable/bg_badge_checked"
             tools:text="3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

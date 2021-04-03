@@ -12,24 +12,37 @@
         android:layout_height="match_parent"
         android:background="#312651">
 
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:src="@drawable/ic_arrowleft_24px_white"
+            app:layout_constraintBottom_toBottomOf="@id/tv_my_page_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_my_page_title" />
+
         <TextView
             android:id="@+id/tv_my_page_title"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
+            android:layout_height="?attr/actionBarSize"
             android:gravity="center"
             android:text="@string/my_page"
             android:textColor="@color/white"
-            android:textSize="18dp"
+            android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/iv_setting"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginEnd="10dp"
-            android:padding="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:src="@drawable/ic_setting"
             app:layout_constraintBottom_toBottomOf="@id/tv_my_page_title"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +51,7 @@
         <LinearLayout
             android:id="@+id/ll_my_page_tab"
             android:layout_width="0dp"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="34dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,15 +65,15 @@
 
                 <TextView
                     android:id="@+id/tv_my_counseling"
-                    android:layout_width="129dp"
-                    android:layout_height="32dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="@string/my_counseling"
-                    android:textSize="14dp"
+                    android:textSize="16dp"
                     android:textStyle="bold"
-                    tools:background="@drawable/rect_white_rad_5"
-                    tools:textColor="@color/gray11" />
+                    tools:background="@drawable/bg_my_page_focused"
+                    tools:textColor="@color/white" />
             </FrameLayout>
 
             <FrameLayout
@@ -71,15 +84,24 @@
 
                 <TextView
                     android:id="@+id/tv_my_answer"
-                    android:layout_width="129dp"
-                    android:layout_height="32dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="@string/my_answer"
-                    android:textSize="14dp"
+                    android:textSize="16dp"
                     tools:textColor="@color/gray6" />
             </FrameLayout>
         </LinearLayout>
+
+        <!-- divider -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/purpleGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_my_page_tab" />
 
         <FrameLayout
             android:id="@+id/fl_container"

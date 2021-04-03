@@ -27,14 +27,13 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:alpha="@{item.isCheck ? 1f : 0.2f}"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="0dp">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:alpha="@{item.isCheck ? 1f : 0.2f}"
-                    android:background="@color/white"
                     android:src="@{item.category.faceRes}"
                     tools:src="@drawable/face_cat" />
             </androidx.cardview.widget.CardView>
@@ -50,10 +49,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:alpha="@{item.isCheck ? 1f : 0.2f}"
+            android:textColor="@{item.isCheck ? @color/white : @color/gray6}"
             android:includeFontPadding="false"
             android:text="@{item.category.title}"
-            android:textColor="@color/white"
             android:textSize="14dp"
             tools:text="연애" />
     </LinearLayout>
