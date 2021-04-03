@@ -5,6 +5,10 @@
     <data>
 
         <variable
+            name="isCheck"
+            type="Boolean" />
+
+        <variable
             name="feeling"
             type="mashup.mac.model.Feeling" />
     </data>
@@ -12,6 +16,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:alpha="@{isCheck ? 1f : 0.2f}"
         android:gravity="center"
         android:orientation="vertical"
         tools:background="@color/gray3">

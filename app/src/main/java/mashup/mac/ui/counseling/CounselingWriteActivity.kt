@@ -19,7 +19,7 @@ class CounselingWriteActivity :
     private val categoryAdapter by lazy { AnimalCategoryAdapter() }
 
     private val counselingWriteViewModel by viewModels<CounselingWriteViewModel> {
-        CounselingWriteViewModelFactory()
+        CounselingWriteViewModelFactory(categoryAdapter)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

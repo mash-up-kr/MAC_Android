@@ -59,6 +59,8 @@ class AnimalCategoryAdapter :
         notifyDataSetChanged()
     }
 
+    fun getCheckedCategory() = items.find { it.isCheck }
+
     class AnimalCategoryViewHolder(
         parent: ViewGroup
     ) : RecyclerView.ViewHolder(
