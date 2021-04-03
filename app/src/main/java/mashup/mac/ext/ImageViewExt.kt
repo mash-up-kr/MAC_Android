@@ -7,6 +7,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
+
 @BindingAdapter("setImageUrl")
 fun ImageView.setImageUrl(url: String?) {
     url?.let {

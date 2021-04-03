@@ -6,6 +6,10 @@
     <data>
 
         <import type="mashup.mac.model.Feeling" />
+
+        <variable
+            name="counselingViewModel"
+            type="mashup.mac.ui.counseling.CounselingWriteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,40 +54,43 @@
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:text="@string/title"
                     android:textColor="@color/white"
-                    android:textSize="14dp"
+                    android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="9dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:background="@drawable/rect_counseling_write"
                     android:hint="@string/what_is_title_of_counseling"
                     android:inputType="text"
+                    android:maxLength="20"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:singleLine="true"
+                    android:text="@={counselingViewModel.title}"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/gray5" />
+                    android:textColorHint="@color/gray5"
+                    android:textSize="14dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="42dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:text="@string/category"
                     android:textColor="@color/white"
-                    android:textSize="14dp"
+                    android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_animal_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
+                    android:layout_marginTop="22dp"
                     android:clipToPadding="false"
                     android:orientation="horizontal"
                     android:paddingStart="16dp"
@@ -96,10 +103,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="42dp"
                     android:text="@string/feeling"
                     android:textColor="@color/white"
-                    android:textSize="14dp"
+                    android:textSize="16dp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@id/layout_feeling_happy"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -108,7 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="94dp"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:background="@drawable/rect_counseling_feeling_box"
                     android:orientation="horizontal">
@@ -118,7 +125,9 @@
                         layout="@layout/layout_feeling_item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{() -> counselingViewModel.onClickFeeling(Feeling.기쁨)}"
                         app:feeling="@{Feeling.기쁨}"
+                        app:isCheck="@{counselingViewModel.feeling.get(Feeling.기쁨)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/layout_feeling_sad"
                         app:layout_constraintStart_toStartOf="parent"
@@ -129,7 +138,9 @@
                         layout="@layout/layout_feeling_item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{() -> counselingViewModel.onClickFeeling(Feeling.슬픔)}"
                         app:feeling="@{Feeling.슬픔}"
+                        app:isCheck="@{counselingViewModel.feeling.get(Feeling.슬픔)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/layout_feeling_angry"
                         app:layout_constraintStart_toEndOf="@id/layout_feeling_happy"
@@ -140,7 +151,9 @@
                         layout="@layout/layout_feeling_item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{() -> counselingViewModel.onClickFeeling(Feeling.화남)}"
                         app:feeling="@{Feeling.화남}"
+                        app:isCheck="@{counselingViewModel.feeling.get(Feeling.화남)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/layout_feeling_embarrassed"
                         app:layout_constraintStart_toEndOf="@id/layout_feeling_sad"
@@ -151,7 +164,9 @@
                         layout="@layout/layout_feeling_item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{() -> counselingViewModel.onClickFeeling(Feeling.당황)}"
                         app:feeling="@{Feeling.당황}"
+                        app:isCheck="@{counselingViewModel.feeling.get(Feeling.당황)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/layout_feeling_irritation"
                         app:layout_constraintStart_toEndOf="@id/layout_feeling_angry"
@@ -162,7 +177,9 @@
                         layout="@layout/layout_feeling_item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{() -> counselingViewModel.onClickFeeling(Feeling.짜증)}"
                         app:feeling="@{Feeling.짜증}"
+                        app:isCheck="@{counselingViewModel.feeling.get(Feeling.짜증)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/layout_feeling_embarrassed"
@@ -173,7 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="42dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:text="@string/content"
                     android:textColor="@color/white"
@@ -190,12 +207,15 @@
                     android:gravity="start"
                     android:hint="@string/please_write_counseling"
                     android:inputType="text"
+                    android:maxLength="200"
                     android:paddingStart="10dp"
-                    android:paddingTop="13dp"
+                    android:paddingTop="12dp"
                     android:paddingEnd="10dp"
-                    android:paddingBottom="13dp"
+                    android:paddingBottom="12dp"
+                    android:text="@={counselingViewModel.description}"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/gray5" />
+                    android:textColorHint="@color/gray5"
+                    android:textSize="14dp" />
             </LinearLayout>
         </ScrollView>
 
@@ -205,6 +225,7 @@
             android:layout_height="52dp"
             android:background="@color/point"
             android:foreground="?attr/selectableItemBackground"
+            android:onSingleClick="@{() -> counselingViewModel.submitCounseling()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
