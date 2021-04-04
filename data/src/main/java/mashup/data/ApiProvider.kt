@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiProvider {
 
-    private const val BASE_URL = "https://api.cowcat.live/api/v1"
+    private const val BASE_URL = "https://api.cowcat.live/api/v1/"
 
     fun <T> provideApi(
         service: Class<T>,
@@ -20,11 +20,24 @@ object ApiProvider {
         .build()
         .create(service)
 
-    // 네트뭐크 통신에 사용할 클라이언트 객체를 생성합니다.
-    private fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun <T> provideRefreshApi(
+        service: Class<T>,
+    ): T = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .client(provideOkHttpClient(provideLoggingInterceptor(), true))
+        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(service)
+
+    // 네트워크 통신에 사용할 클라이언트 객체를 생성합니다.
+    private fun provideOkHttpClient(interceptor: HttpLoggingInterceptor, refreshToken: Boolean = false): OkHttpClient {
         val b = OkHttpClient.Builder()
         // 이 클라이언트를 통해 오고 가는 네트워크 요청/응답을 로그로 표시하도록 합니다.
         b.addInterceptor(interceptor)
+
+        // header 에 정보를 추가해 준다.
+        b.addInterceptor(AddHeaderInterceptor(refreshToken))
 
         return b.build()
     }

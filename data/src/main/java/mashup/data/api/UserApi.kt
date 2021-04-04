@@ -36,7 +36,7 @@ interface UserApi {
     fun postRefreshToken(): Single<BaseResponse<Token>>
 
     @POST("users/nickname/check")
-    fun postRefreshToken(
+    fun postNickNameCheck(
         @Body request: NicknameCheckRequest
     ): Single<BaseResponse<Any>>
 }

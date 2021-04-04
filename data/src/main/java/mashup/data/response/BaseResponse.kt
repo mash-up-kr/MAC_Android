@@ -10,6 +10,5 @@ data class BaseResponse<T>(
 )
 
 enum class RESULT(val code: Int) {
-    //TODO REFRESH TOKEN code 값 따로 필요
-    SUCCESS(1), ERROR(0), REFRESH_TOKEN(-1)
+    SUCCESS(1), ERROR(0), REFRESH_TOKEN(401)
 }
