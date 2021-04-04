@@ -17,5 +17,7 @@ data class Counseling(
     @SerializedName("emotionId")
     val emotionId: Int?,
     @SerializedName("userId")
-    val userId: Int?
+    val userId: Int?,
+    @SerializedName("location")
+    val location: Location?
 )

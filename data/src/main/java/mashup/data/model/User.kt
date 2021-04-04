@@ -1,9 +1,8 @@
 package mashup.data.model
 
-
 import com.google.gson.annotations.SerializedName
 
-data class Signup(
+data class User(
     @SerializedName("id")
     val id: Int?,
     @SerializedName("nickname")
@@ -12,11 +11,6 @@ data class Signup(
     val birthday: String?,
     @SerializedName("gender")
     val gender: String?,
-    @SerializedName("token")
-    val token: Token?,
     @SerializedName("location")
     val location: Location?
-) {
-
-
-}
+)

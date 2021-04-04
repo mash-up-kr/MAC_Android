@@ -3,7 +3,7 @@ package mashup.mac.ui.counseling
 import android.os.Bundle
 import androidx.activity.viewModels
 import mashup.mac.R
-import mashup.mac.base.MACActivity
+import mashup.mac.base.BaseActivity
 import mashup.mac.databinding.ActivityCounselingWriteBinding
 import mashup.mac.ext.observeEvent
 import mashup.mac.ext.toast
@@ -12,7 +12,7 @@ import mashup.mac.ui.counseling.adapter.AnimalCategoryAdapter
 import mashup.mac.ui.counseling.model.CategoryItem
 
 class CounselingWriteActivity :
-    MACActivity<ActivityCounselingWriteBinding>(R.layout.activity_counseling_write) {
+    BaseActivity<ActivityCounselingWriteBinding>(R.layout.activity_counseling_write) {
 
     override var logTag = "CounselingWriteActivity"
 
