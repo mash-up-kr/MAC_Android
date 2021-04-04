@@ -2,6 +2,7 @@ package mashup.data.api
 
 import io.reactivex.rxjava3.core.Single
 import mashup.data.model.Signup
+import mashup.data.model.Token
 import mashup.data.request.LocationRequest
 import mashup.data.request.NicknameCheckRequest
 import mashup.data.request.SignupRequest
@@ -32,7 +33,7 @@ interface UserApi {
     ): Single<BaseResponse<Signup>>
 
     @POST("users/refresh")
-    fun postRefreshToken(): Single<BaseResponse<Signup.Token>>
+    fun postRefreshToken(): Single<BaseResponse<Token>>
 
     @POST("users/nickname/check")
     fun postRefreshToken(

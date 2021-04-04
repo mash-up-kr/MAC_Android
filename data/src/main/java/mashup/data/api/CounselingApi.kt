@@ -3,7 +3,7 @@ package mashup.data.api
 import io.reactivex.rxjava3.core.Single
 import mashup.data.model.Comment
 import mashup.data.model.Counseling
-import mashup.data.model.CounselingInfo
+import mashup.data.model.CounselingDetail
 import mashup.data.request.CommentRequest
 import mashup.data.request.CounselingRequest
 import mashup.data.response.BaseResponse
@@ -44,7 +44,7 @@ interface CounselingApi {
     fun getCounseling(
         @Path("counselingQuestionId") path: Int,
         @Query("counselingQuestionId") query: Int
-    ): Single<BaseResponse<CounselingInfo>>
+    ): Single<BaseResponse<CounselingDetail>>
 
     /**
      * 답변

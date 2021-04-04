@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MysticalAnimalCounseling</string>
+    <string name="app_name">신비로운\n동물상담소</string>
 
     <!-- sample start -->
     <string name="sample_name_format">%s. %s %s</string>

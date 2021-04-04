@@ -1,7 +1,5 @@
 package mashup.data
 
-import mashup.data.api.CounselingApi
-import mashup.data.api.UserApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -10,23 +8,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiProvider {
 
-    private const val baseUrl = "https://cowcat.live/api/v1/"
+    private const val BASE_URL = "https://api.cowcat.live/api/v1"
 
-    fun provideUserApi(): UserApi = Retrofit.Builder()
-        .baseUrl(baseUrl)
+    fun <T> provideApi(
+        service: Class<T>,
+    ): T = Retrofit.Builder()
+        .baseUrl(BASE_URL)
         .client(provideOkHttpClient(provideLoggingInterceptor()))
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-        .create(UserApi::class.java)
-
-    fun provideCounselingApi(): CounselingApi = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .client(provideOkHttpClient(provideLoggingInterceptor()))
-        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(CounselingApi::class.java)
+        .create(service)
 
     // 네트뭐크 통신에 사용할 클라이언트 객체를 생성합니다.
     private fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {

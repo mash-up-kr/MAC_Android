@@ -1,8 +1,8 @@
 package mashup.data.response
 
-import mashup.data.model.CommentInfo
+import mashup.data.model.CommentDetail
 
 data class CommentResponse(
     val counselingQuestionId: Int,
-    val counselingComments: List<CommentInfo>
+    val counselingComments: List<CommentDetail>
 )
