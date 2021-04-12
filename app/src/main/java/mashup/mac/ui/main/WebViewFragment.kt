@@ -41,6 +41,7 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
         ViewModelProvider(
             viewModelStore, MainViewModelFactory(
                 Injection.provideCounselingRepository()
+
             )
         ).get(MainViewModel::class.java)
     }
@@ -75,4 +76,3 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
         }
     }
 }
-

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import mashup.data.Injection
 import mashup.mac.R
@@ -77,7 +78,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
         })
 
-        mainViewModel.mapItems.observe(this, { _counselingMapList ->
+        mainViewModel.mapItems.observe(this) { _counselingMapList ->
             val width = binding.svMainMap.width
             binding.customCounselingMap.setMapWidth(width)
             //TODO:: distance가 0~5까지의 범위로 되어있기 때문에 입력값을 min max 로 나눠 관리 해야
@@ -95,9 +96,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 )
             }
             counselingAdapter.replaceAll(counselingMapList)
-        })
+        }
 
-        mainViewModel.mainListView.observe(this, {
+        mainViewModel.mainListView.observe(this) {
             val link = when (mainViewModel.mainListView.value) {
                 MainViewModel.CounselingWebView.LIST -> {
                     counselingList
@@ -108,19 +109,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 else -> counselingDetail
             }
             replaceFragment(WebViewFragment.newInstance(link, -1))
-        })
+        }
 
-        mainViewModel.reset.observe(this, {
+        val observe = mainViewModel.reset.observe(this) {
             mainViewModel.loadData()
             //TODO: 지우기.. 공전코드입니다,ㅎ,,
-//            lifecycleScope.launch {
-//                binding.customCounselingMap.cycle()
-//            }
-        })
+            //            lifecycleScope.launch {
+            //                binding.customCounselingMap.cycle()
+            //            }
+        }
 
-        locationViewModel.eventShowToast.observeEvent(this, {
+        locationViewModel.eventShowToast.observeEvent(this) {
             toast(it)
-        })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
