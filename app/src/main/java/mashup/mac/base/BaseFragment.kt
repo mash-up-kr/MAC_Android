@@ -11,10 +11,9 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import mashup.data.ApiProvider
-import mashup.data.api.UserApi
+import mashup.data.api.AuthApi
 import mashup.data.exception.Exception
 import mashup.data.pref.PrefUtil
-import mashup.data.response.RESULT
 import mashup.mac.ext.plusAssign
 import mashup.mac.ext.toast
 import mashup.mac.util.log.Dlog
@@ -28,7 +27,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
 
     abstract var logTag: String
 
-    private val tokenApi = ApiProvider.provideRefreshApi(UserApi::class.java)
+    private val tokenApi = ApiProvider.provideRefreshApi(AuthApi::class.java)
 
     val compositeDisposable = CompositeDisposable()
 
@@ -67,7 +66,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
 
             compositeDisposable += tokenApi.postRefreshToken()
                 .subscribe({
-                    if (it.result == RESULT.SUCCESS) {
+                    if (it.isSuccess()) {
                         val accessToken = it.data.accessToken
                         if (TextUtils.isEmpty(accessToken)) {
                             goToLogin()

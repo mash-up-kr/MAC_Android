@@ -30,7 +30,25 @@ object ApiProvider {
         .build()
         .create(service)
 
+    fun <T> provideApiWithoutHeader(
+        service: Class<T>,
+    ): T = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .client(provideOkHttpClientWithoutHeader(provideLoggingInterceptor()))
+        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(service)
+
     // 네트워크 통신에 사용할 클라이언트 객체를 생성합니다.
+    private fun provideOkHttpClientWithoutHeader(interceptor: HttpLoggingInterceptor): OkHttpClient {
+        val b = OkHttpClient.Builder()
+        // 이 클라이언트를 통해 오고 가는 네트워크 요청/응답을 로그로 표시하도록 합니다.
+        b.addInterceptor(interceptor)
+
+        return b.build()
+    }
+
     private fun provideOkHttpClient(interceptor: HttpLoggingInterceptor, refreshToken: Boolean = false): OkHttpClient {
         val b = OkHttpClient.Builder()
         // 이 클라이언트를 통해 오고 가는 네트워크 요청/응답을 로그로 표시하도록 합니다.

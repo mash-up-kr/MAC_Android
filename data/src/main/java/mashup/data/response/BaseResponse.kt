@@ -1,13 +1,13 @@
 package mashup.data.response
 
-import com.google.gson.annotations.SerializedName
-
 data class BaseResponse<T>(
-    @SerializedName("code")
-    val result: RESULT,
+    val code: Int,
     val data: T,
     val error: String = ""
-)
+) {
+    fun isSuccess() = code == RESULT.SUCCESS.code
+    fun isRefreshToken() = code == RESULT.REFRESH_TOKEN.code
+}
 
 enum class RESULT(val code: Int) {
     SUCCESS(1), ERROR(0), REFRESH_TOKEN(401)
