@@ -8,13 +8,13 @@ import okhttp3.Response
 //https://github.com/square/okhttp/wiki/Interceptors
 class AddHeaderInterceptor(private val refresh: Boolean) : Interceptor {
 
-    private val tag = "AddHeaderInterceptor"
+    private val tag = "okhttp"
 
     override fun intercept(chain: Interceptor.Chain): Response = chain.run {
         val token = if (refresh) {
-            PrefUtil.get(PrefUtil.PREF_ACCESS_TOKEN, "")
-        } else {
             PrefUtil.get(PrefUtil.PREF_REFRESH_TOKEN, "")
+        } else {
+            PrefUtil.get(PrefUtil.PREF_ACCESS_TOKEN, "")
         }
 
         Log.d(tag, "refresh : $refresh, token : $token")

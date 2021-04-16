@@ -5,7 +5,8 @@ import mashup.data.model.Comment
 import mashup.data.model.Counseling
 import mashup.data.model.CounselingDetail
 import mashup.data.request.CommentRequest
-import mashup.data.request.CounselingRequest
+import mashup.data.request.CounselingAddRequest
+import mashup.data.request.CounselingModifyRequest
 import mashup.data.response.BaseResponse
 import mashup.data.response.CommentResponse
 import mashup.data.response.CounselingResponse
@@ -16,18 +17,18 @@ interface CounselingApi {
     /**
      * 고민
      */
-    @POST("counseling")
+    @POST("counselings")
     fun postCounseling(
-        @Body request: CounselingRequest
+        @Body request: CounselingAddRequest
     ): Single<BaseResponse<Counseling>>
 
-    @PUT("counseling/{CounselingQuestionId}")
+    @PUT("counselings/{CounselingQuestionId}")
     fun putCounseling(
         @Path("CounselingQuestionId") diaryId: Int,
-        @Body request: CounselingRequest
+        @Body request: CounselingModifyRequest
     ): Single<BaseResponse<Counseling>>
 
-    @DELETE("counseling/{CounselingQuestionId}")
+    @DELETE("counselings/{CounselingQuestionId}")
     fun deleteCounseling(
         @Path("CounselingQuestionId") counselingQuestionId: Int
     ): Single<BaseResponse<Any>>
@@ -40,7 +41,7 @@ interface CounselingApi {
         @Query("emotionId") emotionId: Int
     ): Single<BaseResponse<CounselingResponse>>
 
-    @GET("counseling/{counselingQuestionId}")
+    @GET("counselings/{counselingQuestionId}")
     fun getCounseling(
         @Path("counselingQuestionId") path: Int,
         @Query("counselingQuestionId") query: Int
@@ -49,25 +50,25 @@ interface CounselingApi {
     /**
      * 답변
      */
-    @POST("counseling/{counselingQuestionId}/comments")
+    @POST("counselings/{counselingQuestionId}/comments")
     fun postComment(
         @Body request: CommentRequest
     ): Single<BaseResponse<Comment>>
 
-    @PUT("counseling/{CounselingQuestionId}/comments/{commentId}")
+    @PUT("counselings/{CounselingQuestionId}/comments/{commentId}")
     fun putComment(
         @Path("CounselingQuestionId") counselingQuestionId: Int,
         @Path("commentId") commentId: Int,
-        @Body request: CounselingRequest
+        @Body request: CommentRequest
     ): Single<BaseResponse<Comment>>
 
-    @DELETE("counseling/{CounselingQuestionId}/comments/{commentId}")
+    @DELETE("counselings/{CounselingQuestionId}/comments/{commentId}")
     fun deleteComment(
         @Path("CounselingQuestionId") counselingQuestionId: Int,
         @Path("commentId") commentId: Int
     ): Single<BaseResponse<Any>>
 
-    @GET("counseling/{counselingQuestionId}/comments")
+    @GET("counselings/{counselingQuestionId}/comments")
     fun getComments(
         @Path("counselingQuestionId") counselingQuestionId: Int
     ): Single<BaseResponse<CommentResponse>>

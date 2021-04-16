@@ -2,6 +2,8 @@ package mashup.mac.ui.counseling
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import mashup.data.ApiProvider
+import mashup.data.api.CounselingApi
 import mashup.mac.R
 import mashup.mac.base.BaseActivity
 import mashup.mac.databinding.ActivityCounselingWriteBinding
@@ -19,7 +21,10 @@ class CounselingWriteActivity :
     private val categoryAdapter by lazy { AnimalCategoryAdapter() }
 
     private val counselingWriteViewModel by viewModels<CounselingWriteViewModel> {
-        CounselingWriteViewModelFactory(categoryAdapter)
+        CounselingWriteViewModelFactory(
+            ApiProvider.provideApi(CounselingApi::class.java),
+            categoryAdapter
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
