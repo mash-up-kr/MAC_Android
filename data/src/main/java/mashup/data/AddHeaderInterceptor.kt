@@ -19,12 +19,12 @@ class AddHeaderInterceptor(private val refresh: Boolean) : Interceptor {
 
         Log.d(tag, "refresh : $refresh, token : $token")
 
-        val headerToken = "Bearer $token"
+        //val headerToken = "Bearer $token"
 
         proceed(
             request()
                 .newBuilder()
-                .addHeader("Authorization", headerToken)
+                .addHeader("Authorization", token)
                 .build()
         )
     }
