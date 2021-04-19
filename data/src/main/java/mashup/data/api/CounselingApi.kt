@@ -6,10 +6,11 @@ import mashup.data.model.Counseling
 import mashup.data.model.CounselingDetail
 import mashup.data.request.CommentRequest
 import mashup.data.request.CounselingAddRequest
+import mashup.data.request.CounselingGetRequest
 import mashup.data.request.CounselingModifyRequest
 import mashup.data.response.BaseResponse
 import mashup.data.response.CommentResponse
-import mashup.data.response.CounselingResponse
+import mashup.data.response.MyCounselingResponse
 import retrofit2.http.*
 
 interface CounselingApi {
@@ -33,13 +34,23 @@ interface CounselingApi {
         @Path("CounselingQuestionId") counselingQuestionId: Int
     ): Single<BaseResponse<Any>>
 
+    //TODO @GET("counselings") 사용시 : java.lang.IllegalArgumentException: Non-body HTTP method cannot contain @Body. -> 에러 조차 안잡히고 앱이 종료됨
+    //TODO @HTTP(method = "GET", path = "counselings", hasBody = true) 사용시 : method GET must not have a request body. -> 에러는 잡히나 동작이 안됨
+    /**
+     * Get 통신에서 Body를 사용하면 안되는 이유
+     *
+     * https://stackoverflow.com/questions/978061/http-get-with-request-body
+     * -> 서버 통신을 바꾸자!
+     * -> 아래 로직 또한 동작이 안됩니다.
+     */
     @GET("counselings")
+    //@HTTP(method = "GET", path = "counselings", hasBody = true)
     fun getCounselings(
-        @Query("minKilometer") minKilometer: Int,
-        @Query("maxKilometer") maxKilometer: Int,
-        @Query("categoryId") categoryId: Int,
-        @Query("emotionId") emotionId: Int
-    ): Single<BaseResponse<CounselingResponse>>
+        @Body request: CounselingGetRequest
+    ): Single<BaseResponse<List<Counseling>>>
+
+    @GET("counselings/my")
+    fun getMyCounselings(): Single<BaseResponse<MyCounselingResponse>>
 
     @GET("counselings/{counselingQuestionId}")
     fun getCounseling(

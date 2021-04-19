@@ -51,7 +51,7 @@
         <LinearLayout
             android:id="@+id/ll_my_page_tab"
             android:layout_width="0dp"
-            android:layout_height="34dp"
+            android:layout_height="40dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +61,8 @@
                 android:id="@+id/btn_my_counseling"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:foreground="?attr/selectableItemBackground">
 
                 <TextView
                     android:id="@+id/tv_my_counseling"
@@ -80,7 +81,8 @@
                 android:id="@+id/btn_my_answer"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:foreground="?attr/selectableItemBackground">
 
                 <TextView
                     android:id="@+id/tv_my_answer"

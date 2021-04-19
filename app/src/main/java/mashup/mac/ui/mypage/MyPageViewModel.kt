@@ -3,14 +3,21 @@ package mashup.mac.ui.mypage
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import mashup.data.api.CounselingApi
+import mashup.data.request.CounselingGetRequest
 import mashup.mac.base.BaseViewModel
+import mashup.mac.ext.EventMutableLiveData
+import mashup.mac.ext.postEvent
 import mashup.mac.model.AnimalBadgeItem
 import mashup.mac.model.Category
 import mashup.mac.model.CounselingItem
 import mashup.mac.ui.mypage.adapter.AnimalBadgeAdapter
+import mashup.mac.util.log.Dlog
 
 class MyPageViewModel(
-    handle: SavedStateHandle
+    handle: SavedStateHandle,
+    private val counselingApi: CounselingApi
 ) : BaseViewModel() {
 
     private val viewType: MyPageFragment.ViewType = handle[MyPageFragment.PARAM_VIEW_TYPE]
@@ -22,17 +29,94 @@ class MyPageViewModel(
     private val _counselingItems = MutableLiveData<List<CounselingItem>>()
     val counselingItems: LiveData<List<CounselingItem>> get() = _counselingItems
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
+    val eventShowToast = EventMutableLiveData<String>()
+
     fun loadData() {
+        Dlog.d("loadData viewType : $viewType")
+        //TODO SavedStateHandle 사용하면 Fragment 별로 데이터를 구분 할 수 없음 -> 어떻게 해야 할까?
         when (viewType) {
             MyPageFragment.ViewType.MyCounseling -> {
-                loadSample()
+                loadCounselingSample()
             }
             MyPageFragment.ViewType.MyAnswer -> {
+                //TODO API 나오면 작업
                 loadSample()
             }
         }
     }
 
+    private fun loadCounselingSample() {
+        counselingApi.getCounselings(
+            CounselingGetRequest(
+                minKilometer = 0,
+                maxKilometer = 9999
+            )
+        ).observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showLoading()
+            }
+            .doOnTerminate {
+                hideLoading()
+            }
+            .subscribe({
+                if (it.isSuccess()) {
+                    val items = it.data
+                    Dlog.d("items : $items")
+                } else {
+                    showToast(it.error)
+                }
+            }) {
+                Dlog.e(it.message)
+            }.also {
+                compositeDisposable.add(it)
+            }
+    }
+
+    private fun loadMyCounseling() {
+        counselingApi.getMyCounselings()
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showLoading()
+            }
+            .doOnTerminate {
+                hideLoading()
+            }
+            .subscribe({
+                if (it.isSuccess()) {
+                    val items = it.data
+                    Dlog.d("items : $items")
+                } else {
+                    showToast(it.error)
+                }
+            }) {
+                Dlog.e(it.message)
+            }.also {
+                compositeDisposable.add(it)
+            }
+    }
+
+    private fun showLoading() {
+        _isLoading.postValue(true)
+    }
+
+    private fun hideLoading() {
+        _isLoading.postValue(false)
+    }
+
+    private fun showToast(msg: String?) {
+        msg?.let {
+            if (it.isNotEmpty()) {
+                eventShowToast.postEvent(it)
+            }
+        }
+    }
+
+    /**
+     * SampleData
+     */
     private fun loadSample() {
         _badgeItems.postValue(getBadgeSampleData())
         _counselingItems.postValue(getCounselingItemsSampleData())

@@ -16,8 +16,10 @@ data class CounselingDetail(
     val updatedAt: String?,
     @SerializedName("user")
     val user: User?,
+    //TODO enum 값으로 변경하기
     @SerializedName("category")
     val category: Category?,
+    //TODO enum 값으로 변경하기
     @SerializedName("emotion")
     val emotion: Emotion?,
     @SerializedName("distanceKilometer")
