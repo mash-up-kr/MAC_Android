@@ -20,8 +20,7 @@ class MyPageViewModel(
     private val counselingApi: CounselingApi
 ) : BaseViewModel() {
 
-    private val viewType: MyPageFragment.ViewType = handle[MyPageFragment.PARAM_VIEW_TYPE]
-        ?: MyPageFragment.ViewType.MyCounseling
+    private val viewType: MyPageFragment.ViewType? = handle[MyPageFragment.PARAM_VIEW_TYPE]
 
     private val _badgeItems = MutableLiveData<List<AnimalBadgeItem>>()
     val badgeItems: LiveData<List<AnimalBadgeItem>> get() = _badgeItems
@@ -35,11 +34,9 @@ class MyPageViewModel(
     val eventShowToast = EventMutableLiveData<String>()
 
     fun loadData() {
-        Dlog.d("loadData viewType : $viewType")
-        //TODO SavedStateHandle 사용하면 Fragment 별로 데이터를 구분 할 수 없음 -> 어떻게 해야 할까?
         when (viewType) {
             MyPageFragment.ViewType.MyCounseling -> {
-                loadCounselingSample()
+                loadMyCounseling()
             }
             MyPageFragment.ViewType.MyAnswer -> {
                 //TODO API 나오면 작업

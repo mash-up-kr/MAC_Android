@@ -25,16 +25,8 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Dlog.d("MyPageActivity onCreate : ${this.hashCode()}")
-        Dlog.d("savedInstanceState : $savedInstanceState")
         initButton()
         replaceMyCounseling()
-    }
-
-    override fun onBackPressed() {
-        //TODO 프래그먼트들이 왜 1개 이상 존재하게 되는 걸까?
-        //super.onBackPressed()
-        finish()
     }
 
     private fun initButton() {
@@ -67,7 +59,6 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
 
     private fun goToFragmentTopScroll() {
         supportFragmentManager.findFragmentByTag(viewType.name)?.let {
-            Dlog.d("goToFragmentTopScroll findFragment : $it")
             if (it is MyPageFragment) {
                 it.goToTopScroll()
             }
@@ -78,30 +69,30 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
         viewType = MyPageFragment.ViewType.MyCounseling
         showMyCounselingTab()
         hideAllFragment()
-        replaceFragment()
+        addFragment()
     }
 
     private fun replaceMyAnswer() {
         viewType = MyPageFragment.ViewType.MyAnswer
         showMyAnswerTab()
         hideAllFragment()
-        replaceFragment()
+        addFragment()
     }
 
-    private fun replaceFragment() {
+    private fun addFragment() {
         val tagName = viewType.name
         val findFragment = supportFragmentManager.findFragmentByTag(tagName)
-        Dlog.d("-- findFragment : $findFragment , hashcode : ${findFragment.hashCode()}")
+        Dlog.d("MyPageActivity findFragment : $findFragment , hashcode : ${findFragment.hashCode()}")
 
         if (findFragment == null) {
-            val newFragment = makeNewFragmentByViewType()
-            replaceAddToBackStack(newFragment, tagName)
+            val newFragment = createNewFragmentByViewType()
+            addFragment(newFragment, tagName)
         } else {
             showFragment(findFragment)
         }
     }
 
-    private fun makeNewFragmentByViewType() = when (viewType) {
+    private fun createNewFragmentByViewType() = when (viewType) {
         MyPageFragment.ViewType.MyCounseling -> {
             MyPageFragment.newInstanceCounseling()
         }
@@ -110,10 +101,9 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
         }
     }
 
-    private fun replaceAddToBackStack(fragment: BaseFragment<*>, tag: String) {
+    private fun addFragment(fragment: BaseFragment<*>, tag: String) {
         supportFragmentManager.beginTransaction()
             .add(R.id.fl_container, fragment, tag)
-            .addToBackStack(null)
             .commitAllowingStateLoss()
     }
 
