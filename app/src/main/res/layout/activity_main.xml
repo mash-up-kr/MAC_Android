@@ -136,12 +136,11 @@
             app:layout_constraintStart_toStartOf="@id/iv_profile_img"
             app:layout_constraintTop_toBottomOf="@id/main_name" />
 
-        <include
+        <View
             android:layout_width="0dp"
             android:layout_height="108dp"
             android:layout_margin="16sp"
             android:id="@+id/counseling"
-            layout="@layout/item_counseling"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -152,7 +151,9 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
