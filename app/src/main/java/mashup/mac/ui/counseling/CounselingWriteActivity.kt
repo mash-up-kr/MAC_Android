@@ -2,8 +2,7 @@ package mashup.mac.ui.counseling
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import mashup.data.ApiProvider
-import mashup.data.api.CounselingApi
+import mashup.data.Injection
 import mashup.mac.R
 import mashup.mac.base.BaseActivity
 import mashup.mac.databinding.ActivityCounselingWriteBinding
@@ -22,7 +21,7 @@ class CounselingWriteActivity :
 
     private val counselingWriteViewModel by viewModels<CounselingWriteViewModel> {
         CounselingWriteViewModelFactory(
-            ApiProvider.provideApi(CounselingApi::class.java),
+            Injection.provideCounselingRepository(),
             categoryAdapter
         )
     }
@@ -37,6 +36,9 @@ class CounselingWriteActivity :
     override fun onViewModelSetup() {
         counselingWriteViewModel.eventToast.observeEvent(this) {
             toast(it)
+        }
+        counselingWriteViewModel.eventFinish.observeEvent(this) {
+            finish()
         }
     }
 

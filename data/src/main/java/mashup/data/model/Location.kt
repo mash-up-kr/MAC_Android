@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Location(
     @SerializedName("type")
-    val type: String?,
+    val type: LocationType?,
     @SerializedName("coordinates")
     val coordinates: Coordinates?
 ) {
@@ -14,4 +14,10 @@ data class Location(
         @SerializedName("longitude")
         val longitude: Double?
     )
+
+    enum class LocationType {
+        Point
+    }
 }
+
+

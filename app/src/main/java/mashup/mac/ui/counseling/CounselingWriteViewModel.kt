@@ -4,46 +4,46 @@ import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import mashup.data.api.CounselingApi
-import mashup.data.request.CounselingAddRequest
+import mashup.data.repository.CounselingRepository
 import mashup.mac.base.BaseViewModel
 import mashup.mac.ext.EventMutableLiveData
 import mashup.mac.ext.postEvent
 import mashup.mac.ext.safeLet
-import mashup.mac.model.Feeling
+import mashup.mac.model.Emotion
 import mashup.mac.ui.counseling.adapter.AnimalCategoryAdapter
 import mashup.mac.util.log.Dlog
 
 class CounselingWriteViewModel(
-    private val counselingApi: CounselingApi,
+    private val counselingRepository: CounselingRepository,
     private val animalCategoryAdapter: AnimalCategoryAdapter
 ) : BaseViewModel() {
 
     val eventToast = EventMutableLiveData<String>()
+    val eventFinish = EventMutableLiveData<Unit>()
 
     val title = MutableLiveData<String>()
     val description = MutableLiveData<String>()
 
-    private val feelingCheckingMap = hashMapOf<Feeling, Boolean>()
+    private val feelingCheckingMap = hashMapOf<Emotion, Boolean>()
 
-    private val _feeling = MutableLiveData<HashMap<Feeling, Boolean>>()
-    val feeling: LiveData<HashMap<Feeling, Boolean>> get() = _feeling
+    private val _feeling = MutableLiveData<HashMap<Emotion, Boolean>>()
+    val emotion: LiveData<HashMap<Emotion, Boolean>> get() = _feeling
 
     init {
-        Feeling.getAllFeeling().forEachIndexed { index, feeling ->
+        Emotion.getAllFeeling().forEachIndexed { index, feeling ->
             feelingCheckingMap[feeling] = index == 0
         }
         showFeelingCheckingMap()
     }
 
-    fun onClickFeeling(feeling: Feeling) {
+    fun onClickFeeling(emotion: Emotion) {
         initAllFellingUnCheck()
-        setFeelingCheck(feeling)
+        setFeelingCheck(emotion)
         showFeelingCheckingMap()
     }
 
-    private fun setFeelingCheck(feeling: Feeling) {
-        feelingCheckingMap[feeling] = true
+    private fun setFeelingCheck(emotion: Emotion) {
+        feelingCheckingMap[emotion] = true
     }
 
     private fun initAllFellingUnCheck() {
@@ -73,36 +73,31 @@ class CounselingWriteViewModel(
         val checkedFeeling = getCheckedFeeling()
 
         safeLet(checkedCategory, checkedFeeling) { category, feeling ->
-
-            counselingApi.postCounseling(
-                CounselingAddRequest(
-                    title = title,
-                    content = description,
-                    category = category.category.title,
-                    emotion = feeling.title,
-                    //todo 저장된 위치정보 가져오기
-                    latitude = 49.124214,
-                    longitude = 4.8148428
-                )
+            counselingRepository.addCounseling(
+                title = title!!,
+                content = description!!,
+                category = category.category.title,
+                emotion = feeling.title,
             ).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     Dlog.d(it.toString())
                     if (it.isSuccess()) {
-                        //todo 작성 완료 후 메인으로 이동하기
                         showToast("작성 완료")
+                        finish()
                     } else {
                         showToast(it.error)
                     }
                 }) {
                     Dlog.e(it.message)
+                }.also {
+                    compositeDisposable.add(it)
                 }
-
         } ?: run {
-            error("category and feeling check must not be null")
+            error("category and feeling must not be null")
         }
     }
 
-    private fun getCheckedFeeling(): Feeling? {
+    private fun getCheckedFeeling(): Emotion? {
         for ((feeling, usCheck) in feelingCheckingMap) {
             if (usCheck) {
                 return feeling
@@ -115,5 +110,9 @@ class CounselingWriteViewModel(
         message?.let {
             eventToast.postEvent(message)
         }
+    }
+
+    private fun finish() {
+        eventFinish.postEvent(Unit)
     }
 }

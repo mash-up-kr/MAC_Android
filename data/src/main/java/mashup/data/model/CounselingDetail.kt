@@ -17,9 +17,9 @@ data class CounselingDetail(
     @SerializedName("user")
     val user: User?,
     @SerializedName("category")
-    val category: Category?,
+    val category: CategoryModel?,
     @SerializedName("emotion")
-    val emotion: Emotion?,
+    val emotion: EmotionModel?,
     @SerializedName("distanceKilometer")
     val distanceKilometer: Int?
 )

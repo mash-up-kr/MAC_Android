@@ -7,15 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import mashup.mac.R
 import mashup.mac.databinding.ItemAnimalBadgeBinding
 import mashup.mac.model.AnimalBadgeItem
+import mashup.mac.model.CounselingItem
 import mashup.mac.ui.counseling.adapter.AnimalCategoryAdapter
 
-class AnimalBadgeAdapter :
+class AnimalBadgeAdapter(private val listener: (List<CounselingItem>) -> Unit) :
     RecyclerView.Adapter<AnimalBadgeAdapter.AnimalBadgeViewHolder>() {
-
-    companion object {
-
-        const val DEFAULT_CHECK_ITEM_POSITION = 0
-    }
 
     private var prePosition = AnimalCategoryAdapter.DEFAULT_CHECK_ITEM_POSITION
 
@@ -25,10 +21,13 @@ class AnimalBadgeAdapter :
         return AnimalBadgeViewHolder(parent).apply {
             itemView.setOnClickListener {
                 val currentPosition = adapterPosition
+                val item = items[currentPosition]
+
                 if (currentPosition != prePosition) {
                     notifyUnCheckItem(prePosition)
                     notifyCheckItem(currentPosition)
                     changePrePosition(currentPosition)
+                    listener.invoke(item.counselingItems)
                 }
             }
         }

@@ -10,12 +10,14 @@ data class Counseling(
     val title: String?,
     @SerializedName("content")
     val content: String?,
+    @SerializedName("commentCount")
+    val commentCount: Int?,
     @SerializedName("createdAt")
     val createdAt: String?,
-    @SerializedName("categoryId")
-    val categoryId: Int?,
-    @SerializedName("emotionId")
-    val emotionId: Int?,
+    @SerializedName("category")
+    val category: CategoryModel?,
+    @SerializedName("emotion")
+    val emotion: EmotionModel?,
     @SerializedName("userId")
     val userId: Int?,
     @SerializedName("location")

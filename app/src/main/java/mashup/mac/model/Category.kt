@@ -19,6 +19,9 @@ enum class Category(
     학업("학업", "원숭이", R.drawable.body_monkey, R.drawable.face_monkey, R.drawable.circle_monkey);
 
     companion object {
+
+        fun getFromTitle(title: String?) = getAllCategories().find { it.title == title }
+
         fun getAllCategories() = values().toList()
 
         fun getRandomCategory(): Category {
@@ -27,7 +30,7 @@ enum class Category(
             return allCategories[index]
         }
 
-        fun findCircleImage(title:String): Int? {
+        fun findCircleImage(title: String): Int? {
             return getAllCategories().find {
                 it.title == title
             }?.let { it.circleRes }

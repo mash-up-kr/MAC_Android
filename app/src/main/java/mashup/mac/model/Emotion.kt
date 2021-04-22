@@ -3,7 +3,7 @@ package mashup.mac.model
 import androidx.annotation.DrawableRes
 import mashup.mac.R
 
-enum class Feeling(
+enum class Emotion(
     val title: String,
     @DrawableRes val icon: Int
 ) {

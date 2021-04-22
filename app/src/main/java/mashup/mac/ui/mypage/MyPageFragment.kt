@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import mashup.data.ApiProvider
+import mashup.data.api.CounselingApi
 import mashup.mac.R
 import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.FragmentMyPageBinding
+import mashup.mac.ext.observeEvent
+import mashup.mac.ext.toast
 import mashup.mac.ui.mypage.adapter.AnimalBadgeAdapter
 import mashup.mac.ui.mypage.adapter.CounselingAdapter
 
@@ -31,11 +35,21 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
 
     override var logTag = "MyPageFragment"
 
-    private val animalBadgeAdapter by lazy { AnimalBadgeAdapter() }
+    private val animalBadgeAdapter by lazy {
+        AnimalBadgeAdapter(
+            myPageViewModel::onClickBadge
+        )
+    }
 
     private val counselingAdapter by lazy { CounselingAdapter() }
 
-    private val myPageViewModel by viewModels<MyPageViewModel>()
+    private val myPageViewModel: MyPageViewModel by viewModels {
+        MyPageViewModelFactory(
+            savedStateRegistry = this,
+            bundle = arguments,
+            counselingApi = ApiProvider.provideApi(CounselingApi::class.java)
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,17 +59,28 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
     }
 
     override fun onViewModelSetup() {
-        myPageViewModel.badgeItems.observe(this) {
-            animalBadgeAdapter.replaceAll(it)
-        }
+        with(myPageViewModel) {
+            badgeItems.observe(viewLifecycleOwner) {
+                animalBadgeAdapter.replaceAll(it)
+            }
 
-        myPageViewModel.counselingItems.observe(this) {
-            counselingAdapter.replaceAll(it)
+            counselingItems.observe(viewLifecycleOwner) {
+                counselingAdapter.replaceAll(it)
+            }
+
+            eventShowToast.observeEvent(viewLifecycleOwner) {
+                toast(it)
+            }
         }
     }
 
     private fun initRecyclerView() {
         binding.rvAnimalBadge.adapter = animalBadgeAdapter
         binding.rvCounseling.adapter = counselingAdapter
+    }
+
+    fun goToTopScroll() {
+        binding.ablMyPage.setExpanded(true)
+        binding.rvCounseling.scrollToPosition(0)
     }
 }

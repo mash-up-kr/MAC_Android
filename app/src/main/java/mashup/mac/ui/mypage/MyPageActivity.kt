@@ -5,27 +5,29 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import mashup.mac.R
 import mashup.mac.base.BaseActivity
 import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.ActivityMyPageBinding
 import mashup.mac.ext.toast
+import mashup.mac.util.log.Dlog
 
 class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_page) {
 
     override var logTag = "MyPageActivity"
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var viewType = MyPageFragment.ViewType.MyCounseling
 
-        initButton()
-        showMyCounselingTab()
-        replaceFragment(
-            MyPageFragment.newInstanceCounseling()
-        )
+    private val focusedTabBackground by lazy {
+        ResourcesCompat.getDrawable(resources, R.drawable.bg_my_page_focused, null)
     }
 
-    private var viewType = MyPageFragment.ViewType.MyCounseling
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initButton()
+        replaceMyCounseling()
+    }
 
     private fun initButton() {
         with(binding) {
@@ -39,40 +41,83 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
 
             btnMyCounseling.setOnClickListener {
                 if (viewType == MyPageFragment.ViewType.MyCounseling) {
+                    goToFragmentTopScroll()
                     return@setOnClickListener
                 }
-
-                viewType = MyPageFragment.ViewType.MyCounseling
-
-                showMyCounselingTab()
-                replaceFragment(
-                    MyPageFragment.newInstanceCounseling()
-                )
+                replaceMyCounseling()
             }
 
             btnMyAnswer.setOnClickListener {
                 if (viewType == MyPageFragment.ViewType.MyAnswer) {
+                    goToFragmentTopScroll()
                     return@setOnClickListener
                 }
-
-                viewType = MyPageFragment.ViewType.MyAnswer
-
-                showMyAnswerTab()
-                replaceFragment(
-                    MyPageFragment.newInstanceAnswer()
-                )
+                replaceMyAnswer()
             }
         }
     }
 
-    private fun replaceFragment(fragment: BaseFragment<*>) {
+    private fun goToFragmentTopScroll() {
+        supportFragmentManager.findFragmentByTag(viewType.name)?.let {
+            if (it is MyPageFragment) {
+                it.goToTopScroll()
+            }
+        }
+    }
+
+    private fun replaceMyCounseling() {
+        viewType = MyPageFragment.ViewType.MyCounseling
+        showMyCounselingTab()
+        hideAllFragment()
+        addFragment()
+    }
+
+    private fun replaceMyAnswer() {
+        viewType = MyPageFragment.ViewType.MyAnswer
+        showMyAnswerTab()
+        hideAllFragment()
+        addFragment()
+    }
+
+    private fun addFragment() {
+        val tagName = viewType.name
+        val findFragment = supportFragmentManager.findFragmentByTag(tagName)
+        Dlog.d("MyPageActivity findFragment : $findFragment , hashcode : ${findFragment.hashCode()}")
+
+        if (findFragment == null) {
+            val newFragment = createNewFragmentByViewType()
+            addFragment(newFragment, tagName)
+        } else {
+            showFragment(findFragment)
+        }
+    }
+
+    private fun createNewFragmentByViewType() = when (viewType) {
+        MyPageFragment.ViewType.MyCounseling -> {
+            MyPageFragment.newInstanceCounseling()
+        }
+        MyPageFragment.ViewType.MyAnswer -> {
+            MyPageFragment.newInstanceAnswer()
+        }
+    }
+
+    private fun addFragment(fragment: BaseFragment<*>, tag: String) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fl_container, fragment)
+            .add(R.id.fl_container, fragment, tag)
             .commitAllowingStateLoss()
     }
 
-    private val focusedTabBackground by lazy {
-        ResourcesCompat.getDrawable(resources, R.drawable.bg_my_page_focused, null)
+    private fun showFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .show(fragment)
+            .commitAllowingStateLoss()
+    }
+
+    private fun hideAllFragment() {
+        supportFragmentManager.fragments.forEach {
+            supportFragmentManager.beginTransaction().hide(it)
+                .commitAllowingStateLoss()
+        }
     }
 
     private fun showMyCounselingTab() {

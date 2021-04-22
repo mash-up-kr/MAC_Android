@@ -9,7 +9,7 @@ import mashup.data.request.CounselingAddRequest
 import mashup.data.request.CounselingModifyRequest
 import mashup.data.response.BaseResponse
 import mashup.data.response.CommentResponse
-import mashup.data.response.CounselingResponse
+import mashup.data.response.MyCounselingResponse
 import retrofit2.http.*
 
 interface CounselingApi {
@@ -35,11 +35,14 @@ interface CounselingApi {
 
     @GET("counselings")
     fun getCounselings(
-        @Query("minKilometer") minKilometer: Int,
-        @Query("maxKilometer") maxKilometer: Int,
-        @Query("categoryId") categoryId: Int,
-        @Query("emotionId") emotionId: Int
-    ): Single<BaseResponse<CounselingResponse>>
+        @Query("minKilometer") minKilometer: Int, // 1 km → 1
+        @Query("maxKilometer") maxKilometer: Int, // 150 m → 0.15
+        @Query("category") category: String? = null,
+        @Query("emotion") emotion: String? = null
+    ): Single<BaseResponse<List<Counseling>>>
+
+    @GET("counselings/my")
+    fun getMyCounselings(): Single<BaseResponse<MyCounselingResponse>>
 
     @GET("counselings/{counselingQuestionId}")
     fun getCounseling(
