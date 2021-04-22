@@ -35,7 +35,11 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
 
     override var logTag = "MyPageFragment"
 
-    private val animalBadgeAdapter by lazy { AnimalBadgeAdapter() }
+    private val animalBadgeAdapter by lazy {
+        AnimalBadgeAdapter(
+            myPageViewModel::onClickBadge
+        )
+    }
 
     private val counselingAdapter by lazy { CounselingAdapter() }
 

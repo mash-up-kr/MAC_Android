@@ -10,17 +10,16 @@ data class Counseling(
     val title: String?,
     @SerializedName("content")
     val content: String?,
+    @SerializedName("commentCount")
+    val commentCount: Int?,
     @SerializedName("createdAt")
     val createdAt: String?,
-    //TODO enum 값으로 변경하기
     @SerializedName("category")
-    val category: String?,
-    //TODO enum 값으로 변경하기
+    val category: CategoryModel?,
     @SerializedName("emotion")
-    val emotion: String?,
+    val emotion: EmotionModel?,
     @SerializedName("userId")
     val userId: Int?,
-    //TODO 서버 API 형식 변경되어야 합니다.
     @SerializedName("location")
     val location: Location?
 )

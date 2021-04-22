@@ -50,7 +50,7 @@
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        bind:setHtmlText="@{@string/own_counseling_badge_format(100)}"
+                        bind:setHtmlText="@{@string/own_counseling_badge_format(myPageViewModel.badgeTotalCount)}"
                         tools:text="보유한 고민 배지 133" />
 
                     <TextView
