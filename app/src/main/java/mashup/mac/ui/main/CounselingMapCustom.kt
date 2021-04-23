@@ -39,10 +39,7 @@ class CounselingMapCustom : View {
     private var cue: List<CounselingMapDrawModel>? = null
 
     private val offset: Int = 120
-//    private var maxOffset: Int = 1
-    private var rOffset: Int = 50
-//    private val offset: Int = (width * 0.15).toInt()
-//    private val offset: Int = width/0.1
+    private var rOffset: Int = 120
 
 
     init {
@@ -50,8 +47,6 @@ class CounselingMapCustom : View {
         val white: Int = ContextCompat.getColor(context, R.color.white)
         val point: Int = ContextCompat.getColor(context, R.color.point)
 
-//        maxOffset = (width / 2) * 1.3.toInt()
-        rOffset = (width / 2) * 0.2.toInt()
 
         mTitlePaint.color = textCounselingMsg
         mTitlePaint.textSize = titleSize
@@ -72,37 +67,48 @@ class CounselingMapCustom : View {
 
     fun setCueList(cue: List<CounselingMapModel>) {
         this.cue = cue.map {
+            Log.e("123", "x   $it")
             CounselingMapDrawModel(
                 id = it.id,
-                x = getTargetX(getDegree(id), it.location * rOffset),
-                y = getTargetY(getDegree(id), it.location * rOffset),
+                r = offset + it.location * rOffset,
+                degree = getDegree(it.id),
                 category = it.category,
                 distanceKilometer = it.location
             )
         }
+
         invalidate()
     }
 
-    val random = Random()
-    fun rand(from: Int, to: Int): Int {
+    private val random = Random()
+    private fun rand(from: Int, to: Int): Int {
         return random.nextInt(to - from) + from
     }
 
-    fun getDegree(id: Int): Int {
-        return rand(0, 72) * id
+    private fun getDegree(id: Int): Int {
+//        return 0
+        return rand(0, 60) + 72 * (id)
     }
 
-    fun getTargetX(degree: Int, r: Int): Int {
-        val x = width / 2f
-        Log.e("x","degree$degree  r$r")
-        return (x + cos(Math.toRadians(degree.toDouble())) * r).toInt()
+    private fun getTargetX(degree: Int, r: Int): Int {
+        Log.e("123", "x   $r")
+
+        return (cos(Math.toRadians(degree.toDouble())) * r).toInt()
     }
 
-    fun getTargetY(degree: Int, r: Int): Int {
-        val y = height / 2f
-        return (y + sin(Math.toRadians(degree.toDouble())) * r).toInt()
+    private fun getTargetY(degree: Int, r: Int): Int {
+        Log.e("123", "y   $r")
+        return (sin(Math.toRadians(degree.toDouble())) * r).toInt()
     }
 
+    override fun onMeasure(widthwidthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val width = (widthwidthMeasureSpec*1.5).toInt()
+//        rOffset = (width - widthwidthMeasureSpec)/8
+        Log.e("onMeasure", "widthMeasureSpec   $widthwidthMeasureSpec")
+        Log.e("onMeasure", "width   $width")
+
+        super.onMeasure(width, heightMeasureSpec)
+    }
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         drawSubtitle(canvas)
@@ -112,48 +118,53 @@ class CounselingMapCustom : View {
 //        val radius = 300f
         val radius = offset * 3.toFloat()
         canvas.drawCircle(width / 2f, height / 2f, radius, linePaint)
-
         canvas.drawCircle(width / 2f, height / 2f, radius + offset * 1.5f, linePaint)
         canvas.drawCircle(width / 2f, height / 2f, radius + offset * 3, linePaint)
-        //        canvas.drawCircle(
-//            width / 2f,
-//            height / 2f,
-//            radius + offset + (maxOffset - offset) / 2,
-//            linePaint
-//        )
-//        canvas.drawCircle(width / 2f, height / 2f, radius + maxOffset, linePaint)
+        Log.e("123", "width   $width")
+
+
 
         cue?.forEach {
-            val itemStartX = (it.x - textStarMargin.toInt())
+            Log.e("x", "it  $it")
+            val x = getTargetX(it.degree, it.r)
+            val y = getTargetY(it.degree,  it.r)
+
+            val drawX = x + width / 2 - offset / 2
+            val drawY = y + height / 2 + offset / 2
+            val itemStartX = (drawX - textStarMargin.toInt())
             rect.set(
                 itemStartX.toFloat() + textStarMargin,
-                it.y.toFloat() - offset,
+                drawY.toFloat() - offset,
                 itemStartX.toFloat() + offset + textStarMargin,
-                (it.y).toFloat()
+                (drawY).toFloat()
             )
 
             canvas.drawArc(rect, 0F, 360F, true, paint)
 
             canvas.drawText(
                 it.category + " | " + it.distanceKilometer + "Km",
-                it.x - textStarMargin,
-                (it.y + (offset * 0.5f)),
+                drawX - textStarMargin,
+                (drawY + (offset * 0.5f)),
                 mSubTittlePaint
             )
 
             val img = Category.findCircleImage(it.category) ?: R.drawable.circle_cat
             val imgMargin = 5
             ContextCompat.getDrawable(context, img)?.run {
-                val imageX = (it.x - textStarMargin).toInt()
+                val imageX = (drawX - textStarMargin).toInt()
                 setBounds(
                     (imageX + textStarMargin + imgMargin).toInt(),
-                    it.y - offset + imgMargin,
+                    drawY - offset + imgMargin,
                     (imageX + textStarMargin + offset - imgMargin).toInt(),
-                    it.y - imgMargin
+                    drawY - imgMargin
                 )
                 draw(canvas)
             }
+            canvas.drawCircle(width / 2f, height / 2f, 20f, linePaint)
+
 
         }
     }
+
+
 }

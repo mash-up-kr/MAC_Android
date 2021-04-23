@@ -2,6 +2,7 @@ package mashup.mac.ui.main
 
 import android.content.Context
 import android.content.Intent
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import mashup.data.sample.repository.SampleRepository
 import mashup.mac.base.BaseViewModel
@@ -13,6 +14,7 @@ class MainViewModel(
 ) : BaseViewModel() {
 
     val mainListView = MutableLiveData<CounselingWebView>()
+    val reset = MutableLiveData<Unit>()
 
     enum class CounselingWebView { DETAIL, LIST }
 
@@ -30,5 +32,7 @@ class MainViewModel(
         mainListView.postValue(CounselingWebView.LIST)
     }
 
-    fun onClickReset() {}
+    fun onClickReset() {
+        reset.postValue(Unit)
+    }
 }
