@@ -19,11 +19,11 @@ import mashup.mac.ext.toast
 import mashup.mac.ui.main.MainActivity
 import mashup.mac.util.log.Dlog
 
+
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
 
     override var logTag = "LoginActivity"
     val KAKAO_TAG = "kakaoTag"
-    val TAG = "tag"
     private val viewModel by lazy {
         ViewModelProvider(
             this, LoginViewModelFactory(
@@ -35,15 +35,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.loginVm = viewModel
-
 //        viewModel.onClickLogin.observe(this, Observer {
 //            replaceFragment(SignUpFragment.newInstance())
 //        })
         binding.btnLogin.setOnClickListener {
 
             //TODO [test] 하드코딩을 통해 카카오 토큰을 직접 일력한 로그인
-            testLogin()
-            return@setOnClickListener
+//            return@setOnClickListener
 
             //공통 Call back
             val TAG = "카카오"
@@ -55,6 +53,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 } else if (token != null) {
                     Log.i("LoginTest", "로그인 성공 ${token.accessToken}")
                     //사용자 정보 가져오기
+                    testLogin(token.accessToken)
+
                     UserApiClient.instance.me { user, error ->
                         if (error != null) {
                             Log.e(KAKAO_TAG, "사용자 정보 요청 실패", error)
@@ -86,9 +86,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private val authApi = ApiProvider.provideApiWithoutHeader(AuthApi::class.java)
 
-    private fun testLogin() {
+    private fun testLogin(token: String) {
         //kakao sns token
-        val token = "HUs4bfxhQPp3CNKw-oQVfq3pdn65gvHAo626cwo9cpcAAAF42UnC3A"
+//        val token = "7c9f40UfXrNNXp2mgR9vHQRYw-2HokZGI7QZRQo9cpgAAAF5ANmSbw"
         val snsToken = "Bearer $token"
 
         authApi.postLogin(
@@ -133,5 +133,27 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     private fun showError() {
         toast("something wrong error")
     }
+
+    /**
+     * kakao HashKey 값 얻을 때 쓰기!
+     **/
+/*  private fun getHashKey() {
+        var packageInfo: PackageInfo? = null
+        try {
+            packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+        if (packageInfo == null) Log.e("KeyHash", "KeyHash:null")
+        for (signature in packageInfo!!.signatures) {
+            try {
+                val md: MessageDigest = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                Log.e("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+            } catch (e: NoSuchAlgorithmException) {
+                Log.e("KeyHash", "Unable to get MessageDigest. signature=$signature", e)
+            }
+        }
+    }*/
 
 }
