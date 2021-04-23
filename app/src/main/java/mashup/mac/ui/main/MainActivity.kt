@@ -32,6 +32,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         cue.add(CounselingMapModel(2, 4, "제 남친이 좀 이상...", Category.음식.title))
         cue.add(CounselingMapModel(3, 2, "제 남친이 좀 이상...", Category.연애.title))
         cue.add(CounselingMapModel(4, 5, "제 남친이 좀 이상...", Category.학업.title))
+        cue.add(CounselingMapModel(5, 3, "제 남친이 좀 이상...", Category.학업.title))
 //        cue.add(CounselingMapModel(500, 400, "MapMdoMapMo", Category.관계.title, 5))
 //        cue.add(CounselingMapModel(210, 1300, "제 남친이 좀 이상...", Category.음식.title, 1))
 //        cue.add(CounselingMapModel(620, 1400, "제 남친이 좀 이상...", Category.연애.title, 7))
@@ -51,6 +52,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             replaceFragment(WebViewFragment.newInstance(link))
         })
 
+        mainViewModel.reset.observe(this, Observer {
+            binding.customCounselingMap.setCueList(cue)
+        })
     }
 
     private val counselingList = "https://www.cowcat.live/concern/edit"
