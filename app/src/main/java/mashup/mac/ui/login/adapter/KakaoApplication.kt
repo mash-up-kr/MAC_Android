@@ -10,6 +10,6 @@ class KakaoApplication  : Application() {
 
 
         // Kakao SDK 초기화
-        KakaoSdk.init(this, "...")
+        KakaoSdk.init(this, "5076efb469d1742dd2fb665625c764d7")
     }
 }
