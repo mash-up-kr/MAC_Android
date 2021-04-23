@@ -3,6 +3,8 @@ package mashup.mac.ui.main
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import mashup.data.sample.SampleInjection
 import mashup.mac.R
 import mashup.mac.base.BaseActivity
@@ -54,6 +56,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         mainViewModel.reset.observe(this, Observer {
             binding.customCounselingMap.setCueList(cue)
+            lifecycleScope.launch {
+                binding.customCounselingMap.cycle()
+            }
         })
     }
 

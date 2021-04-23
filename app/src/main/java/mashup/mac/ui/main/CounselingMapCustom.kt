@@ -8,6 +8,8 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import mashup.mac.R
 import mashup.mac.model.Category
 import java.util.*
@@ -76,7 +78,6 @@ class CounselingMapCustom : View {
                 distanceKilometer = it.location
             )
         }
-
         invalidate()
     }
 
@@ -84,38 +85,21 @@ class CounselingMapCustom : View {
     private fun rand(from: Int, to: Int): Int {
         return random.nextInt(to - from) + from
     }
-
     private fun getDegree(id: Int): Int {
-//        return 0
         return rand(0, 60) + 72 * (id)
-    }
-
-    private fun getTargetX(degree: Int, r: Int): Int {
-        Log.e("123", "x   $r")
-
-        return (cos(Math.toRadians(degree.toDouble())) * r).toInt()
-    }
-
-    private fun getTargetY(degree: Int, r: Int): Int {
-        Log.e("123", "y   $r")
-        return (sin(Math.toRadians(degree.toDouble())) * r).toInt()
     }
 
     override fun onMeasure(widthwidthMeasureSpec: Int, heightMeasureSpec: Int) {
         val width = (widthwidthMeasureSpec*1.5).toInt()
-//        rOffset = (width - widthwidthMeasureSpec)/8
-        Log.e("onMeasure", "widthMeasureSpec   $widthwidthMeasureSpec")
-        Log.e("onMeasure", "width   $width")
-
         super.onMeasure(width, heightMeasureSpec)
     }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         drawSubtitle(canvas)
     }
 
     private fun drawSubtitle(canvas: Canvas) {
-//        val radius = 300f
         val radius = offset * 3.toFloat()
         canvas.drawCircle(width / 2f, height / 2f, radius, linePaint)
         canvas.drawCircle(width / 2f, height / 2f, radius + offset * 1.5f, linePaint)
@@ -126,8 +110,8 @@ class CounselingMapCustom : View {
 
         cue?.forEach {
             Log.e("x", "it  $it")
-            val x = getTargetX(it.degree, it.r)
-            val y = getTargetY(it.degree,  it.r)
+            val x = getTargetX(it.degree + delayDegree, it.r)
+            val y = getTargetY(it.degree + delayDegree, it.r)
 
             val drawX = x + width / 2 - offset / 2
             val drawY = y + height / 2 + offset / 2
@@ -161,10 +145,28 @@ class CounselingMapCustom : View {
                 draw(canvas)
             }
             canvas.drawCircle(width / 2f, height / 2f, 20f, linePaint)
-
-
         }
     }
 
+    var delayDegree = 0
+    suspend fun cycle() {
+        for (i in 0..1000) {
+            coroutineScope {
+                delay(50)
+                delayDegree++
+            }
+            this.post {
+                invalidate()
+            }
+        }
+    }
+
+    private fun getTargetX(degree: Int, r: Int): Int {
+        return (cos(Math.toRadians(degree.toDouble())) * r).toInt()
+    }
+
+    private fun getTargetY(degree: Int, r: Int): Int {
+        return (sin(Math.toRadians(degree.toDouble())) * r).toInt()
+    }
 
 }
