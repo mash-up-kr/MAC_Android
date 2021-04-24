@@ -11,12 +11,16 @@ import mashup.mac.base.BaseActivity
 import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.ActivityMainBinding
 import mashup.mac.model.Category
+import mashup.mac.model.CounselingItem
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     override var logTag = "MainActivity"
+    private val counselingList = "https://www.cowcat.live/concerns"
+    private val counselingDetail = "https://www.cowcat.live/concern/edit"
 
-    //TODO:: ktx 공부하고 적용하기
+    private val counselingAdapter by lazy { MainCounselingAdapter() }
+
     private val mainViewModel by lazy {
         ViewModelProvider(
             viewModelStore, MainViewModelFactory(
@@ -28,18 +32,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.mainVm = mainViewModel
+        initRecyclerView()
 
         val cue = arrayListOf<CounselingMapModel>()
-        cue.add(CounselingMapModel(1, 1, "MapMdoMapMo", Category.관계.title))
-        cue.add(CounselingMapModel(2, 4, "제 남친이 좀 이상...", Category.음식.title))
-        cue.add(CounselingMapModel(3, 2, "제 남친이 좀 이상...", Category.연애.title))
-        cue.add(CounselingMapModel(4, 5, "제 남친이 좀 이상...", Category.학업.title))
-        cue.add(CounselingMapModel(5, 3, "제 남친이 좀 이상...", Category.학업.title))
-//        cue.add(CounselingMapModel(500, 400, "MapMdoMapMo", Category.관계.title, 5))
-//        cue.add(CounselingMapModel(210, 1300, "제 남친이 좀 이상...", Category.음식.title, 1))
-//        cue.add(CounselingMapModel(620, 1400, "제 남친이 좀 이상...", Category.연애.title, 7))
-//        cue.add(CounselingMapModel(720, 700, "제 남친이 좀 이상...", Category.학업.title, 7))
+        cue.add(CounselingMapModel(1, 1, 1, "MapMdoMapMo", Category.관계.title))
+        cue.add(CounselingMapModel(2, 4, 1, "제 남친이 좀 이상...", Category.음식.title))
+        cue.add(CounselingMapModel(3, 2, 1, "제 남친이 좀 이상...", Category.연애.title))
+        cue.add(CounselingMapModel(4, 5, 1, "제 남친이 좀 이상...", Category.학업.title))
+        cue.add(CounselingMapModel(5, 3, 1, "제 남친이 좀 이상...", Category.학업.title))
         binding.customCounselingMap.setCueList(cue)
+        counselingAdapter.replaceAll(cue.map {
+            CounselingItem(
+                category = Category.getFromTitle(it.category)!!,
+                title = it.title,
+                description = it.description,
+                date = it.date,
+                answer = it.answer
+            )
+        })
 
         mainViewModel.mainListView.observe(this, Observer {
             val link = when (mainViewModel.mainListView.value) {
@@ -53,7 +63,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             }
             replaceFragment(WebViewFragment.newInstance(link))
         })
-
         mainViewModel.reset.observe(this, Observer {
             binding.customCounselingMap.setCueList(cue)
             lifecycleScope.launch {
@@ -62,8 +71,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         })
     }
 
-    private val counselingList = "https://www.cowcat.live/concern/edit"
-    private val counselingDetail = "https://www.cowcat.live/concern/edit"
+
+    private fun initRecyclerView() {
+        binding.rvMainCounseling.adapter = counselingAdapter
+    }
+
     private fun replaceFragment(fragment: BaseFragment<*>) {
         supportFragmentManager.beginTransaction().apply {
             add(R.id.layout_frame_main, fragment)

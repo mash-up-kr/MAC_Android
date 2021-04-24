@@ -5,7 +5,6 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.coroutineScope
@@ -40,7 +39,7 @@ class CounselingMapCustom : View {
 
     private var cue: List<CounselingMapDrawModel>? = null
 
-    private val offset: Int = 120
+    private val offset: Int = 150
     private var rOffset: Int = 120
 
 
@@ -63,13 +62,12 @@ class CounselingMapCustom : View {
         linePaint.isAntiAlias = true
         linePaint.color = point
         linePaint.alpha = 30
-        linePaint.strokeWidth = 2F
+        linePaint.strokeWidth = 5F
         linePaint.style = Paint.Style.STROKE
     }
 
     fun setCueList(cue: List<CounselingMapModel>) {
         this.cue = cue.map {
-            Log.e("123", "x   $it")
             CounselingMapDrawModel(
                 id = it.id,
                 r = offset + it.location * rOffset,
@@ -104,12 +102,8 @@ class CounselingMapCustom : View {
         canvas.drawCircle(width / 2f, height / 2f, radius, linePaint)
         canvas.drawCircle(width / 2f, height / 2f, radius + offset * 1.5f, linePaint)
         canvas.drawCircle(width / 2f, height / 2f, radius + offset * 3, linePaint)
-        Log.e("123", "width   $width")
-
-
 
         cue?.forEach {
-            Log.e("x", "it  $it")
             val x = getTargetX(it.degree + delayDegree, it.r)
             val y = getTargetY(it.degree + delayDegree, it.r)
 
@@ -128,7 +122,7 @@ class CounselingMapCustom : View {
             canvas.drawText(
                 it.category + " | " + it.distanceKilometer + "Km",
                 drawX - textStarMargin,
-                (drawY + (offset * 0.5f)),
+                (drawY + (offset * 0.3f)),
                 mSubTittlePaint
             )
 
@@ -144,7 +138,6 @@ class CounselingMapCustom : View {
                 )
                 draw(canvas)
             }
-            canvas.drawCircle(width / 2f, height / 2f, 20f, linePaint)
         }
     }
 

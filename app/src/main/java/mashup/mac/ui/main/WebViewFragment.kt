@@ -3,7 +3,6 @@ package mashup.mac.ui.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.webkit.JavascriptInterface
 import android.webkit.WebSettings
@@ -67,7 +66,6 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
         mWebSettings.builtInZoomControls = false; // 화면 확대 축소 허용 여부
         mWebSettings.cacheMode = WebSettings.LOAD_DEFAULT // 브라우저 캐시 허용 여부
         mWebSettings.domStorageEnabled = true // 로컬저장소 허용 여부
-        Log.e("!23", "it$webViewLink")
         webViewLink?.let {
             mWebView.loadUrl(it)
         }
