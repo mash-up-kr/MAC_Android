@@ -23,15 +23,18 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
 
 
     companion object {
-        const val KEY = "webViewType"
-        fun newInstance(data: String) = WebViewFragment().apply {
+        const val LINK = "webViewType"
+        const val QuestionId = "conselingQuestionId"
+        fun newInstance(link: String, questionId:Int) = WebViewFragment().apply {
             arguments = Bundle().apply {
-                putString(KEY, data)
+                putString(LINK, link)
+                putInt(QuestionId, questionId)
             }
         }
     }
 
-    val webViewLink by lazy { requireArguments().getString(KEY) }
+    val webViewLink by lazy { requireArguments().getString(LINK) }
+    val conselingQuestionId by lazy { requireArguments().getInt(QuestionId) }
 
     private lateinit var mWebView: WebView
     private lateinit var mWebSettings: WebSettings //웹뷰세팅
@@ -73,8 +76,12 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
         mWebView.addJavascriptInterface(object : CustomJavaScriptCallback {
             //웹에서 네이티브 메소드 호출
             @JavascriptInterface
-            override fun userAccessToken(): String? {
+            override fun userAccessToken(): String {
                 return PrefUtil.get(PrefUtil.PREF_ACCESS_TOKEN, "")
+            }
+
+            override fun conselingQuestionId(): Int {
+                return conselingQuestionId
             }
         }, "WebViewCallbackInterface")
     }
@@ -91,4 +98,5 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
  */
 interface CustomJavaScriptCallback {
     fun userAccessToken(): String?
+    fun conselingQuestionId(): Int?
 }
