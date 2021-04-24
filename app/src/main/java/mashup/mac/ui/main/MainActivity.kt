@@ -1,7 +1,6 @@
 package mashup.mac.ui.main
 
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
@@ -12,6 +11,7 @@ import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.ActivityMainBinding
 import mashup.mac.model.Category
 import mashup.mac.model.CounselingItem
+
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
@@ -35,11 +35,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         initRecyclerView()
 
         val cue = arrayListOf<CounselingMapModel>()
-        cue.add(CounselingMapModel(1, 1, 1, "MapMdoMapMo", Category.관계.title))
-        cue.add(CounselingMapModel(2, 4, 1, "제 남친이 좀 이상...", Category.음식.title))
-        cue.add(CounselingMapModel(3, 2, 1, "제 남친이 좀 이상...", Category.연애.title))
-        cue.add(CounselingMapModel(4, 5, 1, "제 남친이 좀 이상...", Category.학업.title))
-        cue.add(CounselingMapModel(5, 3, 1, "제 남친이 좀 이상...", Category.학업.title))
+        cue.add(CounselingMapModel(1, 1, 1, false, "MapMdoMapMo", Category.관계.title))
+        cue.add(CounselingMapModel(2, 4, 1, false, "제 남친이 좀 이상...", Category.음식.title))
+        cue.add(CounselingMapModel(3, 2, 1, false, "제 남친이 좀 이상...", Category.연애.title))
+        cue.add(CounselingMapModel(4, 5, 1, false, "제 남친이 좀 이상...", Category.학업.title))
+        cue.add(CounselingMapModel(5, 3, 1, false, "제 남친이 좀 이상...", Category.학업.title))
         binding.customCounselingMap.setCueList(cue)
         counselingAdapter.replaceAll(cue.map {
             CounselingItem(
@@ -51,7 +51,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             )
         })
 
-        mainViewModel.mainListView.observe(this, Observer {
+        counselingAdapter.setOnItemClickListener(object :
+            MainCounselingAdapter.OnItemClickListener {
+            override fun onClick(position: Int) {
+                replaceFragment(WebViewFragment.newInstance(counselingDetail, position))
+            }
+        })
+
+        mainViewModel.mainListView.observe(this, {
             val link = when (mainViewModel.mainListView.value) {
                 MainViewModel.CounselingWebView.LIST -> {
                     counselingList
@@ -61,9 +68,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 }
                 else -> counselingDetail
             }
-            replaceFragment(WebViewFragment.newInstance(link))
+            replaceFragment(WebViewFragment.newInstance(link, 0))
         })
-        mainViewModel.reset.observe(this, Observer {
+
+        //TODO: 지우기.. 공전코드입니다,ㅎ,,
+        mainViewModel.reset.observe(this, {
             binding.customCounselingMap.setCueList(cue)
             lifecycleScope.launch {
                 binding.customCounselingMap.cycle()

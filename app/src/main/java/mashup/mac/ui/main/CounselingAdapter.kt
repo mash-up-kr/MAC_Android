@@ -8,15 +8,22 @@ import mashup.mac.R
 import mashup.mac.databinding.ItemCounselingBinding
 import mashup.mac.model.CounselingItem
 
+
 class MainCounselingAdapter :
     RecyclerView.Adapter<MainCounselingAdapter.CounselingViewHolder>() {
 
     private val items = mutableListOf<CounselingItem>()
 
+    private var onItemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.onItemClickListener = onItemClickListener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CounselingViewHolder {
         return CounselingViewHolder(parent).apply {
             itemView.setOnClickListener {
-               //..
+                onItemClickListener?.onClick(layoutPosition)
             }
         }
     }
@@ -39,11 +46,13 @@ class MainCounselingAdapter :
         LayoutInflater.from(parent.context)
             .inflate(R.layout.item_counseling, parent, false)
     ) {
-
         private val binding: ItemCounselingBinding? = DataBindingUtil.bind(itemView)
-
         fun bind(item: CounselingItem) {
             binding?.item = item
         }
+    }
+
+    interface OnItemClickListener {
+        fun onClick(position: Int)
     }
 }

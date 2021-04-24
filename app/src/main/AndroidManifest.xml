@@ -14,8 +14,8 @@
         android:theme="@style/Theme.MysticalAnimalCounseling">
         <activity android:name=".ui.mypage.MyPageActivity" />
         <activity android:name=".ui.counseling.CounselingWriteActivity" />
-        <activity android:name=".ui.main.MainActivity"/>
-        <activity android:name=".ui.login.LoginActivity" >
+        <activity android:name=".ui.login.LoginActivity" />
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
