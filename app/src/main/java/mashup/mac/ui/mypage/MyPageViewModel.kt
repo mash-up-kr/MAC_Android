@@ -132,9 +132,9 @@ class MyPageViewModel(
             id = counseling.id?:0,
             category = category,
             title = counseling.title ?: "",
-            description = counseling.content ?: "",
+            content = counseling.content ?: "",
             date = counseling.createdAt ?: "",
-            answer = counseling.commentCount ?: 0
+            commentCount = counseling.commentCount ?: 0
         )
     }
 
@@ -180,8 +180,8 @@ class MyPageViewModel(
                     id = 0,
                     category = Category.getRandomCategory(),
                     title = "소양이팀 너무 좋아요!",
-                    description = "뭔가 긴 설명이 필요한데 뭐라고 적을까요? 그냥 우리팀 너무너무 멋지다! 홍대 너무너무 신난다! 날씨 너무너무 좋다! 으아 다 좋다! 라이언 귀엽다!",
-                    answer = 100
+                    content = "뭔가 긴 설명이 필요한데 뭐라고 적을까요? 그냥 우리팀 너무너무 멋지다! 홍대 너무너무 신난다! 날씨 너무너무 좋다! 으아 다 좋다! 라이언 귀엽다!",
+                    commentCount = 100
                 )
             )
         }

@@ -4,28 +4,26 @@ package mashup.mac.ui.main
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import android.webkit.JavascriptInterface
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.lifecycle.ViewModelProvider
+import mashup.data.Injection
 import mashup.data.pref.PrefUtil
-import mashup.data.sample.SampleInjection
 import mashup.mac.R
 import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.FragmentWebViewBinding
+import mashup.mac.util.log.Dlog
 
 
 class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_web_view) {
 
-
     override var logTag = "WebViewFragment"
-
 
     companion object {
         const val LINK = "webViewType"
         const val QuestionId = "conselingQuestionId"
-        fun newInstance(link: String, questionId:Int) = WebViewFragment().apply {
+        fun newInstance(link: String, questionId: Int) = WebViewFragment().apply {
             arguments = Bundle().apply {
                 putString(LINK, link)
                 putInt(QuestionId, questionId)
@@ -33,8 +31,8 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
         }
     }
 
-    val webViewLink by lazy { requireArguments().getString(LINK) }
-    val conselingQuestionId by lazy { requireArguments().getInt(QuestionId) }
+    private val webViewLink by lazy { requireArguments().getString(LINK) }
+    private val conselingQuestionId by lazy { requireArguments().getInt(QuestionId) }
 
     private lateinit var mWebView: WebView
     private lateinit var mWebSettings: WebSettings //웹뷰세팅
@@ -42,11 +40,10 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
     private val mainViewModel by lazy {
         ViewModelProvider(
             viewModelStore, MainViewModelFactory(
-                SampleInjection.provideRepository()
+                Injection.provideCounselingRepository()
             )
         ).get(MainViewModel::class.java)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -70,33 +67,12 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
         mWebSettings.cacheMode = WebSettings.LOAD_DEFAULT // 브라우저 캐시 허용 여부
         mWebSettings.domStorageEnabled = true // 로컬저장소 허용 여부
         webViewLink?.let {
-            mWebView.loadUrl(it)
+            val jwt = (PrefUtil.get(PrefUtil.PREF_ACCESS_TOKEN, "").replace("Bearer ", ""))
+            val url = "$it?jwt=" + jwt +
+                    if (conselingQuestionId != -1) "&questionId=$conselingQuestionId" else ""
+            Dlog.d(url)
+            mWebView.loadUrl(url)
         }
-
-        mWebView.addJavascriptInterface(object : CustomJavaScriptCallback {
-            //웹에서 네이티브 메소드 호출
-            @JavascriptInterface
-            override fun userAccessToken(): String {
-                return PrefUtil.get(PrefUtil.PREF_ACCESS_TOKEN, "")
-            }
-
-            override fun conselingQuestionId(): Int {
-                return conselingQuestionId
-            }
-        }, "WebViewCallbackInterface")
     }
 }
 
-/**
- *     <meta name="viewport" content="width=device-width, user-scalable=no">
- *      <script language="JavaScript">
- *      function userAccessToken
- *     () {
- *     alert(WebViewCallbackInterface.userAccessToken
- *    (1, 2));
- *     }
- */
-interface CustomJavaScriptCallback {
-    fun userAccessToken(): String?
-    fun conselingQuestionId(): Int?
-}

@@ -8,22 +8,18 @@ import mashup.mac.R
 import mashup.mac.databinding.ItemCounselingBinding
 import mashup.mac.model.CounselingItem
 
-
 class MainCounselingAdapter :
     RecyclerView.Adapter<MainCounselingAdapter.CounselingViewHolder>() {
 
     private val items = mutableListOf<CounselingItem>()
+    private var itemPosition: Int = -1
 
     private var onItemClickListener: OnItemClickListener? = null
-
-    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
-        this.onItemClickListener = onItemClickListener
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CounselingViewHolder {
         return CounselingViewHolder(parent).apply {
             itemView.setOnClickListener {
-                onItemClickListener?.onClick(layoutPosition)
+                onItemClickListener?.onClick(items[layoutPosition].id)
             }
         }
     }
@@ -33,12 +29,6 @@ class MainCounselingAdapter :
     }
 
     override fun getItemCount() = items.size
-
-    fun replaceAll(items: List<CounselingItem>) {
-        this.items.clear()
-        this.items.addAll(items)
-        notifyDataSetChanged()
-    }
 
     class CounselingViewHolder(
         parent: ViewGroup
@@ -52,7 +42,25 @@ class MainCounselingAdapter :
         }
     }
 
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.onItemClickListener = onItemClickListener
+    }
+
+    fun replaceAll(items: List<CounselingItem>) {
+        this.items.clear()
+        this.items.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun setScrollPositionItem(itemPosition: Int) {
+        if (this.itemPosition != itemPosition) {
+            this.itemPosition = itemPosition
+            onItemClickListener?.onScrollItem(items[itemPosition].id)
+        }
+    }
+
     interface OnItemClickListener {
         fun onClick(position: Int)
+        fun onScrollItem(id: Int)
     }
 }

@@ -1,13 +1,17 @@
 package mashup.mac.ui.main
 
+import mashup.data.model.EmotionModel
+import mashup.mac.model.Category
+
 data class CounselingMapModel(
     val id: Int = 1,
-    val location: Int = 1,
-    val answer: Int = 100,
-    val select: Boolean = false,
     val title: String = "제 남친이 좀 이상...",
-    val description: String = "제 남친이 좀 이상...",
-    val date: String = "2021.03.01",
-    val category: String = "연애",
-    val distanzceKilometer: Int = 5
+    val content: String = "제 남친이 좀 이상...",
+    val category: Category,
+    val commentCount: Int = 0,
+    val date: String = "2020.02.20 오전 08:00",
+    val emotion: EmotionModel?,
+    val userId: Int?,
+    val select: Boolean = false,
+    val distance: Int = 5
 )
