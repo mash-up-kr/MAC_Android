@@ -87,7 +87,7 @@
             android:background="@drawable/rect_green_rad_30"
             android:backgroundTint="@color/point"
             android:padding="6dp"
-            android:src="@drawable/ic_reset"
+            android:src="@drawable/ic_location"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
