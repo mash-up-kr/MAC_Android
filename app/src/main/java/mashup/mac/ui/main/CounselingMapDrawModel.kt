@@ -2,9 +2,11 @@ package mashup.mac.ui.main
 
 data class CounselingMapDrawModel(
     val id: Int = 1,
+    var x: Int = 100,
+    var y: Int = 100,
     val r: Int = 100,
     val degree: Int = 10,
-    val select: Boolean = false,
+    var select: Boolean = true,
     val category: String = "연애",
-    val distanceKilometer: Int = 5
+    val distance: Int = 5
 )

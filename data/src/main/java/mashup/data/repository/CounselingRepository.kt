@@ -1,5 +1,6 @@
 package mashup.data.repository
 
+import android.util.Log
 import io.reactivex.rxjava3.core.Single
 import mashup.data.api.CounselingApi
 import mashup.data.model.CategoryModel
@@ -28,5 +29,24 @@ class CounselingRepository(
         )
 
         return counselingApi.postCounseling(request)
+    }
+
+    fun getCounselingList(
+        minKilometer: Double,
+        maxKilometer: Double,
+        category: String? = null,
+        emotion: String? = null
+    ): Single<BaseResponse<List<Counseling>>> {
+        return counselingApi.getCounselings(minKilometer, maxKilometer, category, emotion)
+
+//        try {
+//            val minKilometer = minKilometer.toString()
+//            val maxKilometer = maxKilometer.toString()
+//
+//        } catch (e: Exception) {
+//            Log.e("Exception ", e.message.toString())
+//            return counselingApi.getCounselings(minKilometer.toString(),
+//                maxKilometer.toString(), category, emotion)
+//        }
     }
 }

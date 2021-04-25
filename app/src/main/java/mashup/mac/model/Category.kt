@@ -20,6 +20,8 @@ enum class Category(
 
     companion object {
 
+        fun getFromTitleCategory(title: String?): Category = getAllCategories().find { it.title == title } ?: Category.관계
+
         fun getFromTitle(title: String?) = getAllCategories().find { it.title == title }
 
         fun getAllCategories() = values().toList()

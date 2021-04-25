@@ -1,6 +1,5 @@
 package mashup.data.model
 
-
 import com.google.gson.annotations.SerializedName
 
 data class Counseling(
@@ -12,16 +11,16 @@ data class Counseling(
     val content: String?,
     @SerializedName("commentCount")
     val commentCount: Int?,
+    @SerializedName("emotion")
+    val emotion: EmotionModel?,
     @SerializedName("createdAt")
     val createdAt: String?,
     @SerializedName("category")
     val category: CategoryModel?,
-    @SerializedName("emotion")
-    val emotion: EmotionModel?,
     @SerializedName("userId")
     val userId: Int?,
     @SerializedName("location")
     val location: Location?,
     @SerializedName("distance")
-    val distance: Int?
+    val distance: Double?
 )

@@ -5,10 +5,9 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import mashup.mac.R
 import mashup.mac.model.Category
 import java.util.*
@@ -27,21 +26,23 @@ class CounselingMapCustom : View {
         private const val TAG = "CounselingMapCustom"
     }
 
-    private val mTitlePaint = Paint()
-    private val mSubTittlePaint = Paint()
-    private val paint = Paint()
+    private val contentTextPaint = Paint()
+    private val itemBackground = Paint()
+    private val itemSelectBackground = Paint()
     private val linePaint = Paint()
     private val rect = RectF()
 
-    var titleSize = 40F
-    var subtileSize = 35F
+    var textSize = 35F
     var textStarMargin = 10F
 
     private var cue: List<CounselingMapDrawModel>? = null
 
-    private val offset: Int = 150
-    private var rOffset: Int = 120
+    private var first: Boolean = true
+    private var randomDegree: Int = 0
+    private var offset: Int = 150
+    private var itemOffest: Int = 120
 
+    private var onMapItemClickListener: OnMapItemClickListener? = null
 
     init {
         val textCounselingMsg: Int = ContextCompat.getColor(context, R.color.textCounselingMsg)
@@ -49,15 +50,12 @@ class CounselingMapCustom : View {
         val point: Int = ContextCompat.getColor(context, R.color.point)
 
 
-        mTitlePaint.color = textCounselingMsg
-        mTitlePaint.textSize = titleSize
-        mTitlePaint.textAlign = Paint.Align.LEFT
+        contentTextPaint.color = white
+        contentTextPaint.textSize = textSize
+        contentTextPaint.textAlign = Paint.Align.LEFT
 
-        mSubTittlePaint.color = white
-        mSubTittlePaint.textSize = subtileSize
-        mSubTittlePaint.textAlign = Paint.Align.LEFT
-
-        paint.color = point
+        itemBackground.color = point
+        itemSelectBackground.color = white
 
         linePaint.isAntiAlias = true
         linePaint.color = point
@@ -66,15 +64,42 @@ class CounselingMapCustom : View {
         linePaint.style = Paint.Style.STROKE
     }
 
+    fun setOnMapItemClickListener(onMapItemClickListener: OnMapItemClickListener) {
+        this.onMapItemClickListener = onMapItemClickListener
+    }
+
+    fun setMapWidth(width: Int) {
+        if (width < 1200) {
+            contentTextPaint.textSize = 30f
+            offset = width / 10
+            itemOffest = width / 16
+        } else {
+            this.itemOffest = width / 15
+        }
+    }
+
     fun setCueList(cue: List<CounselingMapModel>) {
+        val angle = 360/ cue.size
         this.cue = cue.map {
+            val r = offset * 3 + it.distance * itemOffest
+            val degree = getDegree(angle)
             CounselingMapDrawModel(
                 id = it.id,
-                r = offset + it.location * rOffset,
-                degree = getDegree(it.id),
-                category = it.category,
-                distanceKilometer = it.location
+                select = it.select,
+                x = getTargetX(degree, r),
+                y = getTargetY(degree, r),
+                r = r,
+                degree = degree,
+                category = it.category.name,
+                distance = it.distance
             )
+        }
+        invalidate()
+    }
+
+    fun selectItemId(id: Int) {
+        cue?.forEach {
+            it.select = it.id == id
         }
         invalidate()
     }
@@ -83,12 +108,44 @@ class CounselingMapCustom : View {
     private fun rand(from: Int, to: Int): Int {
         return random.nextInt(to - from) + from
     }
-    private fun getDegree(id: Int): Int {
-        return rand(0, 60) + 72 * (id)
+
+    private fun getDegree(angle:Int): Int {
+        randomDegree++
+        return rand(0, angle) + angle * (randomDegree)
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        val touchedX = event.x - width / 2 + offset / 2
+        val touchedY = event.y - height / 2 - offset / 2
+        val imgMargin = 5
+        return when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                true
+            }
+            MotionEvent.ACTION_MOVE -> {
+                true
+            }
+            MotionEvent.ACTION_UP -> {
+                cue?.forEachIndexed { index, it ->
+                    if ((it.x + imgMargin) < touchedX &&
+                        (it.x + offset - imgMargin) > touchedX &&
+                        (it.y - offset + imgMargin) < touchedY &&
+                        (it.y + (offset)) > touchedY
+                    ) {
+                        selectItemId(it.id)
+                        onMapItemClickListener?.onClick(index)
+                    }
+                }
+                false
+            }
+            else -> {
+                false
+            }
+        }
     }
 
     override fun onMeasure(widthwidthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val width = (widthwidthMeasureSpec*1.5).toInt()
+        val width = if (first) (widthwidthMeasureSpec * 1.5).toInt() else widthwidthMeasureSpec
         super.onMeasure(width, heightMeasureSpec)
     }
 
@@ -97,6 +154,7 @@ class CounselingMapCustom : View {
         drawSubtitle(canvas)
     }
 
+
     private fun drawSubtitle(canvas: Canvas) {
         val radius = offset * 3.toFloat()
         canvas.drawCircle(width / 2f, height / 2f, radius, linePaint)
@@ -104,36 +162,36 @@ class CounselingMapCustom : View {
         canvas.drawCircle(width / 2f, height / 2f, radius + offset * 3, linePaint)
 
         cue?.forEach {
-            val x = getTargetX(it.degree + delayDegree, it.r)
-            val y = getTargetY(it.degree + delayDegree, it.r)
-
-            val drawX = x + width / 2 - offset / 2
-            val drawY = y + height / 2 + offset / 2
+            val drawX = it.x + width / 2 - offset / 2
+            val drawY = it.y + height / 2 + offset / 2
             val itemStartX = (drawX - textStarMargin.toInt())
-            rect.set(
-                itemStartX.toFloat() + textStarMargin,
-                drawY.toFloat() - offset,
-                itemStartX.toFloat() + offset + textStarMargin,
-                (drawY).toFloat()
-            )
 
-            canvas.drawArc(rect, 0F, 360F, true, paint)
+            val select = if (it.select) 8 else 0
+            rect.set(
+                itemStartX.toFloat() + textStarMargin - select,
+                drawY.toFloat() - offset - select,
+                itemStartX.toFloat() + offset + textStarMargin + select,
+                (drawY).toFloat() + select
+            )
+            if (it.select)
+                canvas.drawArc(rect, 0F, 360F, true, itemSelectBackground)
+            else
+                canvas.drawArc(rect, 0F, 360F, true, itemBackground)
 
             canvas.drawText(
-                it.category + " | " + it.distanceKilometer + "Km",
+                it.category + " | " + it.distance + "Km",
                 drawX - textStarMargin,
-                (drawY + (offset * 0.3f)),
-                mSubTittlePaint
+                (drawY + (offset * 0.5f)),
+                contentTextPaint
             )
 
-            val img = Category.findCircleImage(it.category) ?: R.drawable.circle_cat
+            val img = Category.findCircleImage(it.category) ?: R.drawable.circle_monkey
             val imgMargin = 5
             ContextCompat.getDrawable(context, img)?.run {
-                val imageX = (drawX - textStarMargin).toInt()
                 setBounds(
-                    (imageX + textStarMargin + imgMargin).toInt(),
+                    drawX + imgMargin,
                     drawY - offset + imgMargin,
-                    (imageX + textStarMargin + offset - imgMargin).toInt(),
+                    drawX + offset - imgMargin,
                     drawY - imgMargin
                 )
                 draw(canvas)
@@ -141,18 +199,22 @@ class CounselingMapCustom : View {
         }
     }
 
-    var delayDegree = 0
-    suspend fun cycle() {
-        for (i in 0..1000) {
-            coroutineScope {
-                delay(50)
-                delayDegree++
-            }
-            this.post {
-                invalidate()
-            }
-        }
-    }
+//    var delayDegree = 0
+//    suspend fun cycle() {
+//        for (i in 0..1000) {
+//            coroutineScope {
+//                delay(50)
+//                delayDegree++
+//                cue?.forEach {
+//                    it.x = getTargetX(it.degree + delayDegree, it.r)
+//                    it.y = getTargetY(it.degree + delayDegree, it.r)
+//                }
+//            }
+//            this.post {
+//                invalidate()
+//            }
+//        }
+//    }
 
     private fun getTargetX(degree: Int, r: Int): Int {
         return (cos(Math.toRadians(degree.toDouble())) * r).toInt()
@@ -162,4 +224,7 @@ class CounselingMapCustom : View {
         return (sin(Math.toRadians(degree.toDouble())) * r).toInt()
     }
 
+    interface OnMapItemClickListener {
+        fun onClick(position: Int)
+    }
 }

@@ -2,15 +2,15 @@ package mashup.mac.ui.main
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
-import mashup.data.sample.SampleInjection
+import androidx.recyclerview.widget.RecyclerView
+import mashup.data.Injection
 import mashup.mac.R
 import mashup.mac.base.BaseActivity
 import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.ActivityMainBinding
 import mashup.mac.model.Category
 import mashup.mac.model.CounselingItem
+import mashup.mac.util.log.Dlog
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -24,7 +24,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val mainViewModel by lazy {
         ViewModelProvider(
             viewModelStore, MainViewModelFactory(
-                SampleInjection.provideRepository()
+                Injection.provideCounselingRepository()
             )
         ).get(MainViewModel::class.java)
     }
@@ -33,29 +33,54 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         binding.mainVm = mainViewModel
         initRecyclerView()
+        mainViewModel.loadData()
 
-        val cue = arrayListOf<CounselingMapModel>()
-        cue.add(CounselingMapModel(1, 1, 1, false, "MapMdoMapMo", Category.관계.title))
-        cue.add(CounselingMapModel(2, 4, 1, false, "제 남친이 좀 이상...", Category.음식.title))
-        cue.add(CounselingMapModel(3, 2, 1, false, "제 남친이 좀 이상...", Category.연애.title))
-        cue.add(CounselingMapModel(4, 5, 1, false, "제 남친이 좀 이상...", Category.학업.title))
-        cue.add(CounselingMapModel(5, 3, 1, false, "제 남친이 좀 이상...", Category.학업.title))
-        binding.customCounselingMap.setCueList(cue)
-        counselingAdapter.replaceAll(cue.map {
-            CounselingItem(
-                category = Category.getFromTitle(it.category)!!,
-                title = it.title,
-                description = it.description,
-                date = it.date,
-                answer = it.answer
-            )
-        })
 
         counselingAdapter.setOnItemClickListener(object :
             MainCounselingAdapter.OnItemClickListener {
             override fun onClick(position: Int) {
                 replaceFragment(WebViewFragment.newInstance(counselingDetail, position))
             }
+
+            override fun onScrollItem(id: Int) {
+                binding.customCounselingMap.selectItemId(id)
+            }
+        })
+
+        binding.customCounselingMap.setOnMapItemClickListener(object :
+            CounselingMapCustom.OnMapItemClickListener {
+            override fun onClick(id: Int) {
+                binding.rvMainCounseling.scrollToPosition(id)
+            }
+        })
+
+        binding.rvMainCounseling.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val itemCount =
+                    (recyclerView.computeHorizontalScrollOffset() + recyclerView.width / 2) / recyclerView.width
+                counselingAdapter.setScrollPositionItem(itemCount)
+            }
+        })
+
+        mainViewModel.mapItems.observe(this, { _counselingMapList ->
+            val width = binding.svMainMap.width
+            binding.customCounselingMap.setMapWidth(width)
+            //TODO:: distance가 0~5까지의 범위로 되어있기 때문에 입력값을 min max 로 나눠 관리 해야
+            binding.customCounselingMap.setCueList(_counselingMapList)
+            binding.svMainMap.scrollX = (width / 4.5).toInt()
+            Dlog.d(_counselingMapList.toString())
+            val counselingMapList = _counselingMapList.map {
+                CounselingItem(
+                    id = it.id,
+                    category = Category.getFromTitle(it.category.name)!!,
+                    title = it.title,
+                    content = it.content,
+                    date = it.date,
+                    commentCount = it.commentCount
+                )
+            }
+            counselingAdapter.replaceAll(counselingMapList)
         })
 
         mainViewModel.mainListView.observe(this, {
@@ -68,15 +93,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 }
                 else -> counselingDetail
             }
-            replaceFragment(WebViewFragment.newInstance(link, 0))
+            replaceFragment(WebViewFragment.newInstance(link, -1))
         })
 
-        //TODO: 지우기.. 공전코드입니다,ㅎ,,
         mainViewModel.reset.observe(this, {
-            binding.customCounselingMap.setCueList(cue)
-            lifecycleScope.launch {
-                binding.customCounselingMap.cycle()
-            }
+            mainViewModel.loadData()
+        //TODO: 지우기.. 공전코드입니다,ㅎ,,
+//            lifecycleScope.launch {
+//                binding.customCounselingMap.cycle()
+//            }
         })
     }
 

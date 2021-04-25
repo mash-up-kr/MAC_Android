@@ -88,7 +88,7 @@
             app:layout_constraintBottom_toBottomOf="@id/tv_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_title"
-            bind:setHtmlText="@{@string/answer_count_format(item.answer)}"
+            bind:setHtmlText="@{@string/answer_count_format(item.commentCount)}"
             tools:text="답변 311" />
 
         <TextView
@@ -101,7 +101,7 @@
             android:includeFontPadding="false"
             android:lineSpacingExtra="2dp"
             android:maxLines="2"
-            android:text="@{item.description}"
+            android:text="@{item.content}"
             android:textColor="@color/gray11"
             android:textSize="14dp"
             app:layout_constraintBottom_toTopOf="@+id/tv_date"
