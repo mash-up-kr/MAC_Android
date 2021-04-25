@@ -1,4 +1,4 @@
-package mashup.mac.ui.main
+package mashup.mac.ui.main.custom
 
 data class CounselingMapDrawModel(
     val id: Int = 1,

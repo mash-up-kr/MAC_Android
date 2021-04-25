@@ -65,7 +65,7 @@
                     app:layout_constraintStart_toStartOf="@id/iv_profile_img"
                     app:layout_constraintTop_toBottomOf="@id/main_name" />
 
-                <mashup.mac.ui.main.CounselingMapCustom
+                <mashup.mac.ui.main.custom.CounselingMapCustom
                     android:id="@+id/custom_counseling_map"
                     android:layout_width="400dp"
                     android:layout_height="match_parent"

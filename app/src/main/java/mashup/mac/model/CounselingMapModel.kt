@@ -1,7 +1,6 @@
-package mashup.mac.ui.main
+package mashup.mac.model
 
 import mashup.data.model.EmotionModel
-import mashup.mac.model.Category
 
 data class CounselingMapModel(
     val id: Int = 1,
