@@ -21,5 +21,7 @@ data class Counseling(
     @SerializedName("userId")
     val userId: Int?,
     @SerializedName("location")
-    val location: Location?
+    val location: Location?,
+    @SerializedName("distance")
+    val distance: Int?
 )
