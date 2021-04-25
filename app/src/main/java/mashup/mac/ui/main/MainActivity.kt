@@ -10,6 +10,7 @@ import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.ActivityMainBinding
 import mashup.mac.model.Category
 import mashup.mac.model.CounselingItem
+import mashup.mac.ui.main.custom.CounselingMapCustom
 import mashup.mac.util.log.Dlog
 
 

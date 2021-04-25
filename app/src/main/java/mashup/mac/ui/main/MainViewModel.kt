@@ -10,6 +10,7 @@ import mashup.mac.base.BaseViewModel
 import mashup.mac.ext.EventMutableLiveData
 import mashup.mac.ext.postEvent
 import mashup.mac.model.Category
+import mashup.mac.model.CounselingMapModel
 import mashup.mac.ui.counseling.CounselingWriteActivity
 import mashup.mac.ui.mypage.MyPageActivity
 import mashup.mac.util.log.Dlog

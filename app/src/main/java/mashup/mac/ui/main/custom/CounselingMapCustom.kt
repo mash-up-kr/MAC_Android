@@ -1,4 +1,4 @@
-package mashup.mac.ui.main
+package mashup.mac.ui.main.custom
 
 import android.content.Context
 import android.graphics.Canvas
@@ -10,6 +10,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import mashup.mac.R
 import mashup.mac.model.Category
+import mashup.mac.model.CounselingMapModel
 import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
