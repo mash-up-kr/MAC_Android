@@ -100,9 +100,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
             .subscribe({
                 Dlog.d(it.toString())
                 if (it.isSuccess()) {
-                    Log.e("data  ", "${it.data}")
-                    Log.e("accessToken  ", "${it.data.token?.accessToken}")
-                    Log.e("refreshToken  ", "${it.data.token?.refreshToken}")
                     val accessToken = it.data.token?.accessToken
                     if (accessToken == null) {
                         showError()
