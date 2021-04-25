@@ -1,6 +1,7 @@
 package mashup.mac.model
 
 data class CounselingItem(
+    val id: Int,
     val category: Category,
     val title: String = "",
     val description: String = "",
