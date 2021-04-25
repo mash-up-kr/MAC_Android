@@ -21,10 +21,11 @@ class MainViewModel(
 
     private val _mapItems = MutableLiveData<List<CounselingMapModel>>()
     val mapItems: LiveData<List<CounselingMapModel>> = _mapItems
+    private val _mainListView = MutableLiveData<CounselingWebView>()
+    val mainListView: LiveData<CounselingWebView> = _mainListView
 
     private val eventShowToast = EventMutableLiveData<String>()
 
-    val mainListView = MutableLiveData<CounselingWebView>()
     val reset = MutableLiveData<Unit>()
 
     enum class CounselingWebView { DETAIL, LIST }
@@ -40,7 +41,7 @@ class MainViewModel(
     }
 
     fun onClickList() {
-        mainListView.postValue(CounselingWebView.LIST)
+        _mainListView.postValue(CounselingWebView.LIST)
     }
 
     fun onClickReset() {
