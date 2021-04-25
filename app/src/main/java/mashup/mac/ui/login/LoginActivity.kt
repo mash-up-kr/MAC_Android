@@ -23,7 +23,7 @@ import mashup.mac.util.log.Dlog
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
 
     override var logTag = "LoginActivity"
-    val KAKAO_TAG = "kakaoTag"
+    private val KAKAO_TAG = "kakaoTag"
     private val viewModel by lazy {
         ViewModelProvider(
             this, LoginViewModelFactory(
@@ -41,7 +41,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         binding.btnLogin.setOnClickListener {
 
             //TODO [test] 하드코딩을 통해 카카오 토큰을 직접 일력한 로그인
+//            testLogin(token.accessToken)
 //            return@setOnClickListener
+
 
             //공통 Call back
             val TAG = "카카오"
@@ -98,6 +100,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
             .subscribe({
                 Dlog.d(it.toString())
                 if (it.isSuccess()) {
+                    Log.e("data  ", "${it.data}")
+                    Log.e("accessToken  ", "${it.data.token?.accessToken}")
+                    Log.e("refreshToken  ", "${it.data.token?.refreshToken}")
                     val accessToken = it.data.token?.accessToken
                     if (accessToken == null) {
                         showError()
