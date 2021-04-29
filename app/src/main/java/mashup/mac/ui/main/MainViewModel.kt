@@ -49,7 +49,7 @@ class MainViewModel(
     }
 
     fun loadData() {
-        counselingRepository.getCounselingList(0.1, 10.0)
+        counselingRepository.getCounselingList(0.0, 99999.0)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (it.isSuccess()) {
