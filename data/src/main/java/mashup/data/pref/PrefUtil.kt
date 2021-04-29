@@ -15,6 +15,12 @@ object PrefUtil {
     const val PREF_ACCESS_TOKEN = "access_token"
     const val PREF_REFRESH_TOKEN = "refresh_token"
 
+    /**
+     * String 값으로 저장합니다.
+     */
+    const val PREF_USER_LATITUDE = "pref_user_latitude"
+    const val PREF_USER_LONGITUDE = "pref_user_longitude"
+
     fun init(context: Context) {
         pref = context.applicationContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     }

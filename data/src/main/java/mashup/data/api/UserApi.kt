@@ -9,8 +9,8 @@ import mashup.data.request.SignupRequest
 import mashup.data.response.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.PUT
 
 interface UserApi {
 
@@ -27,7 +27,7 @@ interface UserApi {
     @GET("users/me")
     fun getUser(): Single<BaseResponse<Signup>>
 
-    @PUT("users/me")
+    @PATCH("users")
     fun putLocation(
         @Body request: LocationRequest
     ): Single<BaseResponse<Signup>>

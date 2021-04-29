@@ -1,6 +1,8 @@
 package mashup.mac.ui.main
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import mashup.data.Injection
@@ -8,6 +10,8 @@ import mashup.mac.R
 import mashup.mac.base.BaseActivity
 import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.ActivityMainBinding
+import mashup.mac.ext.observeEvent
+import mashup.mac.ext.toast
 import mashup.mac.model.Category
 import mashup.mac.model.CounselingItem
 import mashup.mac.ui.main.custom.CounselingMapCustom
@@ -30,12 +34,21 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         ).get(MainViewModel::class.java)
     }
 
+    private val locationViewModel by lazy {
+        ViewModelProvider(viewModelStore, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return LocationViewModel(this@MainActivity, Injection.provideUserRepository()) as T
+            }
+        }).get(LocationViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.mainVm = mainViewModel
+        binding.locationVm = locationViewModel
         initRecyclerView()
         mainViewModel.loadData()
-
+        locationViewModel.checkLocationFirstTime()
 
         counselingAdapter.setOnItemClickListener(object :
             MainCounselingAdapter.OnItemClickListener {
@@ -99,13 +112,26 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         mainViewModel.reset.observe(this, {
             mainViewModel.loadData()
-        //TODO: 지우기.. 공전코드입니다,ㅎ,,
+            //TODO: 지우기.. 공전코드입니다,ㅎ,,
 //            lifecycleScope.launch {
 //                binding.customCounselingMap.cycle()
 //            }
         })
+
+        locationViewModel.eventShowToast.observeEvent(this, {
+            toast(it)
+        })
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        locationViewModel.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        locationViewModel.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 
     private fun initRecyclerView() {
         binding.rvMainCounseling.adapter = counselingAdapter

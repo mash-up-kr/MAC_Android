@@ -8,6 +8,10 @@
         <variable
             name="mainVm"
             type="mashup.mac.ui.main.MainViewModel" />
+
+        <variable
+            name="locationVm"
+            type="mashup.mac.ui.main.LocationViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,9 +100,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:text="서울시 송파구 "
-            android:clickable="true"
-            android:onClick="@{() -> mainVm.onClickMyPage(context)}"
+            android:onClick="@{() -> locationVm.checkLocationPermission()}"
+            android:text="@{locationVm.locationName}"
+            tools:text="서울시 송파구"
             android:textStyle="bold"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@id/iv_profile_img_mini"
