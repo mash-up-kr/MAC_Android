@@ -11,12 +11,12 @@ enum class Category(
     @DrawableRes val faceRes: Int,
     @DrawableRes val circleRes: Int
 ) {
-    음식("음식", "돼지", R.drawable.body_pig, R.drawable.face_pig, R.drawable.circle_pig),
-    관계("관계", "햄스터", R.drawable.body_hamster, R.drawable.face_hamster, R.drawable.circle_hamster),
-    직업("직업", "소", R.drawable.body_cow, R.drawable.face_cow, R.drawable.circle_cow),
-    기타("기타", "코끼리", R.drawable.body_etc, R.drawable.face_etc, R.drawable.circle_etc),
-    연애("연애", "고양이", R.drawable.body_cat, R.drawable.face_cat, R.drawable.circle_cat),
-    학업("학업", "원숭이", R.drawable.body_monkey, R.drawable.face_monkey, R.drawable.circle_monkey);
+    음식("음식", "뭐든 잘 먹는 돼지야!", R.drawable.body_pig, R.drawable.face_pig, R.drawable.circle_pig),
+    관계("관계", "함께 어울리는 햄스터야!", R.drawable.body_hamster, R.drawable.face_hamster, R.drawable.circle_hamster),
+    직업("직업", "열심히 사는 소야!", R.drawable.body_cow, R.drawable.face_cow, R.drawable.circle_cow),
+    기타("기타", "네가 좋아하는 고민 많은 동물이야!", R.drawable.body_etc, R.drawable.face_etc, R.drawable.circle_etc),
+    연애("연애", "사랑에 빠진 고양이야!", R.drawable.body_cat, R.drawable.face_cat, R.drawable.circle_cat),
+    학업("학업", "밤새 공부하는 원숭이", R.drawable.body_monkey, R.drawable.face_monkey, R.drawable.circle_monkey);
 
     companion object {
 
@@ -32,6 +32,11 @@ enum class Category(
             return allCategories[index]
         }
 
+        fun findAnimalName(title:String): String? {
+            return getAllCategories().find {
+                it.title == title
+            }?.let { it.animalName }
+        }
         fun findCircleImage(title: String): Int? {
             return getAllCategories().find {
                 it.title == title

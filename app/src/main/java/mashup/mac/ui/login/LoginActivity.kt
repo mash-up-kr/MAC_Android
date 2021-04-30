@@ -12,7 +12,6 @@ import mashup.data.api.AuthApi
 import mashup.data.api.UserApi
 import mashup.data.pref.PrefUtil
 import mashup.data.request.LoginRequest
-import mashup.data.sample.SampleInjection
 import mashup.mac.R
 import mashup.mac.base.BaseActivity
 import mashup.mac.base.BaseFragment
@@ -20,7 +19,6 @@ import mashup.mac.databinding.ActivityLoginBinding
 import mashup.mac.ext.toast
 import mashup.mac.ui.main.MainActivity
 import mashup.mac.util.log.Dlog
-import java.lang.Exception
 
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
@@ -29,8 +27,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     private val KAKAO_TAG = "kakaoTag"
     private val viewModel by lazy {
         ViewModelProvider(
-            this, LoginViewModelFactory(
-                SampleInjection.provideRepository()
+            viewModelStore, LoginViewModelFactory(
+                ApiProvider.provideApiWithoutHeader(UserApi::class.java)
             )
         ).get(LoginViewModel::class.java)
     }
@@ -38,29 +36,21 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.loginVm = viewModel
-//        viewModel.onClickLogin.observe(this, Observer {
-//            replaceFragment(SignUpFragment.newInstance())
-//        })
-
         val userApi = ApiProvider.provideApiWithoutHeader(UserApi::class.java)
-        userApi.getUser()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
+        replaceFragment(SignUpFragment.newInstance())
+//        userApi.getUser()
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe({
+//                if (it.code == 1){
+//                    goToMainActivity()
+//                }
+//            }) {
+//                Dlog.e(it.message)
+//            }
 
-                if (it.code == 1){
-
-                    goToMainActivity()
-                }
-            }) {
-                Dlog.e(it.message)
-            }
 
         binding.btnLogin.setOnClickListener {
 
-            //TODO [test] 하드코딩을 통해 카카오 토큰을 직접 일력한 로그인
-//            testLogin(token.accessToken)
-//            return@setOnClickListener
-            //공통 Call back
             val TAG = "카카오"
             // 로그인 공통 callback 구성
             val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -106,7 +96,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         //kakao sns token
 //        val token = "7c9f40UfXrNNXp2mgR9vHQRYw-2HokZGI7QZRQo9cpgAAAF5ANmSbw"
         val snsToken = "Bearer $token"
-
         authApi.postLogin(
             snsToken = snsToken,
             LoginRequest(snsType = "kakao")

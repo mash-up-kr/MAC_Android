@@ -2,12 +2,14 @@ package mashup.mac.ui.login
 
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import mashup.data.sample.SampleInjection
+import androidx.lifecycle.observe
+import mashup.data.ApiProvider
+import mashup.data.api.UserApi
 import mashup.mac.R
 import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.FragmentSignUpBinding
@@ -29,7 +31,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
     private val loginViewModel by lazy {
         ViewModelProvider(
             viewModelStore, LoginViewModelFactory(
-                SampleInjection.provideRepository()
+                ApiProvider.provideApiWithoutHeader(UserApi::class.java)
             )
         ).get(LoginViewModel::class.java)
 
@@ -49,9 +51,30 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
         binding.pickerYear.value = 2000
 
         binding.btnNext.setOnClickListener {
-            step++
-            setImageStep(step)
+            if (step == 1 && loginViewModel.nickNameAble.value!!) {
+                step++
+                setImageStep(step)
+            } else {
+                step++
+                setImageStep(step)
+            }
         }
+
+        loginViewModel.nickname.observe(viewLifecycleOwner) {
+            loginViewModel.checkNickName()
+        }
+        loginViewModel.nickNameAble.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.btnNext.setTextColor(Color.WHITE)
+                binding.btnNext.setBackgroundColor(resources.getColor(R.color.point))
+                binding.tvNicknameAble.setTextColor(resources.getColor(R.color.green))
+            } else {
+                binding.btnNext.setBackgroundColor(resources.getColor(R.color.gray4))
+                binding.btnNext.setTextColor(resources.getColor(R.color.gray2))
+                binding.tvNicknameAble.setTextColor(resources.getColor(R.color.red))
+            }
+        }
+
     }
 
     private var step = 1
@@ -62,6 +85,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
         val exp = Regex("^[가-힣ㄱ-ㅎa-zA-Z0-9._ -]{2,}\$")
         return !trimmedNickname.isEmpty() && exp.matches(trimmedNickname)
     }
+
     private fun setImageStep(step: Int) {
         when (step) {
             1 -> {
@@ -122,26 +146,21 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
     }
 
     private fun animalProfile() {
-        val photos =
-            intArrayOf(Category.관계.circleRes, Category.음식.circleRes, Category.직업.circleRes, Category.학업.circleRes, Category.기타.circleRes, Category.연애.circleRes)
-
+        val photos = arrayOf("관계", "음식", "직업", "학업", "기타", "연애")
         val ran = Random()
         val i: Int = ran.nextInt(photos.size)
+        binding.ivSignUpProfile.setImageResource(
+            Category.findCircleImage(photos[i]) ?: Category.학업.circleRes
+        )
+        binding.tvSignUpProfile.text = "안녕 내 이름은 "+Category.findAnimalName(photos[i]) ?: ""
 
-
-
-        binding.ivSignUpProfile.setImageResource(photos[i])
-
-        binding.ivSignUpProfile.setOnClickListener()
-        {
-
-                val k: Int = ran.nextInt(photos.size)
-            binding.ivSignUpProfile.setImageResource(photos[k])
+        binding.ivSignUpProfile.setOnClickListener {
+            val k = ran.nextInt(photos.size)
+            binding.ivSignUpProfile.setImageResource(
+                Category.findCircleImage(photos[k]) ?: Category.학업.circleRes
+            )
+            binding.tvSignUpProfile.text = "안녕 내 이름은 "+ Category.findAnimalName(photos[k]) ?: ""
         }
-
-
-
-
     }
 
 }

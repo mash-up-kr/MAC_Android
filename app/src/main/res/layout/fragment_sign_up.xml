@@ -59,8 +59,10 @@
             app:layout_constraintTop_toTopOf="@id/iv_step" />
 
         <TextView
+            android:id="@+id/tv_sign_up_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/ic_chat_bubble"
             android:layout_marginTop="12dp"
             android:gravity="center"
             android:padding="12dp"
@@ -69,6 +71,7 @@
             android:textSize="12dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/iv_sign_up_profile"
+            app:layout_constraintHorizontal_bias="0.487"
             app:layout_constraintStart_toStartOf="@+id/iv_sign_up_profile"
             app:layout_constraintTop_toBottomOf="@+id/iv_sign_up_profile" />
 
@@ -109,7 +112,7 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/nickName"
+                        android:id="@+id/etNickName"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_marginStart="16dp"
@@ -119,17 +122,19 @@
                         android:backgroundTint="@color/darkGray1"
                         android:hint="닉네임을 입력해주세요"
                         android:paddingLeft="18dp"
+                        android:text="@={loginVm.nickname}"
                         android:singleLine="true"
                         android:textColor="@color/white"
                         android:textColorHint="@color/gray5"
                         android:textSize="14dp" />
 
                     <TextView
+                        android:id="@+id/tv_nickname_able"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:paddingLeft="28dp"
-                        android:text="10글자 내로 설정 가능해요"
+                        android:text="@{loginVm.ableNickname}"
                         android:textColor="@color/gray3"
                         android:textSize="12dp" />
 
@@ -169,7 +174,7 @@
                     android:layout_height="170dp"
                     android:background="@drawable/bg_sighup_bottom"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -196,12 +201,12 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginEnd="16dp"
                             android:layout_weight="1"
-                            android:background="@drawable/round_8"
-                            android:backgroundTint="@color/darkGray1"
+                            android:onClick="@{() -> loginVm.onClickMan(true)}"
+                            android:background="@drawable/non_stroke_gender_bg"
                             android:gravity="center"
                             android:text="남자"
                             android:textAlignment="center"
-                            android:textColor="@color/white"
+                            android:textColor="@color/gray5"
                             android:textSize="18dp" />
 
                         <TextView
@@ -211,8 +216,8 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginEnd="16dp"
                             android:layout_weight="1"
-                            android:background="@drawable/round_8"
-                            android:backgroundTint="@color/darkGray1"
+                            android:onClick="@{() -> loginVm.onClickMan(false)}"
+                            android:background="@drawable/non_stroke_gender_bg"
                             android:gravity="center"
                             android:text="여자"
                             android:textColor="@color/gray5"
@@ -221,20 +226,17 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <FrameLayout
+
+            <TextView
                 android:id="@+id/btn_next"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:background="#8567FF">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="다음"
-                    android:textColor="@color/white"
-                    android:textSize="18dp" />
-            </FrameLayout>
+                android:background="@color/gray4"
+                android:gravity="center"
+                android:text="다음"
+                android:textColor="@color/gray2"
+                android:textSize="18dp"
+                android:textStyle="bold" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

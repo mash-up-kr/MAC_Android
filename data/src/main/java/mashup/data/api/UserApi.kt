@@ -38,5 +38,5 @@ interface UserApi {
     @POST("users/nickname/check")
     fun postNickNameCheck(
         @Body request: NicknameCheckRequest
-    ): Single<BaseResponse<Any>>
+    ): Single<BaseResponse<Boolean>>
 }
