@@ -15,6 +15,7 @@ import mashup.data.request.LoginRequest
 import mashup.data.sample.SampleInjection
 import mashup.mac.R
 import mashup.mac.base.BaseActivity
+import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.ActivityLoginBinding
 import mashup.mac.ext.toast
 import mashup.mac.ui.main.MainActivity
@@ -45,7 +46,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         userApi.getUser()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                if (it.isSuccess()) {
+
+                if (it.code == 1){
+
                     goToMainActivity()
                 }
             }) {
@@ -89,13 +92,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         }
 
     }
-//
-//    private fun replaceFragment(fragment: BaseFragment<*>) {
-//        supportFragmentManager.beginTransaction().apply {
-//            add(R.id.layout_frame, fragment)
-//            addToBackStack(null)
-//        }.commit()
-//    }
+
+    private fun replaceFragment(fragment: BaseFragment<*>) {
+        supportFragmentManager.beginTransaction().apply {
+            add(R.id.layout_frame, fragment)
+            addToBackStack(null)
+        }.commit()
+    }
 
     private val authApi = ApiProvider.provideApiWithoutHeader(AuthApi::class.java)
 
@@ -110,8 +113,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         ).observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Dlog.d(it.toString())
-                if (it.code == 0) {
-                } else if (it.isSuccess()) {
+
+                if(it.code == 0){
+                    replaceFragment(SignUpFragment.newInstance())
+                }
+                else if (it.isSuccess()) {
+
                     val accessToken = it.data.token?.accessToken
                     if (accessToken == null) {
                         showError()
