@@ -4,14 +4,18 @@ package mashup.mac.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import mashup.data.sample.SampleInjection
 import mashup.mac.R
 import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.FragmentSignUpBinding
+import mashup.mac.model.Category
 import mashup.mac.ui.main.MainActivity
 import mashup.mac.ui.sample.adapter.GithubUserAdapter
+import java.util.*
+
 
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sign_up) {
 
@@ -37,6 +41,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
         super.onViewCreated(view, savedInstanceState)
         binding.loginVm = loginViewModel
 
+        animalProfile()
+
         binding.pickerYear.maxValue = 2021
         binding.pickerYear.minValue = 1920
         binding.pickerYear.wrapSelectorWheel = false
@@ -50,6 +56,12 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
 
     private var step = 1
 
+    // 닉네임 유효성검사 -> true : step 증가, false : step 유지
+    fun isValidNickname(nickname: String?): Boolean {
+        val trimmedNickname = nickname?.trim().toString()
+        val exp = Regex("^[가-힣ㄱ-ㅎa-zA-Z0-9._ -]{2,}\$")
+        return !trimmedNickname.isEmpty() && exp.matches(trimmedNickname)
+    }
     private fun setImageStep(step: Int) {
         when (step) {
             1 -> {
@@ -107,6 +119,29 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
         binding.nickSet.visibility = View.GONE
         binding.nickAccess.visibility = View.GONE
         binding.nickGender.visibility = View.GONE
+    }
+
+    private fun animalProfile() {
+        val photos =
+            intArrayOf(Category.관계.circleRes, Category.음식.circleRes, Category.직업.circleRes, Category.학업.circleRes, Category.기타.circleRes, Category.연애.circleRes)
+
+        val ran = Random()
+        val i: Int = ran.nextInt(photos.size)
+
+
+
+        binding.ivSignUpProfile.setImageResource(photos[i])
+
+        binding.ivSignUpProfile.setOnClickListener()
+        {
+
+                val k: Int = ran.nextInt(photos.size)
+            binding.ivSignUpProfile.setImageResource(photos[k])
+        }
+
+
+
+
     }
 
 }
