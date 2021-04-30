@@ -40,13 +40,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         userApi.getUser()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                if (it.code == 1){
+                if (it.isSuccess()){
                     goToMainActivity()
                 }
             }) {
                 Dlog.e(it.message)
             }
-
 
         binding.btnLogin.setOnClickListener {
 
