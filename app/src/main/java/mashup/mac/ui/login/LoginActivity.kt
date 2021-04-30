@@ -37,16 +37,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         super.onCreate(savedInstanceState)
         binding.loginVm = viewModel
         val userApi = ApiProvider.provideApiWithoutHeader(UserApi::class.java)
-        replaceFragment(SignUpFragment.newInstance())
-//        userApi.getUser()
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe({
-//                if (it.code == 1){
-//                    goToMainActivity()
-//                }
-//            }) {
-//                Dlog.e(it.message)
-//            }
+        userApi.getUser()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if (it.code == 1){
+                    goToMainActivity()
+                }
+            }) {
+                Dlog.e(it.message)
+            }
 
 
         binding.btnLogin.setOnClickListener {

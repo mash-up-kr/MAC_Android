@@ -60,6 +60,19 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
             }
         }
 
+        loginViewModel.isMan.observe(viewLifecycleOwner) {
+            if (it){
+                binding.tvMen.setTextColor(resources.getColor(R.color.white))
+                binding.tvMen.background = resources.getDrawable(R.drawable.stroke_gender_bg)
+                binding.tvWoman.setTextColor(resources.getColor(R.color.gray5))
+                binding.tvWoman.background = resources.getDrawable(R.drawable.non_stroke_gender_bg)
+            }else{
+                binding.tvWoman.setTextColor(resources.getColor(R.color.white))
+                binding.tvWoman.background = resources.getDrawable(R.drawable.stroke_gender_bg)
+                binding.tvMen.setTextColor(resources.getColor(R.color.gray5))
+                binding.tvMen.background = resources.getDrawable(R.drawable.non_stroke_gender_bg)
+            }
+        }
         loginViewModel.nickname.observe(viewLifecycleOwner) {
             loginViewModel.checkNickName()
         }
@@ -115,12 +128,14 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
                 )
                 showNickGender()
             }
-            else -> {
+            4 -> {
+                loginViewModel.postSignUp(binding.pickerYear.value)
                 startActivity(
                     Intent(requireContext(), MainActivity::class.java)
                 )
                 requireActivity().finish()
             }
+            else->{}
         }
     }
 

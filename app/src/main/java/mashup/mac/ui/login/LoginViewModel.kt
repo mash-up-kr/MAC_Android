@@ -27,14 +27,14 @@ class LoginViewModel(
         isMan.postValue(boolean)
     }
 
-    fun postSignUp(){
+    fun postSignUp(birth: Int) {
         userApi.postSignin(SignupRequest(snsType ="kakao"
             ,nickname=nickname.value
-            ,birthdayYear=11,
+            ,birthdayYear=birth,
             gender= if(isMan.value!!)"M" else "F" ))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-
+                Dlog.d(it.data.toString())
             }) {
                 Dlog.e(it.message)
             }
