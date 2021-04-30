@@ -32,10 +32,11 @@ class CounselingRepository(
     fun getCounselingList(
         minKilometer: Double,
         maxKilometer: Double,
+        limit: Int? = null,
         category: String? = null,
         emotion: String? = null
     ): Single<BaseResponse<List<Counseling>>> {
-        return counselingApi.getCounselings(minKilometer, maxKilometer, category, emotion)
+        return counselingApi.getCounselings(minKilometer, maxKilometer, limit, category, emotion)
 
 //        try {
 //            val minKilometer = minKilometer.toString()

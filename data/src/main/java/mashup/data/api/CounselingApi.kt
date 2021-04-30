@@ -37,6 +37,7 @@ interface CounselingApi {
     fun getCounselings(
         @Query("minKilometer") minKilometer: Double = 0.0, // 1 km → 1
         @Query("maxKilometer") maxKilometer: Double = 10.2, // 150 m → 0.15
+        @Query("limit") limit: Int? = null,
         @Query("category") category: String? = null,
         @Query("emotion") emotion: String? = null
     ): Single<BaseResponse<List<Counseling>>>

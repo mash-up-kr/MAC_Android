@@ -77,7 +77,7 @@ class MainViewModel(
     }
 
     fun loadData() {
-        counselingRepository.getCounselingList(getDistanceMin(), getDistanceMax())
+        counselingRepository.getCounselingList(getDistanceMin(), getDistanceMax(),6)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (it.isSuccess()) {
