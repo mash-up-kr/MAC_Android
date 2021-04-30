@@ -41,7 +41,7 @@ class CounselingMapCustom : View {
     private var first: Boolean = true
     private var randomDegree: Int = 0
     private var offset: Int = 150
-    private var itemOffest: Int = 120
+    private var itemOffest: Int = 60
 
     private var onMapItemClickListener: OnMapItemClickListener? = null
 
@@ -73,16 +73,20 @@ class CounselingMapCustom : View {
         if (width < 1200) {
             contentTextPaint.textSize = 30f
             offset = width / 10
-            itemOffest = width / 16
+            itemOffest = width / 32
         } else {
-            this.itemOffest = width / 15
+            this.itemOffest = width / 30
         }
     }
 
-    fun setCueList(cue: List<CounselingMapModel>) {
-        val angle = 360/ cue.size
+    fun setCueList(
+        cue: List<CounselingMapModel>,
+        distanceMin: Double,
+        distanceMax: Double
+    ) {
+        val angle = 360/ 5
         this.cue = cue.map {
-            val r = offset * 3 + it.distance * itemOffest
+            val r = (offset * 3 + ((it.distance - distanceMin)/ (distanceMax-distanceMin) *10) * itemOffest)
             val degree = getDegree(angle)
             CounselingMapDrawModel(
                 id = it.id,
@@ -217,11 +221,11 @@ class CounselingMapCustom : View {
 //        }
 //    }
 
-    private fun getTargetX(degree: Int, r: Int): Int {
+    private fun getTargetX(degree: Int, r: Double): Int {
         return (cos(Math.toRadians(degree.toDouble())) * r).toInt()
     }
 
-    private fun getTargetY(degree: Int, r: Int): Int {
+    private fun getTargetY(degree: Int, r: Double): Int {
         return (sin(Math.toRadians(degree.toDouble())) * r).toInt()
     }
 

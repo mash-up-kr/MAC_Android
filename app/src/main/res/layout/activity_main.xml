@@ -34,11 +34,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <mashup.mac.ui.main.custom.CounselingMapCustom
+                    android:id="@+id/custom_counseling_map"
+                    android:layout_width="400dp"
+                    android:layout_height="match_parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
                 <ImageView
                     android:id="@+id/iv_profile_img"
                     android:layout_width="@dimen/main_user_img"
                     android:layout_height="@dimen/main_user_img"
                     android:src="@drawable/circle_monkey"
+                    android:onClick="@{() -> mainVm.onClickMyPage(context)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -51,32 +60,47 @@
                     android:layout_marginTop="4dp"
                     android:gravity="center"
                     android:text="@string/name_nim"
+                    android:onClick="@{() -> mainVm.onClickMyPage(context)}"
                     android:textColor="@color/white"
                     android:textSize="16dp"
                     app:layout_constraintEnd_toEndOf="@id/iv_profile_img"
                     app:layout_constraintStart_toStartOf="@id/iv_profile_img"
                     app:layout_constraintTop_toBottomOf="@id/iv_profile_img" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/main_user_name"
-                    android:gravity="center"
-                    android:onClick="@{() -> mainVm.onClickMyPage(context)}"
-                    android:text="0~5km"
-                    android:textColor="@color/green"
-                    android:textSize="16dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="@id/iv_profile_img"
                     app:layout_constraintStart_toStartOf="@id/iv_profile_img"
-                    app:layout_constraintTop_toBottomOf="@id/main_name" />
+                    app:layout_constraintTop_toBottomOf="@id/main_name">
 
-                <mashup.mac.ui.main.custom.CounselingMapCustom
-                    android:id="@+id/custom_counseling_map"
-                    android:layout_width="400dp"
-                    android:layout_height="match_parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="@dimen/main_user_name"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:onClick="@{() -> mainVm.onClickLocationLeft()}"
+                        android:src="@drawable/ic_arrow_left" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/main_user_name"
+                        android:gravity="center"
+                        android:text="@{mainVm.distanceText}"
+                        android:textColor="@color/green"
+                        android:textSize="16dp" />
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="@dimen/main_user_name"
+                        android:gravity="center"
+                        android:layout_marginStart="4dp"
+                        android:padding="4dp"
+                        android:onClick="@{() -> mainVm.onClickLocationRight()}"
+                        android:src="@drawable/ic_arrow_right" />
+
+
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 

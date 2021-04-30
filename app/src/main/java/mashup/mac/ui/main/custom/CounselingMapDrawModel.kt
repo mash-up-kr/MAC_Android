@@ -4,7 +4,7 @@ data class CounselingMapDrawModel(
     val id: Int = 1,
     var x: Int = 100,
     var y: Int = 100,
-    val r: Int = 100,
+    val r: Double = 100.0,
     val degree: Int = 10,
     var select: Boolean = true,
     val category: String = "연애",

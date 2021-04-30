@@ -26,13 +26,41 @@ class MainViewModel(
 
     private val eventShowToast = EventMutableLiveData<String>()
 
+    private val kilometers: List<Double> =
+        listOf(0.0, 5.0, 10.0, 30.0, 100.0, 500.0, 1000.0, 9999.0, 99999.0)
+    var distanceText = MutableLiveData<String>()
+    var distanceLevel = 0
     val reset = MutableLiveData<Unit>()
 
     enum class CounselingWebView { DETAIL, LIST }
 
+    init {
+        distanceText.postValue(distanceTextFormat(distanceLevel))
+    }
+
+    fun getDistanceMin(): Double = kilometers[distanceLevel]
+    fun getDistanceMax(): Double = kilometers[distanceLevel + 1]
+
+    private fun distanceTextFormat(distanceLevel: Int) =
+        "${kilometers[distanceLevel].toInt()}~${kilometers[distanceLevel + 1].toInt()}km"
+
     fun onClickCounselingWrite(context: Context) {
         val intent = Intent(context, CounselingWriteActivity::class.java)
         context.startActivity(intent)
+    }
+
+    fun onClickLocationLeft() {
+        if (distanceLevel != 0) {
+            distanceLevel -= 1
+            distanceText.postValue(distanceTextFormat(distanceLevel))
+        }
+    }
+
+    fun onClickLocationRight() {
+        if (distanceLevel < kilometers.size - 2) {
+            distanceLevel += 1
+            distanceText.postValue(distanceTextFormat(distanceLevel))
+        }
     }
 
     fun onClickMyPage(context: Context) {
@@ -49,7 +77,7 @@ class MainViewModel(
     }
 
     fun loadData() {
-        counselingRepository.getCounselingList(0.0, 99999.0)
+        counselingRepository.getCounselingList(getDistanceMin(), getDistanceMax())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (it.isSuccess()) {

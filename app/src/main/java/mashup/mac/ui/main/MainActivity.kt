@@ -77,13 +77,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 counselingAdapter.setScrollPositionItem(itemCount)
             }
         })
+        mainViewModel.distanceText.observe(this) {
+            mainViewModel.loadData()
+        }
 
         mainViewModel.mapItems.observe(this) { _counselingMapList ->
             val width = binding.svMainMap.width
             binding.customCounselingMap.setMapWidth(width)
-            //TODO:: distance가 0~5까지의 범위로 되어있기 때문에 입력값을 min max 로 나눠 관리 해야
-            binding.customCounselingMap.setCueList(_counselingMapList)
             binding.svMainMap.scrollX = (width / 4.5).toInt()
+            binding.customCounselingMap.setCueList(_counselingMapList,mainViewModel.getDistanceMin(),mainViewModel.getDistanceMax())
             Dlog.d(_counselingMapList.toString())
             val counselingMapList = _counselingMapList.map {
                 CounselingItem(
@@ -111,7 +113,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             replaceFragment(WebViewFragment.newInstance(link, -1))
         }
 
-        val observe = mainViewModel.reset.observe(this) {
+        mainViewModel.reset.observe(this) {
             mainViewModel.loadData()
             //TODO: 지우기.. 공전코드입니다,ㅎ,,
             //            lifecycleScope.launch {
