@@ -19,6 +19,7 @@ import mashup.mac.databinding.ActivityLoginBinding
 import mashup.mac.ext.toast
 import mashup.mac.ui.main.MainActivity
 import mashup.mac.util.log.Dlog
+import java.lang.Exception
 
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login) {
@@ -44,7 +45,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         userApi.getUser()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                goToMainActivity()
+                if (it.code == 0){
+                    goToMainActivity()
+                }
             }) {
                 Dlog.e(it.message)
             }
