@@ -52,7 +52,7 @@
             android:adjustViewBounds="true"
             android:background="@drawable/ic_sign_up_profile"
             android:padding="20dp"
-            android:src="@drawable/circle_elephant"
+            android:src="@drawable/circle_etc"
             app:layout_constraintBottom_toTopOf="@id/layout_edit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
