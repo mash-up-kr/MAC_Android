@@ -45,7 +45,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         userApi.getUser()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                if (it.code == 0){
+                if (it.code == 1){
                     goToMainActivity()
                 }
             }) {
