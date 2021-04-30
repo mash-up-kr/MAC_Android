@@ -45,7 +45,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         userApi.getUser()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                if (it.code == 1){
+                if (it.isSuccess()) {
                     goToMainActivity()
                 }
             }) {
@@ -110,7 +110,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         ).observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Dlog.d(it.toString())
-                if (it.isSuccess()) {
+                if (it.code == 0) {
+                } else if (it.isSuccess()) {
                     val accessToken = it.data.token?.accessToken
                     if (accessToken == null) {
                         showError()
