@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import mashup.data.ApiProvider
 import mashup.data.Injection
+import mashup.data.api.UserApi
 import mashup.mac.R
 import mashup.mac.base.BaseActivity
 import mashup.mac.base.BaseFragment
@@ -15,6 +18,7 @@ import mashup.mac.ext.observeEvent
 import mashup.mac.ext.toast
 import mashup.mac.model.Category
 import mashup.mac.model.CounselingItem
+import mashup.mac.ui.login.LoginActivity
 import mashup.mac.ui.main.custom.CounselingMapCustom
 import mashup.mac.util.log.Dlog
 
@@ -48,6 +52,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         binding.mainVm = mainViewModel
         binding.locationVm = locationViewModel
         initRecyclerView()
+
+        //TODO:: 죽어서 일단 유저정보 못가져 올경우 로그인 액티비티로 보내둠 로직 개선 필요
+        val userApi = ApiProvider.provideApiWithoutHeader(UserApi::class.java)
+        userApi.getUser()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if (!it.isSuccess()) {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
+                }
+            }) {
+                Dlog.e(it.message)
+            }
+
         mainViewModel.loadData()
         locationViewModel.checkLocationFirstTime()
 

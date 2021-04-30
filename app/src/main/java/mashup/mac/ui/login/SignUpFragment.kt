@@ -24,8 +24,15 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
 
     override var logTag = "SampleFragment"
 
+    private val snsToken by lazy { requireArguments().getString(SNS_TOKEN) }
+
     companion object {
-        fun newInstance() = SignUpFragment()
+        const val SNS_TOKEN = "snsToken"
+        fun newInstance(snsToken: String) = SignUpFragment().apply {
+            arguments = Bundle().apply {
+                putString(SNS_TOKEN, snsToken)
+            }
+        }
     }
 
     private val loginViewModel by lazy {
@@ -88,6 +95,15 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
             }
         }
 
+        loginViewModel.mainActivity.observe(viewLifecycleOwner) {
+            loginViewModel.checkNickName()
+            startActivity(
+                Intent(requireContext(), MainActivity::class.java)
+            )
+            requireActivity().finish()
+        }
+
+
     }
 
     private var step = 1
@@ -129,11 +145,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
                 showNickGender()
             }
             4 -> {
-                loginViewModel.postSignUp(binding.pickerYear.value)
-                startActivity(
-                    Intent(requireContext(), MainActivity::class.java)
-                )
-                requireActivity().finish()
+                loginViewModel.postSignUp(snsToken!!,binding.pickerYear.value)
             }
             else->{}
         }

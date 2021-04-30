@@ -92,7 +92,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
     private fun testLogin(token: String) {
         //kakao sns token
-//        val token = "7c9f40UfXrNNXp2mgR9vHQRYw-2HokZGI7QZRQo9cpgAAAF5ANmSbw"
+        val token = "AZ8cPSyjXl537ERyHZhgiP5Vr5qgSRDvzs5BSgo9dJcAAAF5JMdt-w"
         val snsToken = "Bearer $token"
         authApi.postLogin(
             snsToken = snsToken,
@@ -102,7 +102,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                 Dlog.d(it.toString())
 
                 if(it.code == 0){
-                    replaceFragment(SignUpFragment.newInstance())
+                    replaceFragment(SignUpFragment.newInstance(snsToken))
                 }
                 else if (it.isSuccess()) {
 

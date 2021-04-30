@@ -3,6 +3,7 @@ package mashup.mac.ui.login
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import mashup.data.api.UserApi
+import mashup.data.pref.PrefUtil
 import mashup.data.request.NicknameCheckRequest
 import mashup.data.request.SignupRequest
 import mashup.mac.base.BaseViewModel
@@ -12,35 +13,48 @@ class LoginViewModel(
     private val userApi: UserApi
 ) : BaseViewModel() {
 
-    val onClickLogin = MutableLiveData<Unit>()
+    val mainActivity = MutableLiveData<Unit>()
 
     val nickname = MutableLiveData<String>()
     val ableNickname = MutableLiveData<String>("10글자 내로 설정 가능해요")
     val nickNameAble = MutableLiveData<Boolean>()
     val isMan = MutableLiveData<Boolean>()
 
-    fun onClickLogin() {
-        onClickLogin.postValue(Unit)
-    }
-
     fun onClickMan(boolean: Boolean) {
         isMan.postValue(boolean)
     }
 
-    fun postSignUp(birth: Int) {
-        userApi.postSignin(SignupRequest(snsType ="kakao"
-            ,nickname=nickname.value
-            ,birthdayYear=birth,
-            gender= if(isMan.value!!)"M" else "F" ))
+    fun postSignUp(token: String, birth: Int) {
+        userApi.postSignUp(
+            snsToken = token
+            , request = SignupRequest(
+                snsType = "kakao"
+                , nickname = nickname.value
+                , birthdayYear = birth,
+                gender = if (isMan.value!!) "M" else "F"
+            )
+        )
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Dlog.d(it.data.toString())
+                if (it.isSuccess()) {
+                    val accessToken = it.data.token?.accessToken ?: return@subscribe
+                    val refreshToken = it.data.token?.refreshToken ?: return@subscribe
+                    saveToken(accessToken, refreshToken)
+                }
+                mainActivity.postValue(Unit)
             }) {
                 Dlog.e(it.message)
             }
     }
-    fun checkNickName(){
-        if (nickname.value?.length!! > 10 ){
+
+    private fun saveToken(accessToken: String, refreshToken: String) {
+        PrefUtil.put(PrefUtil.PREF_ACCESS_TOKEN, accessToken)
+        PrefUtil.put(PrefUtil.PREF_REFRESH_TOKEN, refreshToken)
+    }
+
+    fun checkNickName() {
+        if (nickname.value?.length!! > 10) {
             nickNameAble.postValue(false)
             ableNickname.postValue("10자 이하로 설정해주세요!")
         } else {

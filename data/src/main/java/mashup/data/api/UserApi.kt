@@ -7,10 +7,7 @@ import mashup.data.request.LocationRequest
 import mashup.data.request.NicknameCheckRequest
 import mashup.data.request.SignupRequest
 import mashup.data.response.BaseResponse
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.PATCH
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface UserApi {
 
@@ -19,8 +16,9 @@ interface UserApi {
         @Body request: SignupRequest
     ): Single<BaseResponse<Signup>>
 
-    @POST("users/signin")
-    fun postSignin(
+    @POST("users")
+    fun postSignUp(
+        @Header("Authorization") snsToken: String,
         @Body request: SignupRequest
     ): Single<BaseResponse<Signup>>
 
