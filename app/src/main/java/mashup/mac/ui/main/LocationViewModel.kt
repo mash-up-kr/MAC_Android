@@ -237,6 +237,17 @@ class LocationViewModel(
 
     private fun showUserLocation(latitude: Double?, longitude: Double?) {
         //TODO 좌표를 가지고 지역명 가져오기
-        _locationName.postValue("$latitude, $longitude")
+//        _locationName.postValue("$latitude, $longitude")
+        userRepository.getLocation()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if (it.isSuccess()) {
+                    _locationName.postValue(it.data ?: "")
+                } else {
+                    showToast(it.error)
+                }
+            }) {
+                Dlog.e(it.message)
+            }
     }
 }

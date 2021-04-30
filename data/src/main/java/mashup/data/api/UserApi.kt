@@ -37,4 +37,7 @@ interface UserApi {
     fun postNickNameCheck(
         @Body request: NicknameCheckRequest
     ): Single<BaseResponse<Boolean>>
+
+    @GET("users/address")
+    fun getUserAddress(): Single<BaseResponse<String>>
 }

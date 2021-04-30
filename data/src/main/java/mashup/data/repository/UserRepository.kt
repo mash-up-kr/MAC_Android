@@ -17,7 +17,10 @@ class UserRepository(
                 longitude = longitude
             )
         )
-
         return userApi.putLocation(request)
+    }
+
+    fun getLocation(): Single<BaseResponse<String>> {
+        return userApi.getUserAddress()
     }
 }
