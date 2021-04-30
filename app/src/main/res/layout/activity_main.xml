@@ -37,6 +37,7 @@
                 <mashup.mac.ui.main.custom.CounselingMapCustom
                     android:id="@+id/custom_counseling_map"
                     android:layout_width="400dp"
+                    android:layout_marginBottom="50dp"
                     android:layout_height="match_parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
