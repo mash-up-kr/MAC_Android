@@ -24,7 +24,7 @@ interface UserApi {
         @Body request: SignupRequest
     ): Single<BaseResponse<Signup>>
 
-    @GET("users/me")
+    @GET("users")
     fun getUser(): Single<BaseResponse<Signup>>
 
     @PATCH("users")

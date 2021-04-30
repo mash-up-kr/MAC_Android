@@ -9,6 +9,7 @@ import com.kakao.sdk.user.UserApiClient
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import mashup.data.ApiProvider
 import mashup.data.api.AuthApi
+import mashup.data.api.UserApi
 import mashup.data.pref.PrefUtil
 import mashup.data.request.LoginRequest
 import mashup.data.sample.SampleInjection
@@ -38,16 +39,23 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 //        viewModel.onClickLogin.observe(this, Observer {
 //            replaceFragment(SignUpFragment.newInstance())
 //        })
+
+        val userApi = ApiProvider.provideApiWithoutHeader(UserApi::class.java)
+        userApi.getUser()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                goToMainActivity()
+            }) {
+                Dlog.e(it.message)
+            }
+
         binding.btnLogin.setOnClickListener {
 
             //TODO [test] 하드코딩을 통해 카카오 토큰을 직접 일력한 로그인
 //            testLogin(token.accessToken)
 //            return@setOnClickListener
-
-
             //공통 Call back
             val TAG = "카카오"
-
             // 로그인 공통 callback 구성
             val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
                 if (error != null) {
