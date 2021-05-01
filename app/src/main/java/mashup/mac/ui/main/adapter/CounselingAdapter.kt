@@ -60,7 +60,7 @@ class MainCounselingAdapter :
     }
 
     interface OnItemClickListener {
-        fun onClick(position: Int)
+        fun onClick(questionId: Int)
         fun onScrollItem(id: Int)
     }
 }

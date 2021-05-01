@@ -21,8 +21,15 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
     override var logTag = "WebViewFragment"
 
     companion object {
-        const val LINK = "webViewType"
-        const val QuestionId = "conselingQuestionId"
+
+        const val counselingList = "https://www.cowcat.live/concerns"
+
+        const val counselingDetail = "https://www.cowcat.live/concern"
+
+        private const val LINK = "webViewType"
+
+        private const val QuestionId = "counselingQuestionId"
+
         fun newInstance(link: String, questionId: Int) = WebViewFragment().apply {
             arguments = Bundle().apply {
                 putString(LINK, link)
@@ -32,7 +39,7 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
     }
 
     private val webViewLink by lazy { requireArguments().getString(LINK) }
-    private val conselingQuestionId by lazy { requireArguments().getInt(QuestionId) }
+    private val counselingQuestionId by lazy { requireArguments().getInt(QuestionId) }
 
     private lateinit var mWebView: WebView
     private lateinit var mWebSettings: WebSettings //웹뷰세팅
@@ -68,9 +75,9 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
         mWebSettings.cacheMode = WebSettings.LOAD_DEFAULT // 브라우저 캐시 허용 여부
         mWebSettings.domStorageEnabled = true // 로컬저장소 허용 여부
         webViewLink?.let {
-            val jwt = (PrefUtil.get(PrefUtil.PREF_ACCESS_TOKEN, "").replace("Bearer ", ""))
-            val url = "$it?jwt=" + jwt +
-                    if (conselingQuestionId != -1) "&questionId=$conselingQuestionId" else ""
+            //https://cowcat.live/concern/{questionId}?token={token}
+            val token = (PrefUtil.get(PrefUtil.PREF_ACCESS_TOKEN, "").replace("Bearer ", ""))
+            val url = "$it/$counselingQuestionId?token=$token"
             Dlog.d(url)
             mWebView.loadUrl(url)
         }

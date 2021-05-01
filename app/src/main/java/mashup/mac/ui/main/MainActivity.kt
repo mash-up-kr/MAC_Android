@@ -29,15 +29,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         const val REQUEST_CODE_COUNSELING_WRITE = 1002
     }
 
-    private val counselingList = "https://www.cowcat.live/concerns"
-    private val counselingDetail = "https://www.cowcat.live/concern/edit"
+
 
     private val counselingAdapter by lazy {
         MainCounselingAdapter().apply {
             setOnItemClickListener(object :
                 MainCounselingAdapter.OnItemClickListener {
-                override fun onClick(position: Int) {
-                    replaceFragment(WebViewFragment.newInstance(counselingDetail, position))
+                override fun onClick(questionId: Int) {
+                    replaceFragment(WebViewFragment.newInstance(WebViewFragment.counselingDetail, questionId))
                 }
 
                 override fun onScrollItem(id: Int) {
@@ -108,12 +107,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         mainViewModel.mainListView.observe(this, {
             val link = when (mainViewModel.mainListView.value) {
                 MainViewModel.CounselingWebView.LIST -> {
-                    counselingList
+                    WebViewFragment.counselingList
                 }
                 MainViewModel.CounselingWebView.DETAIL -> {
-                    counselingDetail
+                    WebViewFragment.counselingDetail
                 }
-                else -> counselingDetail
+                else -> WebViewFragment.counselingDetail
             }
             replaceFragment(WebViewFragment.newInstance(link, -1))
         })
@@ -166,8 +165,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private fun initView() {
         binding.customCounselingMap.setOnMapItemClickListener(object :
             CounselingMapCustom.OnMapItemClickListener {
-            override fun onClick(id: Int) {
-                binding.rvMainCounseling.scrollToPosition(id)
+            override fun onClick(position: Int) {
+                binding.rvMainCounseling.scrollToPosition(position)
             }
         })
 
