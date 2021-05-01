@@ -120,10 +120,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         mainViewModel.reset.observe(this, {
             mainViewModel.loadData()
-            //TODO: 지우기.. 공전코드입니다,ㅎ,,
-            //            lifecycleScope.launch {
-            //                binding.customCounselingMap.cycle()
-            //            }
         })
 
         mainViewModel.eventShowToast.observeEvent(this) {

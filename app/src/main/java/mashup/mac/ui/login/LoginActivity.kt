@@ -46,6 +46,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         binding.loginVm = viewModel
 
         initButton()
+        //서버 api 수정되면 주석 제거
         //TODO checkAutoLogin()
     }
 
