@@ -45,6 +45,9 @@ interface CounselingApi {
     @GET("counselings/my")
     fun getMyCounselings(): Single<BaseResponse<MyCounselingResponse>>
 
+    @GET("comments")
+    fun getMyComments(): Single<BaseResponse<MyCounselingResponse>>
+
     @GET("counselings/{counselingQuestionId}")
     fun getCounseling(
         @Path("counselingQuestionId") path: Int,

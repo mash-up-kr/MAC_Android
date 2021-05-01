@@ -52,8 +52,7 @@ class MyPageViewModel(
                 loadMyCounseling()
             }
             MyPageFragment.ViewType.MyAnswer -> {
-                //TODO API 아직 안나옴
-                loadSample()
+                loadMyAnswer()
             }
         }
     }
@@ -64,6 +63,52 @@ class MyPageViewModel(
 
     private fun loadMyCounseling() {
         counselingApi.getMyCounselings()
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showLoading()
+            }
+            .doOnTerminate {
+                hideLoading()
+            }
+            .subscribe({
+                if (it.isSuccess()) {
+                    val data = it.data
+                    Dlog.d("data : $data")
+                    val badges = mutableListOf<AnimalBadgeItem>()
+
+                    setAnimalBadgeItem(Category.연애.title, data.연애)?.let { badge ->
+                        badges.add(badge)
+                        onClickBadge(badge.counselingItems)
+                    }
+                    setAnimalBadgeItem(Category.학업.title, data.학업)?.let { badge ->
+                        badges.add(badge)
+                    }
+                    setAnimalBadgeItem(Category.직업.title, data.직업)?.let { badge ->
+                        badges.add(badge)
+                    }
+                    setAnimalBadgeItem(Category.관계.title, data.관계)?.let { badge ->
+                        badges.add(badge)
+                    }
+                    setAnimalBadgeItem(Category.음식.title, data.음식)?.let { badge ->
+                        badges.add(badge)
+                    }
+                    setAnimalBadgeItem(Category.기타.title, data.기타)?.let { badge ->
+                        badges.add(badge)
+                    }
+
+                    _badgeItems.postValue(badges)
+                } else {
+                    showToast(it.error)
+                }
+            }) {
+                Dlog.e(it.message)
+            }.also {
+                compositeDisposable.add(it)
+            }
+    }
+
+    private fun loadMyAnswer() {
+        counselingApi.getMyComments()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
                 showLoading()
