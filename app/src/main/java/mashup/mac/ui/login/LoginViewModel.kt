@@ -16,7 +16,7 @@ class LoginViewModel(
     val mainActivity = MutableLiveData<Unit>()
 
     val nickname = MutableLiveData<String>()
-    val ableNickname = MutableLiveData<String>("10글자 내로 설정 가능해요")
+    val ableNickname = MutableLiveData("10글자 내로 설정 가능해요")
     val nickNameAble = MutableLiveData<Boolean>()
     val isMan = MutableLiveData<Boolean>()
 
@@ -26,20 +26,20 @@ class LoginViewModel(
 
     fun postSignUp(token: String, birth: Int) {
         userApi.postSignUp(
-            snsToken = token
-            , request = SignupRequest(
-                snsType = "kakao"
-                , nickname = nickname.value
-                , birthdayYear = birth,
-                gender = if (isMan.value!!) "M" else "F"
+            snsToken = token,
+            request = SignupRequest(
+                snsType = "kakao",
+                nickname = nickname.value,
+                birthdayYear = birth,
+                gender = if (isMan.value == true) "M" else "F"
             )
-        )
-            .observeOn(AndroidSchedulers.mainThread())
+        ).observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Dlog.d(it.data.toString())
                 if (it.isSuccess()) {
                     val accessToken = it.data.token?.accessToken ?: return@subscribe
                     val refreshToken = it.data.token?.refreshToken ?: return@subscribe
+
                     saveToken(accessToken, refreshToken)
                 }
                 mainActivity.postValue(Unit)
@@ -48,7 +48,7 @@ class LoginViewModel(
             }
     }
 
-    private fun saveToken(accessToken: String, refreshToken: String) {
+    fun saveToken(accessToken: String, refreshToken: String) {
         PrefUtil.put(PrefUtil.PREF_ACCESS_TOKEN, accessToken)
         PrefUtil.put(PrefUtil.PREF_REFRESH_TOKEN, refreshToken)
     }

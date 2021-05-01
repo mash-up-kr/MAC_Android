@@ -16,7 +16,4 @@ data class Signup(
     val token: Token?,
     @SerializedName("location")
     val location: Location?
-) {
-
-
-}
+)
