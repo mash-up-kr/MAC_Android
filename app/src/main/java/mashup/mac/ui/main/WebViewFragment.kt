@@ -82,7 +82,7 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
             val url = if (counselingQuestionId > 0) {
                 "$it/$counselingQuestionId?token=$token"
             } else {
-                "$it/?token=$token"
+                "$it?token=$token"
             }
 
             Dlog.d(url)
