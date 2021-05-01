@@ -22,8 +22,10 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
 
     companion object {
 
+        //https://www.cowcat.live/concerns?token={token}
         const val counselingList = "https://www.cowcat.live/concerns"
 
+        //https://cowcat.live/concern/{questionId}?token={token}
         const val counselingDetail = "https://www.cowcat.live/concern"
 
         private const val LINK = "webViewType"
@@ -67,7 +69,7 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
         mWebSettings = mWebView.settings; //세부 세팅 등록
         mWebSettings.javaScriptEnabled = true // 웹페이지 자바스클비트 허용 여부
         mWebSettings.setSupportMultipleWindows(false) // 새창 띄우기 허용 여부
-        mWebSettings.javaScriptCanOpenWindowsAutomatically = false; // 자바스크립트 새창 띄우기(멀티뷰) 허용 여부
+        mWebSettings.javaScriptCanOpenWindowsAutomatically = false // 자바스크립트 새창 띄우기(멀티뷰) 허용 여부
         mWebSettings.loadWithOverviewMode = true // 메타태그 허용 여부
         mWebSettings.useWideViewPort = true // 화면 사이즈 맞추기 허용 여부
         mWebSettings.setSupportZoom(false) // 화면 줌 허용 여부
@@ -75,9 +77,14 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
         mWebSettings.cacheMode = WebSettings.LOAD_DEFAULT // 브라우저 캐시 허용 여부
         mWebSettings.domStorageEnabled = true // 로컬저장소 허용 여부
         webViewLink?.let {
-            //https://cowcat.live/concern/{questionId}?token={token}
             val token = (PrefUtil.get(PrefUtil.PREF_ACCESS_TOKEN, "").replace("Bearer ", ""))
-            val url = "$it/$counselingQuestionId?token=$token"
+
+            val url = if (counselingQuestionId > 0) {
+                "$it/$counselingQuestionId?token=$token"
+            } else {
+                "$it/?token=$token"
+            }
+
             Dlog.d(url)
             mWebView.loadUrl(url)
         }
