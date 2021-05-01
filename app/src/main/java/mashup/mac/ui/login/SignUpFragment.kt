@@ -67,13 +67,19 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
             }
         }
 
+
         loginViewModel.isMan.observe(viewLifecycleOwner) {
             if (it){
+                binding.btnNext.setBackgroundColor(resources.getColor(R.color.white))
+                binding.btnNext.setBackgroundColor(resources.getColor(R.color.mainBackground))
                 binding.tvMen.setTextColor(resources.getColor(R.color.white))
                 binding.tvMen.background = resources.getDrawable(R.drawable.stroke_gender_bg)
                 binding.tvWoman.setTextColor(resources.getColor(R.color.gray5))
                 binding.tvWoman.background = resources.getDrawable(R.drawable.non_stroke_gender_bg)
+
             }else{
+                binding.btnNext.setBackgroundColor(resources.getColor(R.color.white))
+                binding.btnNext.setBackgroundColor(resources.getColor(R.color.mainBackground))
                 binding.tvWoman.setTextColor(resources.getColor(R.color.white))
                 binding.tvWoman.background = resources.getDrawable(R.drawable.stroke_gender_bg)
                 binding.tvMen.setTextColor(resources.getColor(R.color.gray5))
@@ -133,6 +139,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
                         R.drawable.ic_step2
                     )
                 )
+                binding.tvSignUpProfile.text = "난 2021년에 태어났어! 너의 생일은 언제야?"
                 showNickAccess()
             }
             3 -> {
@@ -142,6 +149,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
                         R.drawable.ic_step3
                     )
                 )
+                binding.tvSignUpProfile.text = "그렇구나! 마지막으로 너의 성별을 알려줘!"
                 showNickGender()
             }
             4 -> {
@@ -164,6 +172,9 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
     private fun showNickGender() {
         hideAll()
         binding.nickGender.visibility = View.VISIBLE
+        binding.btnNext.text = "완료"
+        binding.btnNext.setBackgroundColor(resources.getColor(R.color.gray4))
+        binding.btnNext.setTextColor(resources.getColor(R.color.gray2))
     }
 
     private fun hideAll() {
@@ -179,7 +190,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
         binding.ivSignUpProfile.setImageResource(
             Category.findCircleImage(photos[i]) ?: Category.학업.circleRes
         )
-        binding.tvSignUpProfile.text = "안녕 내 이름은 "+Category.findAnimalName(photos[i]) ?: ""
+        binding.tvSignUpProfile.text = "안녕 내 이름은 "+ Category.findAnimalName(photos[i]) ?: ""
 
         binding.ivSignUpProfile.setOnClickListener {
             val k = ran.nextInt(photos.size)
