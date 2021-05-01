@@ -34,20 +34,17 @@ class LocationViewModel(
     }
 
     val eventShowToast = EventMutableLiveData<String>()
+    val eventLoadCounseling = EventMutableLiveData<Unit>()
 
     private val _locationName = MutableLiveData<String>()
     val locationName: LiveData<String> get() = _locationName
 
-    fun checkLocationFirstTime() {
+    fun isEvenGetLocation(): Boolean {
         val latitude = PrefUtil.get(PrefUtil.PREF_USER_LATITUDE, "")
         val longitude = PrefUtil.get(PrefUtil.PREF_USER_LONGITUDE, "")
         Dlog.d("latitude : $latitude, longitude : $longitude")
 
-        if (latitude.isEmpty() || longitude.isEmpty()) {
-            checkLocationPermission()
-        } else {
-            showUserLocation(latitude = latitude.toDoubleOrNull(), longitude = longitude.toDoubleOrNull())
-        }
+        return latitude.isNotEmpty() && longitude.isNotEmpty()
     }
 
     /**
@@ -204,7 +201,6 @@ class LocationViewModel(
     /**
      * [end] 실시간 위치정보
      */
-
     private fun updateUserLocation(latitude: Double, longitude: Double) {
         compositeDisposable += userRepository.updateLocation(
             latitude = latitude,
@@ -214,8 +210,11 @@ class LocationViewModel(
                 if (it.isSuccess()) {
                     Dlog.d("success : " + it.data.toString())
                     saveUserLocationToPref(latitude = latitude, longitude = longitude)
-                    showUserLocation(latitude = latitude, longitude = longitude)
+                    showUserLocation()
                     stopLocationUpdates()
+
+                    //위치를 업데이트 한 경우 화면을 갱신해 줍니다.
+                    eventLoadCounseling.postEvent(Unit)
                 } else {
                     showToast(it.error)
                 }
@@ -235,14 +234,13 @@ class LocationViewModel(
         PrefUtil.put(PrefUtil.PREF_USER_LONGITUDE, longitude.toString())
     }
 
-    private fun showUserLocation(latitude: Double?, longitude: Double?) {
-        //TODO 좌표를 가지고 지역명 가져오기
-//        _locationName.postValue("$latitude, $longitude")
+    fun showUserLocation() {
         userRepository.getLocation()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (it.isSuccess()) {
-                    _locationName.postValue(it.data ?: "")
+                    val locationName = it.data
+                    _locationName.postValue(locationName)
                 } else {
                     showToast(it.error)
                 }

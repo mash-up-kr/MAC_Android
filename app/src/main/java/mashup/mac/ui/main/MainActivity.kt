@@ -2,14 +2,11 @@ package mashup.mac.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import mashup.data.ApiProvider
 import mashup.data.Injection
-import mashup.data.api.UserApi
 import mashup.mac.R
 import mashup.mac.base.BaseActivity
 import mashup.mac.base.BaseFragment
@@ -18,7 +15,6 @@ import mashup.mac.ext.observeEvent
 import mashup.mac.ext.toast
 import mashup.mac.model.Category
 import mashup.mac.model.CounselingItem
-import mashup.mac.ui.login.LoginActivity
 import mashup.mac.ui.main.custom.CounselingMapCustom
 import mashup.mac.util.log.Dlog
 
@@ -26,10 +22,24 @@ import mashup.mac.util.log.Dlog
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     override var logTag = "MainActivity"
+
     private val counselingList = "https://www.cowcat.live/concerns"
     private val counselingDetail = "https://www.cowcat.live/concern/edit"
 
-    private val counselingAdapter by lazy { MainCounselingAdapter() }
+    private val counselingAdapter by lazy {
+        MainCounselingAdapter().apply {
+            setOnItemClickListener(object :
+                MainCounselingAdapter.OnItemClickListener {
+                override fun onClick(position: Int) {
+                    replaceFragment(WebViewFragment.newInstance(counselingDetail, position))
+                }
+
+                override fun onScrollItem(id: Int) {
+                    binding.customCounselingMap.selectItemId(id)
+                }
+            })
+        }
+    }
 
     private val mainViewModel by lazy {
         ViewModelProvider(
@@ -51,59 +61,30 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         binding.mainVm = mainViewModel
         binding.locationVm = locationViewModel
+
+        initView()
         initRecyclerView()
 
-        //TODO:: 죽어서 일단 유저정보 못가져 올경우 로그인 액티비티로 보내둠 로직 개선 필요
-        val userApi = ApiProvider.provideApiWithoutHeader(UserApi::class.java)
-        userApi.getUser()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                if (!it.isSuccess()) {
-                    startActivity(Intent(this, LoginActivity::class.java))
-                    finish()
-                }
-            }) {
-                Dlog.e(it.message)
-            }
-
-        mainViewModel.loadData()
-        locationViewModel.checkLocationFirstTime()
-
-        counselingAdapter.setOnItemClickListener(object :
-            MainCounselingAdapter.OnItemClickListener {
-            override fun onClick(position: Int) {
-                replaceFragment(WebViewFragment.newInstance(counselingDetail, position))
-            }
-
-            override fun onScrollItem(id: Int) {
-                binding.customCounselingMap.selectItemId(id)
-            }
-        })
-
-        binding.customCounselingMap.setOnMapItemClickListener(object :
-            CounselingMapCustom.OnMapItemClickListener {
-            override fun onClick(id: Int) {
-                binding.rvMainCounseling.scrollToPosition(id)
-            }
-        })
-
-        binding.rvMainCounseling.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                val itemCount =
-                    (recyclerView.computeHorizontalScrollOffset() + recyclerView.width / 2) / recyclerView.width
-                counselingAdapter.setScrollPositionItem(itemCount)
-            }
-        })
-        mainViewModel.distanceText.observe(this) {
+        if (locationViewModel.isEvenGetLocation()) {
+            //위치 정보 있는 경우에 화면을 로드 합니다.
+            locationViewModel.showUserLocation()
             mainViewModel.loadData()
+        } else {
+            //위치 정보가 없는 경우에 위치 정보를 받아옵니다.
+            locationViewModel.checkLocationPermission()
         }
+    }
 
-        mainViewModel.mapItems.observe(this) { _counselingMapList ->
+    override fun onViewModelSetup() {
+        mainViewModel.distanceText.observe(this, Observer {
+            mainViewModel.loadData()
+        })
+
+        mainViewModel.mapItems.observe(this, Observer { _counselingMapList ->
             val width = binding.svMainMap.width
             binding.customCounselingMap.setMapWidth(width)
             binding.svMainMap.scrollX = (width / 4.5).toInt()
-            binding.customCounselingMap.setCueList(_counselingMapList,mainViewModel.getDistanceMin(),mainViewModel.getDistanceMax())
+            binding.customCounselingMap.setCueList(_counselingMapList, mainViewModel.getDistanceMin(), mainViewModel.getDistanceMax())
             Dlog.d(_counselingMapList.toString())
             val counselingMapList = _counselingMapList.map {
                 CounselingItem(
@@ -116,9 +97,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 )
             }
             counselingAdapter.replaceAll(counselingMapList)
-        }
+        })
 
-        mainViewModel.mainListView.observe(this) {
+        mainViewModel.mainListView.observe(this, Observer {
             val link = when (mainViewModel.mainListView.value) {
                 MainViewModel.CounselingWebView.LIST -> {
                     counselingList
@@ -129,18 +110,22 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                 else -> counselingDetail
             }
             replaceFragment(WebViewFragment.newInstance(link, -1))
-        }
+        })
 
-        mainViewModel.reset.observe(this) {
+        mainViewModel.reset.observe(this, Observer {
             mainViewModel.loadData()
             //TODO: 지우기.. 공전코드입니다,ㅎ,,
             //            lifecycleScope.launch {
             //                binding.customCounselingMap.cycle()
             //            }
-        }
+        })
 
         locationViewModel.eventShowToast.observeEvent(this) {
             toast(it)
+        }
+
+        locationViewModel.eventLoadCounseling.observeEvent(this) {
+            mainViewModel.loadData()
         }
     }
 
@@ -156,6 +141,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     private fun initRecyclerView() {
         binding.rvMainCounseling.adapter = counselingAdapter
+    }
+
+    private fun initView() {
+        binding.customCounselingMap.setOnMapItemClickListener(object :
+            CounselingMapCustom.OnMapItemClickListener {
+            override fun onClick(id: Int) {
+                binding.rvMainCounseling.scrollToPosition(id)
+            }
+        })
+
+        binding.rvMainCounseling.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val itemCount =
+                    (recyclerView.computeHorizontalScrollOffset() + recyclerView.width / 2) / recyclerView.width
+                counselingAdapter.setScrollPositionItem(itemCount)
+            }
+        })
     }
 
     private fun replaceFragment(fragment: BaseFragment<*>) {

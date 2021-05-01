@@ -102,35 +102,38 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         </HorizontalScrollView>
 
-        <ImageView
-            android:id="@+id/iv_profile_img_mini"
-            android:layout_width="@dimen/main_icon"
-            android:layout_height="@dimen/main_icon"
+        <LinearLayout
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/rect_green_rad_30"
-            android:backgroundTint="@color/point"
-            android:padding="6dp"
-            android:src="@drawable/ic_location"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
+            android:gravity="center_vertical"
             android:onClick="@{() -> locationVm.checkLocationPermission()}"
-            android:text="@{locationVm.locationName}"
-            tools:text="서울시 송파구"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@id/iv_profile_img_mini"
-            app:layout_constraintStart_toEndOf="@id/iv_profile_img_mini"
-            app:layout_constraintTop_toTopOf="@id/iv_profile_img_mini" />
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_profile_img_mini"
+                android:layout_width="@dimen/main_icon"
+                android:layout_height="@dimen/main_icon"
+                android:background="@drawable/rect_green_rad_30"
+                android:backgroundTint="@color/point"
+                android:padding="6dp"
+                android:src="@drawable/ic_location" />
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="@{locationVm.locationName}"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                tools:text="서울시 송파구" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/btn_main_reset"
