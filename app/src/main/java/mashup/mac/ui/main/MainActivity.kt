@@ -1,8 +1,8 @@
 package mashup.mac.ui.main
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +15,7 @@ import mashup.mac.ext.observeEvent
 import mashup.mac.ext.toast
 import mashup.mac.model.Category
 import mashup.mac.model.CounselingItem
+import mashup.mac.ui.counseling.CounselingWriteActivity
 import mashup.mac.ui.main.custom.CounselingMapCustom
 import mashup.mac.util.log.Dlog
 
@@ -22,6 +23,11 @@ import mashup.mac.util.log.Dlog
 class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
     override var logTag = "MainActivity"
+
+    companion object {
+
+        const val REQUEST_CODE_COUNSELING_WRITE = 1002
+    }
 
     private val counselingList = "https://www.cowcat.live/concerns"
     private val counselingDetail = "https://www.cowcat.live/concern/edit"
@@ -76,11 +82,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     }
 
     override fun onViewModelSetup() {
-        mainViewModel.distanceText.observe(this, Observer {
+        mainViewModel.distanceText.observe(this, {
             mainViewModel.loadData()
         })
 
-        mainViewModel.mapItems.observe(this, Observer { _counselingMapList ->
+        mainViewModel.mapItems.observe(this, { _counselingMapList ->
             val width = binding.svMainMap.width
             binding.customCounselingMap.setMapWidth(width)
             binding.svMainMap.scrollX = (width / 4.5).toInt()
@@ -99,7 +105,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             counselingAdapter.replaceAll(counselingMapList)
         })
 
-        mainViewModel.mainListView.observe(this, Observer {
+        mainViewModel.mainListView.observe(this, {
             val link = when (mainViewModel.mainListView.value) {
                 MainViewModel.CounselingWebView.LIST -> {
                     counselingList
@@ -112,13 +118,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             replaceFragment(WebViewFragment.newInstance(link, -1))
         })
 
-        mainViewModel.reset.observe(this, Observer {
+        mainViewModel.reset.observe(this, {
             mainViewModel.loadData()
             //TODO: 지우기.. 공전코드입니다,ㅎ,,
             //            lifecycleScope.launch {
             //                binding.customCounselingMap.cycle()
             //            }
         })
+
+        mainViewModel.eventShowToast.observeEvent(this) {
+            toast(it)
+        }
+
+        mainViewModel.eventGoToCounselingWrite.observeEvent(this) {
+            startActivityForResult(
+                Intent(this, CounselingWriteActivity::class.java),
+                REQUEST_CODE_COUNSELING_WRITE
+            )
+        }
 
         locationViewModel.eventShowToast.observeEvent(this) {
             toast(it)
@@ -132,6 +149,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         locationViewModel.onActivityResult(requestCode, resultCode, data)
+
+        Dlog.d("requestCode : $requestCode, resultCode : $resultCode")
+        if (requestCode == REQUEST_CODE_COUNSELING_WRITE) {
+            if (resultCode == Activity.RESULT_OK) {
+                mainViewModel.loadData()
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

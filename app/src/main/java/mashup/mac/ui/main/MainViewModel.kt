@@ -11,7 +11,6 @@ import mashup.mac.ext.EventMutableLiveData
 import mashup.mac.ext.postEvent
 import mashup.mac.model.Category
 import mashup.mac.model.CounselingMapModel
-import mashup.mac.ui.counseling.CounselingWriteActivity
 import mashup.mac.ui.mypage.MyPageActivity
 import mashup.mac.util.log.Dlog
 
@@ -21,10 +20,12 @@ class MainViewModel(
 
     private val _mapItems = MutableLiveData<List<CounselingMapModel>>()
     val mapItems: LiveData<List<CounselingMapModel>> = _mapItems
+
     private val _mainListView = MutableLiveData<CounselingWebView>()
     val mainListView: LiveData<CounselingWebView> = _mainListView
 
-    private val eventShowToast = EventMutableLiveData<String>()
+    val eventShowToast = EventMutableLiveData<String>()
+    val eventGoToCounselingWrite = EventMutableLiveData<Unit>()
 
     private val kilometers: List<Double> =
         listOf(0.0, 5.0, 10.0, 30.0, 100.0, 500.0, 1000.0, 9999.0, 99999.0)
@@ -44,9 +45,8 @@ class MainViewModel(
     private fun distanceTextFormat(distanceLevel: Int) =
         "${kilometers[distanceLevel].toInt()}~${kilometers[distanceLevel + 1].toInt()}km"
 
-    fun onClickCounselingWrite(context: Context) {
-        val intent = Intent(context, CounselingWriteActivity::class.java)
-        context.startActivity(intent)
+    fun onClickCounselingWrite() {
+        eventGoToCounselingWrite.postEvent(Unit)
     }
 
     fun onClickLocationLeft() {
@@ -77,7 +77,7 @@ class MainViewModel(
     }
 
     fun loadData() {
-        counselingRepository.getCounselingList(getDistanceMin(), getDistanceMax(),6)
+        counselingRepository.getCounselingList(getDistanceMin(), getDistanceMax(), 6)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (it.isSuccess()) {

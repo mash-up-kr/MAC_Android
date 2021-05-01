@@ -1,5 +1,6 @@
 package mashup.mac.ui.counseling
 
+import android.app.Activity
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.MotionEvent
@@ -58,6 +59,7 @@ class CounselingWriteActivity :
             toast(it)
         }
         counselingWriteViewModel.eventFinish.observeEvent(this) {
+            setResult(Activity.RESULT_OK)
             finish()
         }
     }

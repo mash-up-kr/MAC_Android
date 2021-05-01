@@ -173,7 +173,7 @@
             android:backgroundTint="@color/point"
             android:clickable="true"
             android:gravity="center"
-            android:onClick="@{() -> mainVm.onClickCounselingWrite(context)}"
+            android:onClick="@{() -> mainVm.onClickCounselingWrite()}"
             android:paddingStart="23dp"
             android:paddingEnd="23dp"
             android:text="@string/write_counseling"
