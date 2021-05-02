@@ -1,5 +1,6 @@
 package mashup.mac.ui.mypage
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.widget.TextView
@@ -10,7 +11,7 @@ import mashup.mac.R
 import mashup.mac.base.BaseActivity
 import mashup.mac.base.BaseFragment
 import mashup.mac.databinding.ActivityMyPageBinding
-import mashup.mac.ext.toast
+import mashup.mac.ui.setting.SettingActivity
 import mashup.mac.util.log.Dlog
 
 class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_page) {
@@ -36,7 +37,9 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(R.layout.activity_my_
             }
 
             ivSetting.setOnClickListener {
-                toast("setting")
+                startActivity(
+                    Intent(this@MyPageActivity, SettingActivity::class.java)
+                )
             }
 
             btnMyCounseling.setOnClickListener {

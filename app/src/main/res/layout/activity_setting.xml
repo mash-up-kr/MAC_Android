@@ -106,6 +106,7 @@
                     android:textSize="14dp" />
 
                 <TextView
+                    android:id="@+id/tv_version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|end"
@@ -116,6 +117,7 @@
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/fl_alarm"
                 android:layout_width="match_parent"
                 android:layout_height="98dp"
                 android:layout_marginTop="16dp"
