@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import mashup.mac.R
 import mashup.mac.databinding.ItemCounselingBinding
 import mashup.mac.model.CounselingItem
+import mashup.mac.ui.webview.WebViewActivity
 
 class CounselingAdapter :
     RecyclerView.Adapter<CounselingAdapter.CounselingViewHolder>() {
@@ -16,7 +17,8 @@ class CounselingAdapter :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CounselingViewHolder {
         return CounselingViewHolder(parent).apply {
             itemView.setOnClickListener {
-               //..
+                val item = items[adapterPosition]
+                WebViewActivity.startCounselingDetailActivity(it.context, item.id)
             }
         }
     }

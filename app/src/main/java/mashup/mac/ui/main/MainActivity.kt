@@ -17,6 +17,7 @@ import mashup.mac.model.Category
 import mashup.mac.model.CounselingItem
 import mashup.mac.ui.counseling.CounselingWriteActivity
 import mashup.mac.ui.main.custom.CounselingMapCustom
+import mashup.mac.ui.webview.WebViewActivity
 import mashup.mac.util.log.Dlog
 
 
@@ -29,14 +30,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         const val REQUEST_CODE_COUNSELING_WRITE = 1002
     }
 
-
-
     private val counselingAdapter by lazy {
         MainCounselingAdapter().apply {
             setOnItemClickListener(object :
                 MainCounselingAdapter.OnItemClickListener {
                 override fun onClick(questionId: Int) {
-                    replaceFragment(WebViewFragment.newInstance(WebViewFragment.counselingDetail, questionId))
+                    WebViewActivity.startCounselingDetailActivity(this@MainActivity, questionId)
                 }
 
                 override fun onScrollItem(id: Int) {
@@ -105,16 +104,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
         })
 
         mainViewModel.mainListView.observe(this, {
-            val link = when (mainViewModel.mainListView.value) {
-                MainViewModel.CounselingWebView.LIST -> {
-                    WebViewFragment.counselingList
-                }
-                MainViewModel.CounselingWebView.DETAIL -> {
-                    WebViewFragment.counselingDetail
-                }
-                else -> WebViewFragment.counselingDetail
-            }
-            replaceFragment(WebViewFragment.newInstance(link, -1))
+            WebViewActivity.startCounselingsActivity(this@MainActivity)
         })
 
         mainViewModel.reset.observe(this, {

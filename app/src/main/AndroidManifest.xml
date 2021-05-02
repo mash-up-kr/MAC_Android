@@ -30,6 +30,7 @@
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -37,6 +38,13 @@
                 <data
                     android:host="oauth"
                     android:scheme="kakao5076efb469d1742dd2fb665625c764d7" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.webview.WebViewActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
     </application>

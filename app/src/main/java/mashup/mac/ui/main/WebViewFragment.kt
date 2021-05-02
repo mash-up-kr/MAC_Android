@@ -7,8 +7,6 @@ import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.lifecycle.ViewModelProvider
-import mashup.data.Injection
 import mashup.data.pref.PrefUtil
 import mashup.mac.R
 import mashup.mac.base.BaseFragment
@@ -21,12 +19,6 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
     override var logTag = "WebViewFragment"
 
     companion object {
-
-        //https://www.cowcat.live/concerns?token={token}
-        const val counselingList = "https://www.cowcat.live/concerns"
-
-        //https://cowcat.live/concern/{questionId}?token={token}
-        const val counselingDetail = "https://www.cowcat.live/concern"
 
         private const val LINK = "webViewType"
 
@@ -46,23 +38,13 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
     private lateinit var mWebView: WebView
     private lateinit var mWebSettings: WebSettings //웹뷰세팅
 
-    private val mainViewModel by lazy {
-        ViewModelProvider(
-            viewModelStore, MainViewModelFactory(
-                Injection.provideCounselingRepository()
-
-            )
-        ).get(MainViewModel::class.java)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.mainVm = mainViewModel
-        webView()
+        initWebView()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    fun webView() {
+    private fun initWebView() {
         binding.webViewMain.visibility = View.VISIBLE
         mWebView = binding.webViewMain
         mWebView.webViewClient = WebViewClient(); // 클릭시 새창 안뜨게
@@ -87,6 +69,14 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
 
             Dlog.d(url)
             mWebView.loadUrl(url)
+        }
+    }
+
+    fun onBackWebVew() {
+        if (binding.webViewMain.canGoBack()) {
+            binding.webViewMain.goBack()
+        } else {
+            requireActivity().finish()
         }
     }
 }
