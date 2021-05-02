@@ -156,7 +156,7 @@
             android:layout_marginEnd="12dp"
             android:background="@drawable/rect_green_rad_30"
             android:backgroundTint="@color/point"
-            android:onClick="@{() -> mainVm.onClickList()}"
+            android:onSingleClick="@{() -> mainVm.onClickList()}"
             android:padding="6dp"
             android:src="@drawable/ic_list"
             app:layout_constraintBottom_toBottomOf="@id/btn_main_reset"

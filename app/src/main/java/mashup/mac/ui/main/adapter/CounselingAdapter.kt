@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import mashup.mac.R
 import mashup.mac.databinding.ItemCounselingBinding
+import mashup.mac.ext.setOnSingleClickListener
 import mashup.mac.model.CounselingItem
 
 class MainCounselingAdapter :
@@ -18,7 +19,7 @@ class MainCounselingAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CounselingViewHolder {
         return CounselingViewHolder(parent).apply {
-            itemView.setOnClickListener {
+            itemView.setOnSingleClickListener {
                 onItemClickListener?.onClick(items[layoutPosition].id)
             }
         }
