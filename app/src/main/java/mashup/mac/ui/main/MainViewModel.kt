@@ -81,9 +81,8 @@ class MainViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (it.isSuccess()) {
-                    val data = it.data
-                    Dlog.e("data : $data")
-                    _mapItems.postValue(data.map { counseling ->
+                    Dlog.e("data : $it")
+                    _mapItems.postValue(it.data.map { counseling ->
                         counseling.category?.title
                         CounselingMapModel(
                             id = counseling.id ?: 0,
