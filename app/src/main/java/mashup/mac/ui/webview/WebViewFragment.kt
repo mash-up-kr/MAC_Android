@@ -1,4 +1,4 @@
-package mashup.mac.ui.main
+package mashup.mac.ui.webview
 
 
 import android.annotation.SuppressLint
@@ -26,7 +26,8 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
 
         private const val QuestionId = "counselingQuestionId"
 
-        fun newInstance(link: String, questionId: Int) = WebViewFragment().apply {
+        fun newInstance(link: String, questionId: Int) = WebViewFragment()
+            .apply {
             arguments = Bundle().apply {
                 putString(LINK, link)
                 putInt(QuestionId, questionId)
@@ -71,13 +72,16 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
             Dlog.d(url)
             mWebView.loadUrl(url)
         }
-        mWebView.addJavascriptInterface(WebAppInterface((object :
-            WebAppInterface.WebViewListener {
-            override fun webViewClose() {
-                Log.e("webview","webViewClose")
-                requireActivity().finish()
-            }
-        })), "mac")
+        mWebView.addJavascriptInterface(
+            WebAppInterface(
+                (object :
+                    WebAppInterface.WebViewListener {
+                    override fun webViewClose() {
+                        Log.e("webview", "webViewClose")
+                        requireActivity().finish()
+                    }
+                })
+            ), "mac")
 
     }
 

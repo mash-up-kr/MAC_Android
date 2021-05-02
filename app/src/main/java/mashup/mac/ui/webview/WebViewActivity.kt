@@ -6,7 +6,6 @@ import android.os.Bundle
 import mashup.mac.R
 import mashup.mac.base.BaseActivity
 import mashup.mac.databinding.ActivityWebViewBinding
-import mashup.mac.ui.main.WebViewFragment
 import mashup.mac.util.log.Dlog
 
 class WebViewActivity : BaseActivity<ActivityWebViewBinding>(R.layout.activity_web_view) {
