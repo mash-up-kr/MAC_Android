@@ -53,7 +53,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
         userApiWithHeader.getUser()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Dlog.d(it.data.toString())
+                Dlog.d(it.toString())
                 if (it.isSuccess()) {
                     //토큰이 유효하므로 자동 로그인
                     goToMainActivity()
