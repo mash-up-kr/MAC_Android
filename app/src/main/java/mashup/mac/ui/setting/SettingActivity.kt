@@ -8,6 +8,7 @@ import mashup.mac.BuildConfig
 import mashup.mac.R
 import mashup.mac.base.BaseActivity
 import mashup.mac.databinding.ActivitySettingBinding
+import mashup.mac.ui.webview.WebViewActivity
 
 class SettingActivity : BaseActivity<ActivitySettingBinding>(R.layout.activity_setting) {
 
@@ -34,8 +35,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(R.layout.activity_s
             }
 
             btnProducerInfo.setOnClickListener {
-                //toast("제작자 정보")
-                //TODO 제작자 정보 보기 화면
+                WebViewActivity.startProducerActivity(this@SettingActivity)
             }
 
             btnAskEmail.setOnClickListener {

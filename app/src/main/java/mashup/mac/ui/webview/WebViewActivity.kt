@@ -21,9 +21,19 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>(R.layout.activity_w
         //https://cowcat.live/concern/{questionId}?token={token}
         private const val counselingDetail = "https://www.cowcat.live/concern"
 
+        private const val settingProducer =  "https://www.cowcat.live/intro"
+
         private const val PARAM_LINK = "link"
 
         private const val PARAM_QUESTION_ID = "question_id"
+
+        fun startProducerActivity(context: Context) {
+            context.startActivity(
+                Intent(context, WebViewActivity::class.java).apply {
+                    putExtra(PARAM_LINK, settingProducer)
+                }
+            )
+        }
 
         fun startCounselingsActivity(context: Context) {
             context.startActivity(
