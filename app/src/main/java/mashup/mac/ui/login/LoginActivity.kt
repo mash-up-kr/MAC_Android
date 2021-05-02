@@ -59,7 +59,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                     goToMainActivity()
                 }
             }) {
-                showToast(it.message)
                 Dlog.e(it.message)
             }
     }
