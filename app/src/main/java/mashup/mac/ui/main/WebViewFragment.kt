@@ -3,6 +3,7 @@ package mashup.mac.ui.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.webkit.JavascriptInterface
 import android.webkit.WebSettings
@@ -67,14 +68,13 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
             } else {
                 "$it?token=$token"
             }
-
             Dlog.d(url)
             mWebView.loadUrl(url)
         }
-        mWebView.destroy()
         mWebView.addJavascriptInterface(WebAppInterface((object :
             WebAppInterface.WebViewListener {
             override fun webViewClose() {
+                Log.e("webview","webViewClose")
                 requireActivity().finish()
             }
         })), "mac")
@@ -92,6 +92,7 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
     class WebAppInterface(private val webViewListener: WebViewListener) {
         @JavascriptInterface
         fun webview_close() {
+            Log.e("webview","webviewclose")
             webViewListener.webViewClose()
         }
 
@@ -99,6 +100,4 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
             fun webViewClose()
         }
     }
-
-
 }
