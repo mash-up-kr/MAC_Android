@@ -102,6 +102,8 @@ class MyPageViewModel(
                     }
 
                     _badgeItems.postValue(badges)
+                } else if (it.isRefreshToken()) {
+                    onRefreshToken { loadMyCounseling() }
                 } else {
                     showToast(it.error)
                 }
@@ -148,6 +150,8 @@ class MyPageViewModel(
                     }
 
                     _badgeItems.postValue(badges)
+                } else if (it.isRefreshToken()) {
+                    onRefreshToken { loadMyAnswer() }
                 } else {
                     showToast(it.error)
                 }
@@ -179,7 +183,7 @@ class MyPageViewModel(
     private fun getCounselingItem(counseling: Counseling): CounselingItem? {
         val category = Category.getFromTitle(counseling.category?.title) ?: return null
         return CounselingItem(
-            id = counseling.id?:0,
+            id = counseling.id ?: 0,
             category = category,
             title = counseling.title ?: "",
             content = counseling.content ?: "",

@@ -100,6 +100,8 @@ class MainViewModel(
                             distance = counseling.distance?.toInt() ?: 0
                         )
                     })
+                } else if (it.isRefreshToken()) {
+                    onRefreshToken { loadData() }
                 } else {
                     showToast(it.error)
                 }

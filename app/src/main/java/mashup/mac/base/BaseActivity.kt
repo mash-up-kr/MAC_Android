@@ -1,5 +1,6 @@
 package mashup.mac.base
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,10 +10,9 @@ import androidx.databinding.ViewDataBinding
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import mashup.data.ApiProvider
 import mashup.data.api.AuthApi
-import mashup.data.exception.Exception
 import mashup.data.pref.PrefUtil
 import mashup.mac.ext.plusAssign
-import mashup.mac.ext.toast
+import mashup.mac.ui.login.LoginActivity
 import mashup.mac.util.log.Dlog
 import mashup.mac.util.log.Showlog
 
@@ -57,33 +57,33 @@ abstract class BaseActivity<B : ViewDataBinding>(
         Showlog.d(logTag)
     }
 
-    fun onError(throwable: Throwable, func: () -> Unit) {
-        if (throwable is Exception.AuthenticationException) {
-            compositeDisposable += tokenApi.postRefreshToken()
-                .subscribe({
-                    if (it.isSuccess()) {
-                        val accessToken = it.data.accessToken
-                        if (TextUtils.isEmpty(accessToken)) {
-                            goToLogin()
-                            return@subscribe
-                        }
-
-                        PrefUtil.put(PrefUtil.PREF_ACCESS_TOKEN, accessToken!!)
-                        Dlog.d("refresh token success")
-                        func.invoke()
-                    } else {
+    fun onRefreshToken(func: () -> Unit) {
+        compositeDisposable += tokenApi.postRefreshToken()
+            .subscribe({
+                if (it.isSuccess()) {
+                    val accessToken = it.data.accessToken
+                    if (TextUtils.isEmpty(accessToken)) {
                         goToLogin()
+                        return@subscribe
                     }
-                }) {
+
+                    PrefUtil.put(PrefUtil.PREF_ACCESS_TOKEN, accessToken!!)
+                    Dlog.d("refresh token success")
+                    func.invoke()
+                } else {
                     goToLogin()
                 }
-        } else {
-            Dlog.e(throwable.message)
-            toast(throwable.message)
-        }
+            }) {
+                goToLogin()
+            }
     }
 
     private fun goToLogin() {
-        //TODO 토큰 만료로 인한 로그인 화면 이동
+        startActivity(
+            Intent(this, LoginActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
+        )
     }
 }

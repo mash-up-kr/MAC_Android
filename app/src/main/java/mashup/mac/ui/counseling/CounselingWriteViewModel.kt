@@ -84,6 +84,8 @@ class CounselingWriteViewModel(
                     if (it.isSuccess()) {
                         showToast("작성 완료")
                         finish()
+                    } else if (it.isRefreshToken()) {
+                        onRefreshToken { submitCounseling() }
                     } else {
                         showToast(it.error)
                     }

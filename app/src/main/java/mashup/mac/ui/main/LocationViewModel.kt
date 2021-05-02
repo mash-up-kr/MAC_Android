@@ -215,6 +215,8 @@ class LocationViewModel(
 
                     //위치를 업데이트 한 경우 화면을 갱신해 줍니다.
                     eventLoadCounseling.postEvent(Unit)
+                } else if (it.isRefreshToken()) {
+                    onRefreshToken { checkLocationPermission() }
                 } else {
                     showToast(it.error)
                 }
