@@ -80,7 +80,6 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
     }
 
     fun goToTopScroll() {
-        binding.ablMyPage.setExpanded(true)
-        binding.rvCounseling.scrollToPosition(0)
+        binding.scrollView.smoothScrollTo(0, 0)
     }
 }

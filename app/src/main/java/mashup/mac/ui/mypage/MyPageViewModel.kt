@@ -42,9 +42,14 @@ class MyPageViewModel(
     private val _counselingItems = MutableLiveData<List<CounselingItem>>()
     val counselingItems: LiveData<List<CounselingItem>> get() = _counselingItems
 
+    val isShowNoBadge = MediatorLiveData<Boolean>().apply {
+        addSource(counselingItems) { items ->
+            postValue(items.isEmpty())
+        }
+    }
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
-
 
     fun loadData() {
         when (viewType) {
