@@ -17,10 +17,21 @@ data class Counseling(
     val createdAt: String?,
     @SerializedName("category")
     val category: CategoryModel?,
+    @SerializedName("counselingQuestion")
+    val counselingQuestion: CounselingQuestion?,
     @SerializedName("userId")
     val userId: Int?,
     @SerializedName("location")
     val location: Location?,
     @SerializedName("distance")
     val distance: Double?
-)
+) {
+    data class CounselingQuestion(
+        @SerializedName("id")
+        val id: Int?,
+        @SerializedName("title")
+        val title: String?,
+        @SerializedName("createdAt")
+        val createdAt: String?
+    )
+}

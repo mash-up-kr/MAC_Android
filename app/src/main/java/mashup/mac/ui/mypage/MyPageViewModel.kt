@@ -168,7 +168,7 @@ class MyPageViewModel(
 
         counselings.forEach { counseling ->
             getCounselingItem(counseling)?.let { item ->
-                tempCounselings.add(item)
+                tempCounselings.add(0, item)
             }
         }
 
@@ -182,14 +182,32 @@ class MyPageViewModel(
 
     private fun getCounselingItem(counseling: Counseling): CounselingItem? {
         val category = Category.getFromTitle(counseling.category?.title) ?: return null
-        return CounselingItem(
-            id = counseling.id ?: 0,
-            category = category,
-            title = counseling.title ?: "",
-            content = counseling.content ?: "",
-            date = counseling.createdAt ?: "",
-            commentCount = counseling.commentCount ?: 0
-        )
+
+        return when (viewType) {
+            MyPageFragment.ViewType.MyCounseling -> {
+                CounselingItem(
+                    id = counseling.id ?: 0,
+                    category = category,
+                    title = counseling.title ?: "",
+                    content = counseling.content ?: "",
+                    date = counseling.createdAt ?: "",
+                    commentCount = counseling.commentCount ?: 0
+                )
+            }
+            MyPageFragment.ViewType.MyAnswer -> {
+                CounselingItem(
+                    id = counseling.counselingQuestion?.id ?: 0,
+                    category = category,
+                    title = counseling.counselingQuestion?.title ?: "",
+                    content = counseling.content ?: "",
+                    date = counseling.createdAt ?: "",
+                    commentCount = counseling.commentCount ?: -1
+                )
+            }
+            else -> {
+                null
+            }
+        }
     }
 
     private fun showLoading() {

@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="item"
             type="mashup.mac.model.CounselingItem" />
@@ -85,6 +87,7 @@
             android:includeFontPadding="false"
             android:textColor="@color/point"
             android:textSize="12dp"
+            android:visibility="@{item.commentCount &lt; 0 ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/tv_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_title"
