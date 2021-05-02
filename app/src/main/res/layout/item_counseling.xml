@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:includeFontPadding="false"
-            android:text="@{item.date}"
+            android:text="@{item.strDate}"
             android:textColor="@color/gray6"
             android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
