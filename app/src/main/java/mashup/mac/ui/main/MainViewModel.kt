@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import mashup.data.repository.CounselingRepository
+import mashup.data.repository.UserRepository
 import mashup.mac.base.BaseViewModel
 import mashup.mac.ext.EventMutableLiveData
 import mashup.mac.ext.postEvent
@@ -15,7 +16,8 @@ import mashup.mac.ui.mypage.MyPageActivity
 import mashup.mac.util.log.Dlog
 
 class MainViewModel(
-    private val counselingRepository: CounselingRepository
+    private val counselingRepository: CounselingRepository,
+    private val userRepository: UserRepository
 ) : BaseViewModel() {
 
     private val _mapItems = MutableLiveData<List<CounselingMapModel>>()
@@ -31,6 +33,8 @@ class MainViewModel(
         listOf(0.0, 5.0, 10.0, 30.0, 100.0, 500.0, 1000.0, 9999.0, 99999.0)
     var distanceText = MutableLiveData<String>()
     var distanceLevel = 0
+
+    var userName = MutableLiveData<String>()
     val reset = MutableLiveData<Unit>()
 
     enum class CounselingWebView { DETAIL, LIST }
@@ -74,6 +78,25 @@ class MainViewModel(
 
     fun onClickReset() {
         reset.postValue(Unit)
+    }
+
+    fun loadUserData() {
+        userRepository.getUser()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if (it.isSuccess()) {
+                    Dlog.e("data : $it")
+                    userName.postValue(it.data.nickname ?: "")
+                } else if (it.isRefreshToken()) {
+                    onRefreshToken { loadData() }
+                } else {
+                    showToast(it.error)
+                }
+            }) {
+                Dlog.e(it.message)
+            }.also {
+                compositeDisposable.add(it)
+            }
     }
 
     fun loadData() {

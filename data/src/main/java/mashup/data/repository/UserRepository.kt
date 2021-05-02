@@ -23,4 +23,8 @@ class UserRepository(
     fun getLocation(): Single<BaseResponse<String>> {
         return userApi.getUserAddress()
     }
+
+    fun getUser(): Single<BaseResponse<Signup>> {
+        return userApi.getUser()
+    }
 }

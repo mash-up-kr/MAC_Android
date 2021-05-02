@@ -26,7 +26,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     override var logTag = "MainActivity"
 
     companion object {
-
         const val REQUEST_CODE_COUNSELING_WRITE = 1002
     }
 
@@ -48,7 +47,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val mainViewModel by lazy {
         ViewModelProvider(
             viewModelStore, MainViewModelFactory(
-                Injection.provideCounselingRepository()
+                Injection.provideCounselingRepository(),
+                Injection.provideUserRepository()
             )
         ).get(MainViewModel::class.java)
     }
@@ -68,6 +68,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         initView()
         initRecyclerView()
+        mainViewModel.loadUserData()
 
         if (locationViewModel.isEvenGetLocation()) {
             //위치 정보 있는 경우에 화면을 로드 합니다.

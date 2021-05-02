@@ -60,14 +60,29 @@
                     android:layout_height="@dimen/main_user_name"
                     android:layout_marginTop="4dp"
                     android:gravity="center"
-                    android:text="@string/name_nim"
+                    android:textStyle="bold"
+                    android:text="@{mainVm.userName}"
+                    android:onClick="@{() -> mainVm.onClickMyPage(context)}"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toStartOf="@id/main_name_nim"
+                    app:layout_constraintStart_toStartOf="@id/iv_profile_img"
+                    app:layout_constraintTop_toBottomOf="@id/iv_profile_img" />
+
+
+                <TextView
+                    android:id="@+id/main_name_nim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/main_user_name"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
+                    android:text=" 님"
                     android:onClick="@{() -> mainVm.onClickMyPage(context)}"
                     android:textColor="@color/white"
                     android:textSize="16dp"
                     app:layout_constraintEnd_toEndOf="@id/iv_profile_img"
-                    app:layout_constraintStart_toStartOf="@id/iv_profile_img"
+                    app:layout_constraintStart_toEndOf="@id/main_name"
                     app:layout_constraintTop_toBottomOf="@id/iv_profile_img" />
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
