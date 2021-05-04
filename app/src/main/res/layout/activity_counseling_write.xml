@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#312651">
+        android:background="@color/mainBackground">
 
         <TextView
             android:id="@+id/tv_counseling_title"
@@ -64,8 +64,10 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
                     android:background="@drawable/rect_counseling_write"
-                    android:hint="@string/what_is_title_of_counseling"
+                    android:imeOptions="actionDone"
                     android:inputType="text"
+                    android:lineSpacingExtra="4dp"
+                    android:hint="@string/what_is_title_of_counseling"
                     android:maxLength="20"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
@@ -206,7 +208,6 @@
                     android:background="@drawable/rect_counseling_write"
                     android:gravity="start"
                     android:hint="@string/please_write_counseling"
-                    android:inputType="text"
                     android:maxLength="200"
                     android:paddingStart="10dp"
                     android:paddingTop="12dp"
