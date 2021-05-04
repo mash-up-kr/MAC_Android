@@ -61,6 +61,7 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
         mWebSettings.builtInZoomControls = false; // 화면 확대 축소 허용 여부
         mWebSettings.cacheMode = WebSettings.LOAD_DEFAULT // 브라우저 캐시 허용 여부
         mWebSettings.domStorageEnabled = true // 로컬저장소 허용 여부
+        mWebView.setBackgroundColor(resources.getColor(R.color.mainBackground))
         webViewLink?.let {
             val token = (PrefUtil.get(PrefUtil.PREF_ACCESS_TOKEN, "").replace("Bearer ", ""))
 
