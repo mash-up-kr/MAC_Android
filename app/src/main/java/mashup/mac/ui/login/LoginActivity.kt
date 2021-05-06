@@ -147,4 +147,21 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
     private fun showError() {
         toast("something wrong error")
     }
+
+    private var mOnKeyBackPressedListener: onKeyBackPressedListener? = null
+
+    fun setOnKeyBackPressedListener(listener: onKeyBackPressedListener?) {
+        mOnKeyBackPressedListener = listener
+    }
+    interface onKeyBackPressedListener {
+        fun onBackKey()
+    }
+    override fun onBackPressed(){
+        if (mOnKeyBackPressedListener != null) {
+            mOnKeyBackPressedListener!!.onBackKey();
+        }else{
+            super.onBackPressed();
+        }
+    }
+
 }

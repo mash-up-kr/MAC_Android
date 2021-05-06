@@ -1,11 +1,14 @@
 package mashup.mac.ui.login
 
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import mashup.data.ApiProvider
@@ -19,7 +22,7 @@ import mashup.mac.ui.sample.adapter.GithubUserAdapter
 import java.util.*
 
 
-class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sign_up) {
+class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sign_up), LoginActivity.onKeyBackPressedListener {
 
 
     override var logTag = "SampleFragment"
@@ -121,6 +124,14 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
         return !trimmedNickname.isEmpty() && exp.matches(trimmedNickname)
     }
 
+    private fun onBackPressed() {
+        if(step==1){
+
+        }
+        step--
+        setImageStep(step)
+    }
+
     private fun setImageStep(step: Int) {
         when (step) {
             1 -> {
@@ -131,6 +142,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
                     )
                 )
                 showNickSet()
+
             }
             2 -> {
                 binding.ivStep.setImageDrawable(
@@ -153,7 +165,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
                 showNickGender()
             }
             4 -> {
-                loginViewModel.postSignUp(snsToken!!,binding.pickerYear.value)
+                loginViewModel.postSignUp(snsToken!!, binding.pickerYear.value)
             }
             else->{}
         }
@@ -201,4 +213,22 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
         }
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
+    override fun onBackKey() {
+        if (step == 1) {
+            val fragmentManager: FragmentManager = activity!!.supportFragmentManager
+            fragmentManager.beginTransaction().remove(this).commit()
+            fragmentManager.popBackStack()
+
+        } else {
+            step--
+            setImageStep(step)
+        }
+    }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (context as LoginActivity).setOnKeyBackPressedListener(this)
+    }
 }
