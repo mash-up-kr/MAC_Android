@@ -104,6 +104,9 @@ class CounselingMapCustom : View {
 
     fun selectItemId(id: Int) {
         cue?.forEach {
+            if (it.select && it.id == id) {
+                onMapItemClickListener?.onClickDouble(id)
+            }
             it.select = it.id == id
         }
         invalidate()
@@ -231,5 +234,6 @@ class CounselingMapCustom : View {
 
     interface OnMapItemClickListener {
         fun onClick(position: Int)
+        fun onClickDouble(position: Int)
     }
 }

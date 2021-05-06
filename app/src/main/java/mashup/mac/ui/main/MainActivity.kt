@@ -159,6 +159,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
             override fun onClick(position: Int) {
                 binding.rvMainCounseling.scrollToPosition(position)
             }
+
+            override fun onClickDouble(questionId: Int) {
+                WebViewActivity.startCounselingDetailActivity(this@MainActivity, questionId)
+            }
         })
 
         binding.rvMainCounseling.addOnScrollListener(object : RecyclerView.OnScrollListener() {

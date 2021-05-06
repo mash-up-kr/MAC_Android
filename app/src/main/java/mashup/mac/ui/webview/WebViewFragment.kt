@@ -34,7 +34,6 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
             }
         }
     }
-
     private val webViewLink by lazy { requireArguments().getString(LINK) }
     private val counselingQuestionId by lazy { requireArguments().getInt(QuestionId) }
 
