@@ -57,7 +57,11 @@ class LoginViewModel(
         if (nickname.value?.length!! > 10) {
             nickNameAble.postValue(false)
             ableNickname.postValue("10자 이하로 설정해주세요!")
-        } else {
+        }else if(nickname.value.isNullOrEmpty()){
+            nickNameAble.postValue(false)
+            ableNickname.postValue(if (false) "사용 가능한 닉네임에요" else "사용 불가능한 닉네임이에요!")
+        }
+            else {
             userApi.postNickNameCheck(NicknameCheckRequest(nickname.value))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -67,5 +71,5 @@ class LoginViewModel(
                     Dlog.e(it.message)
                 }
         }
-    }
+        }
 }
