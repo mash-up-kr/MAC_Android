@@ -22,10 +22,23 @@
 ## Project
 
 - app 모듈과 data 모듈 분리 작업
-- 네이티브와 이 합쳐진 하이브리드 앱
+    - app : 화면과 관련된 로직을 수행성
+    - data : 서버 통신 및 로컬 데이터 연동 및 레포지터리 생성
 
-![](screen/web_list.png){: width="100" height="100"}
-![](screen/web_detail.png){: width="100" height="100"}
+- 네이티브와 웹이 합쳐진 하이브리드 앱
+
+### 네이티브
+- 회원가입, 메인, 고민 작성, 마이페이지
+
+<img src = screen/join.png width="30%" height="30%"><img src = screen/main.png width="30%" height="30%">
+
+<img src = screen/write.png width="30%" height="30%"><img src = screen/mypage.png width="30%" height="30%">
+
+### 웹
+- 고민 상세, 고민 리스트
+
+<img src = screen/web_detail.png width="30%" height="30%"><img src = screen/web_list.png width="30%" height="30%">
+
 
 ## Spec
 
